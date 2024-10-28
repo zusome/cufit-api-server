@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWS EC2 Price Checker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        label, select, input {
+            margin: 10px 0;
+            display: block;
+        }
+        button {
+            margin-top: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>AWS EC2 Price Checker</h1>
+
+    <label for="region">AWS Region:</label>
+    <select id="region">
+        <option value="">Loading regions...</option>
+    </select>
+
+    <label for="instanceType">EC2 Instance Type:</label>
+    <input type="text" id="instanceType" placeholder="Enter instance type (e.g., t3.small)" />
+
+    <button id="searchBtn">Search Price</button>
+    <button id="historyBtn">View Search History</button>
+
+    <div id="result"></div>
+    <table id="historyTable" style="display:none;">
+        <thead>
+        <tr>
+            <th>Date</th>
+            <th>Instance Type</th>
+            <th>Region</th>
+            <th>Price</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- History records will be dynamically inserted here -->
+        </tbody>
+    </table>
+</div>
+<script src="./searchInstanceTypePrice.js"></script>
+</body>
