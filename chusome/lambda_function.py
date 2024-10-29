@@ -1,8 +1,5 @@
 import json
 from persistant.sqlite_db_manager import save_search_history, fetch_search_history
-from service.get_regions import get_regions
-from service.search_price import get_ec2_instance_price
-
 
 def lambda_handler(event, context):
     headers = {
@@ -23,20 +20,20 @@ def lambda_handler(event, context):
             'body': ''
         }
     path = event['requestContext']['http']['path']
-    if path == '/getRegions':
-        # AWS 리전 정보 가져오기
-        regions = get_regions()
+    
+    if path == '/resgistPerson':
+        # 매물 등록
+        
         return {
             'statusCode': 200,
-            'body': {"regions": regions},
+            'body': body,
             'headers': headers
         }
 
-    if path == '/getPrice':
-        # 가격정보 가져오기
+    if path == '/searchPerson':
+        # 매물검색
         body = json.loads(event['body'])
-    
-        price = get_ec2_instance_price(body["region"], body["instanceType"])
+
         return {
             'statusCode': 200,
             'body': {"price": price},
@@ -47,18 +44,7 @@ def lambda_handler(event, context):
     if path == '/saveHistory':
         # 검색 기록을 저장
         body = json.loads(event['body'])
-        instance_type = body.get('instanceType')
-        region = body.get('region')
-        price = body.get('price')
         
-        # 필수 값 검증
-        if not instance_type or not region or not price:
-            return {
-                'statusCode': 400,
-                'body': json.dumps({'message': '인스턴스타입, 리전, 가격 정보 다시 확인'}),
-                 'headers': headers
-            }
-
         # 검색 기록 저장
         save_search_history(instance_type, region, price)
 
@@ -74,15 +60,7 @@ def lambda_handler(event, context):
         search_history = fetch_search_history()
         # 검색 기록 데이터를 json으로 파싱작업
         body = []
-        for row in search_history:
-            tmp_dict  = {
-                "instanceType": row[0],
-                "region": row[1],
-                "price": row[2],
-                "date": row[3]
-            }
-            body.append(tmp_dict)
-            
+        
         return {
             'statusCode': 200,
             'body': body,
