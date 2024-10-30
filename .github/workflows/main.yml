@@ -3,7 +3,7 @@ name: Deploy to S3 and Lambda
 
 on:
   push:
-    branches: ["김영훈"]
+    branches: ["main"]
 
 env:
   AWS_REGION_SEOUL: ap-northeast-2 
