@@ -30,7 +30,7 @@ jobs:
         aws-region: ${{ env.AWS_REGION_SEOUL }}
     - name: Upload static files to S3
       run: |
-        aws s3 cp ./static/* s3://${{env.BUCKET_NAME}}/
+        aws s3 sync ./static/ s3://${{env.BUCKET_NAME}}/ --delete
 
 
   # deploy_core:
