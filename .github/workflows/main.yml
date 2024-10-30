@@ -1,14 +1,15 @@
 
 name: Deploy to S3 and Lambda
 
-# on:
-#   push:
-#     branches: ["main"]
+on:
+  push:
+    branches: ["김영훈"]
 
 env:
-  AWS_REGION: ap-northeast-2 # set this to your preferred AWS region, e.g. us-west-1
-  BUCKET_NAME: /YOUR_BUCKET_NAME/
-  FUNCTION_NAME: /YOUR_LAMBDA_NAME/ # set this to the name of the container in the
+  AWS_REGION_SEOUL: ap-northeast-2 
+  AWS_REGION_US: us-east-1
+  BUCKET_NAME: chusome.com
+  FUNCTION_NAME: chu-some-chu=some # set this to the name of the container in the
   # containerDefinitions section of your task definition
 
 jobs:
@@ -26,31 +27,30 @@ jobs:
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ env.AWS_REGION }}
+        aws-region: ${{ env.AWS_REGION_SEOUL }}
     - name: Upload static files to S3
       run: |
-        aws s3 cp ./static/index.html s3://${{env.BUCKET_NAME}}/index.html
-        aws s3 cp ./static/searchInstanceTypePrice.js s3://${{env.BUCKET_NAME}}/searchInstanceTypePrice.js
+        aws s3 cp ./static/* s3://${{env.BUCKET_NAME}}/
 
 
-  deploy_core:
-    name: Deploy to lambda
-    runs-on: ubuntu-latest
-    environment: production
+  # deploy_core:
+  #   name: Deploy to lambda
+  #   runs-on: ubuntu-latest
+  #   environment: production
 
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4
+  #   steps:
+  #   - name: Checkout
+  #     uses: actions/checkout@v4
 
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v2
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ env.AWS_REGION }}
-    - name: Compress python code to zip
-      run: | 
-        cd serchInstance
-        zip -r serchInstance.zip ./*
-        aws s3 cp serchInstance.zip s3://${{env.BUCKET_NAME}}/serchInstance.zip
-        aws lambda update-function-code --function-name ${{env.FUNCTION_NAME}}  --s3-bucket ${{env.BUCKET_NAME}} --s3-key serchInstance.zip
+  #   - name: Configure AWS credentials
+  #     uses: aws-actions/configure-aws-credentials@v2
+  #     with:
+  #       aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #       aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #       aws-region: ${{ env.AWS_REGION }}
+  #   - name: Compress python code to zip
+  #     run: | 
+  #       cd serchInstance
+  #       zip -r serchInstance.zip ./*
+  #       aws s3 cp serchInstance.zip s3://${{env.BUCKET_NAME}}/serchInstance.zip
+  #       aws lambda update-function-code --function-name ${{env.FUNCTION_NAME}}  --s3-bucket ${{env.BUCKET_NAME}} --s3-key serchInstance.zip
