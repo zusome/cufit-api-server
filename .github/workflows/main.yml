@@ -50,9 +50,9 @@ jobs:
         aws-region: ${{ env.AWS_REGION_US }}
     - name: Compress python code to zip
       run: |
-        cd chusome
-        zip -r chusome.zip ./*
-        aws lambda update-function-code --function-name ${{env.FUNCTION_NAME}} --zip-file fileb://chusome.zip
+        cd lambda_ai
+        zip -r lambda_ai.zip ./*
+        aws lambda update-function-code --function-name ${{env.FUNCTION_NAME}} --zip-file fileb://lambda_ai.zip
   # build_kotlin:
   #   runs-on: ubuntu-latest
 
