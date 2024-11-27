@@ -8,7 +8,7 @@
 # env:
 #   AWS_REGION_SEOUL: ap-northeast-2
 #   AWS_REGION_US: us-east-1
-#   BUCKET_NAME: chusome.com
+#   BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
 #   FUNCTION_NAME: chu-some-chu-some
 #   # containerDefinitions section of your task definition
 
