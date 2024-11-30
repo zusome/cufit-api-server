@@ -29,8 +29,14 @@ dependencies {
 	// JPA
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
+	// QueryDSL
+
 	// swagger
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0")
+
+	// postgresql
+	runtimeOnly("org.postgresql:postgresql")
+
 }
 
 kotlin {
