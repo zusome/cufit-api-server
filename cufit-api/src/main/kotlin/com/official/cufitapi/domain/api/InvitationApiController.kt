@@ -26,6 +26,6 @@ class InvitationApiController(
     fun generate(
         memberId: Long
     ) {
-
+        invitationService.generateInvitationCode(memberId)
     }
 }
