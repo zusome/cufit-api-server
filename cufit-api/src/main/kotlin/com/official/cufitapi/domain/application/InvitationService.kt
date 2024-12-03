@@ -1,15 +1,25 @@
 package com.official.cufitapi.domain.application
 
+import com.official.cufitapi.domain.api.dto.InvitationCodeRequest
+import com.official.cufitapi.domain.infrastructure.repository.InvitationJpaRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import kotlin.random.Random
 
 @Service
 @Transactional(readOnly = true)
-class InvitationService {
+class InvitationService(
+    private val invitationJpaRepository: InvitationJpaRepository
+) {
 
     companion object {
         private const val BASE_62_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+    }
+
+    fun validate(memberId: Long, request: InvitationCodeRequest) {
+        if (invitationJpaRepository.existsByMemberIdAndCode(memberId, request.invitationCode)) {
+            // 가입성공
+        }
     }
 
     fun generateInvitationCode() {
