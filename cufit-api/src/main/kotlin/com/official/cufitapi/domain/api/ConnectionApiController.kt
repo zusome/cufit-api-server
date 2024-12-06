@@ -18,6 +18,10 @@ class ConnectionApiController(
     }
 
     // 연결 요청
+    // - 본인의 후보자 중 1명을 선택해서 연결 요청을 보낼 수 있음.
+    //    - 후보자 1명당 1일 최대 3명까지 연결 요청을 보낼 수 있음.
+    // 같은 성별에게는 연결 요청을 보낼 수 없음. (생물학적 성별을 기준으로 함)
+    // 12시간 이내로 둘 다 의사를 표현하지 않으면 연결 요청이 자동으로 종료됨. -> Cache
     @PostMapping("/connections")
     fun applyConnection(
         memberId: Long

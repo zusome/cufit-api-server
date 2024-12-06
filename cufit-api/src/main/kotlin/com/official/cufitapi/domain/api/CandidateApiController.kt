@@ -7,13 +7,6 @@ import org.springframework.web.bind.annotation.PostMapping
 class CandidateApiController {
 
 
-    // 후보자 정보 조회
-    @GetMapping("/candidates")
-    fun getCandidates() {
-
-    }
-
-
     // 후보자 프로필 업데이트 API
     @PostMapping("/candidates")
     fun updateCandidateProfile() {
