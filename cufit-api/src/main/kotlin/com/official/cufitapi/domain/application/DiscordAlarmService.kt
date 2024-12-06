@@ -1,9 +1,12 @@
 package com.official.cufitapi.domain.application
 
 import org.springframework.stereotype.Service
+import org.springframework.web.reactive.function.client.WebClient
 
 @Service
 class DiscordAlarmService {
+
+    private val webClient = WebClient.create()
 
     // Discord 웹훅 Url은 환경 변수로 관리
 
