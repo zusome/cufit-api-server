@@ -5,10 +5,16 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional(readOnly = true)
-class CandidateService {
+class CandidateService(
+) {
 
     // 후보자 조회
     fun get() {
+
+    }
+
+    // 후보자 프로필 업데이트
+    fun updateProfile() {
 
     }
 }

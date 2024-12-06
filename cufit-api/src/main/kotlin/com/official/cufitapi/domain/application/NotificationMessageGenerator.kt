@@ -31,10 +31,12 @@ class NotificationMessageGenerator {
             return "${toName}님에게 하트 보내기 완료 \n ${fromName}님의 카드를 보냈어요."
         }
 
+        @JvmStatic
         fun failureWithCase2(fromName :String, toName :String) : String {
             return "${toName}님에게 하트 보내기 완료\n ${fromName}님의 카드를 보냈어요."
         }
 
+        @JvmStatic
         fun failureWithCase3(name :String) : String {
             return "${name}님 연결되지 않았어요.\n 후보자 모두 하트를 거절했어요."
         }

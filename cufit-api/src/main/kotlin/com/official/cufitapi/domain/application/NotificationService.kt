@@ -21,6 +21,9 @@ class NotificationService(
                     createdDate = it.createdDate!!
                 )
             }
+    }
+
+    fun save() {
 
     }
 }

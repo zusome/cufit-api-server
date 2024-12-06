@@ -3,6 +3,7 @@ package com.official.cufitapi.domain.api
 import com.official.cufitapi.domain.api.docs.InvitationApiDocs
 import com.official.cufitapi.domain.api.dto.InvitationCodeRequest
 import com.official.cufitapi.domain.application.InvitationService
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 

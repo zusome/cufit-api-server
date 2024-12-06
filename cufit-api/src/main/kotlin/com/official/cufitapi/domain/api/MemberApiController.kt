@@ -25,8 +25,9 @@ class MemberApiController(
     fun updateProfile(
         memberId: Long,
         @RequestBody request: MemberProfileRequest
-    ) {
+    ) : ResponseEntity<Unit> {
         memberService.updateMemberProfile(memberId, request)
+        return ResponseEntity.noContent().build()
     }
 
 

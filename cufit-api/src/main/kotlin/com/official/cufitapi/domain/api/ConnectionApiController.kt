@@ -11,19 +11,33 @@ class ConnectionApiController(
 
     // 연결 정보확인
     @GetMapping("/connections")
-    fun getConnection() {
+    fun getConnection(
+        memberId: Long
+    ) {
 
     }
 
     // 연결 요청
     @PostMapping("/connections")
-    fun applyConnection() {
+    fun applyConnection(
+        memberId: Long
+    ) {
 
     }
 
     // 연결 수락
-    @PostMapping("/connections/approve")
-    fun approveConnection() {
+    @PostMapping("/connections/approval")
+    fun approveConnection(
+        memberId: Long
+    ) {
+
+    }
+
+    // 연결 거절
+    @PostMapping("/connections/rejection")
+    fun rejectConnection(
+        memberId: Long
+    ) {
 
     }
 
