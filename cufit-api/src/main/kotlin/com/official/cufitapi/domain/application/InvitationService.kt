@@ -27,7 +27,7 @@ class InvitationService(
         }
     }
 
-    fun generateInvitationCode(memberId: Long) {
+    fun generateInvitationCode(memberId: Long) : InvitationGenerateResponse {
         val member = memberJpaRepository.findByIdOrNull(memberId) ?: throw InvalidRequestException("잘못된 사용자 ID 요청 : ${memberId}")
         val invitationCode = generateRandomBase62String()
         val invitation = Invitation(

@@ -2,6 +2,7 @@ package com.official.cufitapi.domain.api
 
 import com.official.cufitapi.domain.api.docs.InvitationApiDocs
 import com.official.cufitapi.domain.api.dto.InvitationCodeRequest
+import com.official.cufitapi.domain.api.dto.invitation.InvitationCodeResponse
 import com.official.cufitapi.domain.application.InvitationService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
@@ -26,7 +27,7 @@ class InvitationApiController(
     @PostMapping("/invitations")
     fun generate(
         memberId: Long
-    ) {
-        invitationService.generateInvitationCode(memberId)
+    ) : ResponseEntity<InvitationCodeResponse> {
+        return ResponseEntity.ok(invitationService.generateInvitationCode(memberId))
     }
 }
