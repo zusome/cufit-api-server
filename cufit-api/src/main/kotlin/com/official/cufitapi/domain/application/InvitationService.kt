@@ -22,6 +22,7 @@ class InvitationService(
         private const val BASE_62_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
     }
 
+    // TODO : 주선자 후보자 구분
     fun validate(memberId: Long, request: InvitationCodeRequest) {
         if (invitationJpaRepository.existsByMemberIdAndCode(memberId, request.invitationCode)) {
             // 가입성공
