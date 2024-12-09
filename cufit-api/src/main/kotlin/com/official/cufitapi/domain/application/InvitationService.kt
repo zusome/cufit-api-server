@@ -1,8 +1,10 @@
 package com.official.cufitapi.domain.application
 
 import com.official.cufitapi.common.exception.InvalidRequestException
-import com.official.cufitapi.domain.api.dto.InvitationCodeRequest
+import com.official.cufitapi.domain.api.dto.invitation.InvitationCodeGenerateRequest
+import com.official.cufitapi.domain.api.dto.invitation.InvitationCodeRequest
 import com.official.cufitapi.domain.api.dto.invitation.InvitationCodeResponse
+import com.official.cufitapi.domain.infrastructure.MemberType
 import com.official.cufitapi.domain.infrastructure.entity.Invitation
 import com.official.cufitapi.domain.infrastructure.repository.InvitationJpaRepository
 import com.official.cufitapi.domain.infrastructure.repository.MemberJpaRepository
@@ -22,18 +24,23 @@ class InvitationService(
         private const val BASE_62_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
     }
 
-    // TODO : 주선자 후보자 구분
     fun validate(memberId: Long, request: InvitationCodeRequest) {
-        if (invitationJpaRepository.existsByMemberIdAndCode(memberId, request.invitationCode)) {
-            // 가입성공
+        val member = memberJpaRepository.findByIdOrNull(memberId) ?: throw InvalidRequestException("존재하지 않는 사용자 id : $memberId")
+        if (MemberType.invitationCodePrefix(member.currentType) != request.invitationCode.substring(0,2)) {
+            throw InvalidRequestException("잘못된 사용자 초대코드")
+        }
+
+        if (!invitationJpaRepository.existsByMemberIdAndCode(memberId, request.invitationCode)) {
+            throw InvalidRequestException("잘못된 사용자 초대코드")
         }
     }
 
-    // TODO : 주선자랑 후보자 구분할 수 있는 초대코드 생성
-    fun generateInvitationCode(memberId: Long) : InvitationCodeResponse {
-        val member = memberJpaRepository.findByIdOrNull(memberId) ?: throw InvalidRequestException("잘못된 사용자 ID 요청 : ${memberId}")
-        val invitationCode = generateRandomBase62String()
-        val invitation = invitationJpaRepository.save(Invitation(
+    @Transactional
+    fun generateInvitationCode(memberId: Long, request: InvitationCodeGenerateRequest) : InvitationCodeResponse {
+        val member = memberJpaRepository.findByIdOrNull(memberId) ?: throw InvalidRequestException("잘못된 사용자 id 요청 : $memberId")
+        val invitationCode = MemberType.invitationCodePrefix(request.memberType) + generateRandomBase62String()
+        val invitation = invitationJpaRepository.save(
+            Invitation(
             code = invitationCode,
             memberId = member.id!!
         ))
