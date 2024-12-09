@@ -4,7 +4,7 @@ import com.official.cufitapi.common.exception.InvalidRequestException
 import com.official.cufitapi.domain.api.dto.invitation.InvitationCodeGenerateRequest
 import com.official.cufitapi.domain.api.dto.invitation.InvitationCodeRequest
 import com.official.cufitapi.domain.api.dto.invitation.InvitationCodeResponse
-import com.official.cufitapi.domain.infrastructure.MemberType
+import com.official.cufitapi.domain.enums.MemberType
 import com.official.cufitapi.domain.infrastructure.entity.Invitation
 import com.official.cufitapi.domain.infrastructure.repository.InvitationJpaRepository
 import com.official.cufitapi.domain.infrastructure.repository.MemberJpaRepository
@@ -33,6 +33,8 @@ class InvitationService(
         if (!invitationJpaRepository.existsByMemberIdAndCode(memberId, request.invitationCode)) {
             throw InvalidRequestException("잘못된 사용자 초대코드")
         }
+
+        // TODO : 초대코드 검증 성공하면, 초대코드 삭제
     }
 
     @Transactional

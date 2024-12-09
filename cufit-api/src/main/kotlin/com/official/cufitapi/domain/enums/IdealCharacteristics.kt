@@ -1,4 +1,4 @@
-package com.official.cufitapi.domain.infrastructure
+package com.official.cufitapi.domain.enums
 
 class IdealCharacteristics {
     var ageRange: List<AgeIdealCharacteristics> = listOf()

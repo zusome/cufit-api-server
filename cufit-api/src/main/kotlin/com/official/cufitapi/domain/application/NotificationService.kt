@@ -12,18 +12,20 @@ class NotificationService(
 ) {
 
     fun findAll(memberId : Long) : List<NotificationResponse> {
+        // 알람 최신순으로 정렬
         return notificationJpaRepository.findAllByMemberIdOrderByCreatedDateDesc(memberId)
             .map {
                 NotificationResponse(
                     id = it.id!!,
                     title = it.title,
                     content = it.content,
+                    notificationType = it.notificationType,
                     createdDate = it.createdDate!!
                 )
             }
     }
 
     fun save() {
-
+        
     }
 }

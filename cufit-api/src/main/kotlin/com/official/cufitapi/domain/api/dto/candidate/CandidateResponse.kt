@@ -1,6 +1,6 @@
 package com.official.cufitapi.domain.api.dto.candidate
 
-import com.official.cufitapi.domain.infrastructure.MBTI
+import com.official.cufitapi.domain.enums.MBTI
 import io.swagger.v3.oas.annotations.media.Schema
 
 data class CandidateResponse(

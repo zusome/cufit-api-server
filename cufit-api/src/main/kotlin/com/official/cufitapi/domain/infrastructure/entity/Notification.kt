@@ -1,9 +1,7 @@
 package com.official.cufitapi.domain.infrastructure.entity
 
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
+import com.official.cufitapi.domain.enums.NotificationType
+import jakarta.persistence.*
 
 /*
    알림 Table
@@ -14,6 +12,8 @@ class Notification(
     val id: Long? = null,
     val title: String,
     val content: String,
-    val memberId: Long
+    val memberId: Long,
+    @Enumerated(EnumType.STRING)
+    val notificationType: NotificationType
 ): BaseTimeEntity() {
 }

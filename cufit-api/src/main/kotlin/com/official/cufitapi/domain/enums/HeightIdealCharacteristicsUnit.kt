@@ -1,4 +1,4 @@
-package com.official.cufitapi.domain.infrastructure
+package com.official.cufitapi.domain.enums
 
 enum class HeightIdealCharacteristicsUnit(
     val value: Int

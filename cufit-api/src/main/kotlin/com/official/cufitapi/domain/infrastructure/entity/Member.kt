@@ -1,6 +1,6 @@
 package com.official.cufitapi.domain.infrastructure.entity
 
-import com.official.cufitapi.domain.infrastructure.MemberType
+import com.official.cufitapi.domain.enums.MemberType
 import jakarta.persistence.*
 
 /*
