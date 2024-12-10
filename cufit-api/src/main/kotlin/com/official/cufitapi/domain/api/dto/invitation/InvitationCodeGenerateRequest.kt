@@ -1,6 +1,5 @@
 package com.official.cufitapi.domain.api.dto.invitation
 
-import com.official.cufitapi.domain.enums.MatchMakerCandidateRelation
 import com.official.cufitapi.domain.enums.MatchMakerCandidateRelationType
 import com.official.cufitapi.domain.enums.MemberType
 

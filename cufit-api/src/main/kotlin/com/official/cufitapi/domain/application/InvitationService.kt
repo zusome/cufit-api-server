@@ -25,17 +25,21 @@ class InvitationService(
         private const val BASE_62_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
     }
 
+    @Transactional
     fun validate(memberId: Long, request: InvitationCodeRequest) {
         val member = memberJpaRepository.findByIdOrNull(memberId) ?: throw InvalidRequestException("존재하지 않는 사용자 id : $memberId")
         if (MemberType.invitationCodePrefix(member.currentType) != request.invitationCode.substring(0,2)) {
             throw InvalidRequestException("잘못된 사용자 초대코드")
         }
 
-        if (!invitationJpaRepository.existsByMemberIdAndCode(memberId, request.invitationCode)) {
+        if (!invitationJpaRepository.existsByMemberIdAndCodeAndActivatedIsTrue(memberId, request.invitationCode)) {
             throw InvalidRequestException("잘못된 사용자 초대코드")
         }
 
-        // TODO : 초대코드 검증 성공하면, 초대코드 삭제
+        // 검증 성공하면, 초대코드 Soft Delete
+        val invitation = invitationJpaRepository.findByCode(request.invitationCode) ?: throw InvalidRequestException("유효하지 않은 초대 코드")
+        invitation.deactivate()
+
     }
 
     @Transactional
