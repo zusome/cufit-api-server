@@ -12,6 +12,11 @@ class MatchCandidate(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
     val memberId: Long,
+
+
+    /*
+    후보자 Table
+    */
     val matchMakerId: Long
 ) {
 }

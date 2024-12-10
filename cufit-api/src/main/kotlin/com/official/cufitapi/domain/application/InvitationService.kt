@@ -4,6 +4,7 @@ import com.official.cufitapi.common.exception.InvalidRequestException
 import com.official.cufitapi.domain.api.dto.invitation.InvitationCodeGenerateRequest
 import com.official.cufitapi.domain.api.dto.invitation.InvitationCodeRequest
 import com.official.cufitapi.domain.api.dto.invitation.InvitationCodeResponse
+import com.official.cufitapi.domain.enums.MatchMakerCandidateRelationType
 import com.official.cufitapi.domain.enums.MemberType
 import com.official.cufitapi.domain.infrastructure.entity.Invitation
 import com.official.cufitapi.domain.infrastructure.repository.InvitationJpaRepository
@@ -37,10 +38,13 @@ class InvitationService(
         // TODO : 초대코드 검증 성공하면, 초대코드 삭제
     }
 
+    // TODO: 주선자를 초대하는 경우와 후보자를 초대하는 경우 구분
     @Transactional
     fun generateInvitationCode(memberId: Long, request: InvitationCodeGenerateRequest) : InvitationCodeResponse {
         val member = memberJpaRepository.findByIdOrNull(memberId) ?: throw InvalidRequestException("잘못된 사용자 id 요청 : $memberId")
-        val invitationCode = MemberType.invitationCodePrefix(request.memberType) + generateRandomBase62String()
+        val invitationCodePrefix = MemberType.invitationCodePrefix(request.memberType)
+        val invitationCodeSuffix = MatchMakerCandidateRelationType.invitationCodeSuffix(request.relationType)
+        val invitationCode =  invitationCodePrefix + generateRandomBase62String() + invitationCodeSuffix
         val invitation = invitationJpaRepository.save(
             Invitation(
             code = invitationCode,
