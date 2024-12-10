@@ -1,5 +1,6 @@
 package com.official.cufitapi.domain.infrastructure.entity
 
+import com.official.cufitapi.domain.enums.MatchMakerCandidateRelationType
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
@@ -12,8 +13,17 @@ import jakarta.persistence.Id
 class Invitation(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
+    /*
+    초대 code
+    */
     val code: String,
-    // 사용자 id
+    /*
+    초대한 사람과의 관계
+    */
+    val relationType: MatchMakerCandidateRelationType,
+    /*
+    초대한 사용자 ID
+    */
     val memberId: Long
 ) : BaseTimeEntity() {
 }

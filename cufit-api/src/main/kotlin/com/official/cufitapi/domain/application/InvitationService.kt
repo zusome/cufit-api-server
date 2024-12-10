@@ -38,7 +38,6 @@ class InvitationService(
         // TODO : 초대코드 검증 성공하면, 초대코드 삭제
     }
 
-    // TODO: 주선자를 초대하는 경우와 후보자를 초대하는 경우 구분
     @Transactional
     fun generateInvitationCode(memberId: Long, request: InvitationCodeGenerateRequest) : InvitationCodeResponse {
         val member = memberJpaRepository.findByIdOrNull(memberId) ?: throw InvalidRequestException("잘못된 사용자 id 요청 : $memberId")
@@ -48,6 +47,7 @@ class InvitationService(
         val invitation = invitationJpaRepository.save(
             Invitation(
             code = invitationCode,
+            relationType = request.relationType,
             memberId = member.id!!
         ))
         return InvitationCodeResponse(
