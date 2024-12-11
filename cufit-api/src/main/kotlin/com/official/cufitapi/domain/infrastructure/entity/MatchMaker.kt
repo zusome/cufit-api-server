@@ -11,6 +11,10 @@ import jakarta.persistence.Id
 @Entity
 class MatchMaker(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null
+    val id: Long? = null,
+    /*
+       사용자 id
+    */
+    val memberId: Long
 ) {
 }

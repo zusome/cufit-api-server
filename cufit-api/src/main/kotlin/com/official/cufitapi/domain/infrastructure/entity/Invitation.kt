@@ -18,11 +18,11 @@ class Invitation(
     */
     val code: String,
     /*
-    초대한 사람과의 관계
+    초대하는 사람과의 관계
     */
     val relationType: MatchMakerCandidateRelationType,
     /*
-    초대한 사용자 ID
+    초대하는 사용자 ID
     */
     val memberId: Long,
     /*
@@ -33,7 +33,6 @@ class Invitation(
 
 ) : BaseTimeEntity() {
 
-    fun deactivate() {
 
-    }
+
 }

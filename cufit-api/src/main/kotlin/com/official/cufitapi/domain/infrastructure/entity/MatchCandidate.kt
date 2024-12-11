@@ -11,12 +11,14 @@ import jakarta.persistence.Id
 class MatchCandidate(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
+    /*
+     사용자 id
+    */
     val memberId: Long,
 
-
     /*
-    후보자 Table
+     이상형 정보
     */
-    val matchMakerId: Long
+
 ) {
 }

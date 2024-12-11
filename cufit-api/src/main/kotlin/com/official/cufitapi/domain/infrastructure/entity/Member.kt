@@ -21,20 +21,14 @@ class Member(
     val name: String,
 
     /*
+    사용자 email
+    */
+    val email: String,
+
+    /*
     나를 초대한 유저의 id
     */
     val inviteeId: Long,
-
-    /*
-    키
-    */
-    val height: Int,
-
-    /*
-    나이
-    */
-    val age: Int
-
 
 ) : BaseTimeEntity() {
 }

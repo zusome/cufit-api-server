@@ -7,4 +7,5 @@ interface InvitationJpaRepository : JpaRepository<Invitation, Long> {
 
     fun existsByMemberIdAndCodeAndActivatedIsTrue(memberId: Long, code: String) : Boolean
     fun findByCode(code: String) : Invitation?
+    fun findByMemberId(memberId: Long) : Invitation?
 }
