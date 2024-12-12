@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface InvitationJpaRepository : JpaRepository<Invitation, Long> {
 
-    fun existsByMemberIdAndCodeAndActivatedIsTrue(memberId: Long, code: String) : Boolean
+    fun existsByMemberIdAndCodeAndIsActivatedIsTrue(memberId: Long, code: String) : Boolean
     fun findByCode(code: String) : Invitation?
     fun findByMemberId(memberId: Long) : Invitation?
 }

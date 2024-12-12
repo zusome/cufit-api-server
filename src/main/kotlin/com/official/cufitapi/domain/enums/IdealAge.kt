@@ -1,6 +1,6 @@
 package com.official.cufitapi.domain.enums
 
-enum class AgeIdealCharacteristics(
+enum class IdealAge(
     val description: String
 ) {
     OLDER("연상"),

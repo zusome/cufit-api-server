@@ -16,7 +16,7 @@ class InvitationApiController(
 
     // 초대 코드 검증
     @PostMapping("/invitations/code")
-    fun validateInvitation(
+    override fun validateInvitation(
         memberId: Long,
         @RequestBody request: InvitationCodeRequest
     ) : ResponseEntity<Unit> {
@@ -27,7 +27,7 @@ class InvitationApiController(
 
     // 초대 코드 생성
     @PostMapping("/invitations")
-    fun generate(
+    override fun generate(
         memberId: Long,
         @RequestBody request: InvitationCodeGenerateRequest
     ) : ResponseEntity<InvitationCodeResponse> {

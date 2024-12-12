@@ -21,6 +21,11 @@ class Member(
     val name: String,
 
     /*
+    사용자 출생 연도
+    */
+    val yearOfBirth: Int,
+
+    /*
     사용자 email
     */
     val email: String,

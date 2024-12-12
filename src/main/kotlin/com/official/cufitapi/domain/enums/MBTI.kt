@@ -16,7 +16,14 @@ enum class MBTI {
     ESTJ,
     ESFJ,
     ENFJ,
-    ENTJ
+    ENTJ;
+
+    companion object {
+        @JvmStatic
+        fun split(mbti: MBTI): List<String> {
+            return mbti.name.split("")
+        }
+    }
 }
 
 enum class MBTILetter(
@@ -29,5 +36,25 @@ enum class MBTILetter(
     F("감성적"),
     T("이성적"),
     P("즉흥형"),
-    K("계획형")
+    J("계획형");
+
+    companion object {
+        @JvmStatic
+        fun convert(mbtiList: List<String>): List<MBTILetter> {
+            return mbtiList.map { value ->
+                when (value) {
+                    "E" -> MBTILetter.E
+                    "I" -> MBTILetter.I
+                    "N" -> MBTILetter.N
+                    "S" -> MBTILetter.S
+                    "F" -> MBTILetter.F
+                    "T" -> MBTILetter.T
+                    "P" -> MBTILetter.P
+                    "K" -> MBTILetter.J
+                    else -> throw IllegalArgumentException("Invalid MBTI letter: $value")
+                }
+            }
+        }
+    }
 }
+

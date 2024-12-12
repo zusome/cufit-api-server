@@ -20,6 +20,11 @@ class MemberProfileImage(
     val fileName: UUID = UUID.randomUUID(),
 
     /*
+    image url
+    */
+    val imageUrl: String,
+
+    /*
     프로필 순서
     */
     val profileOrder: Int,

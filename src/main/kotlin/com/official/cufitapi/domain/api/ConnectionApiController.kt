@@ -1,8 +1,10 @@
 package com.official.cufitapi.domain.api
 
+import com.official.cufitapi.domain.api.dto.connection.ConnectionApplyRequest
 import com.official.cufitapi.domain.application.ConnectionService
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 
 @ApiV1Controller
 class ConnectionApiController(
@@ -24,9 +26,10 @@ class ConnectionApiController(
     // 12시간 이내로 둘 다 의사를 표현하지 않으면 연결 요청이 자동으로 종료됨. -> Cache
     @PostMapping("/connections")
     fun applyConnection(
-        memberId: Long
+        memberId: Long,
+        @RequestBody request: ConnectionApplyRequest
     ) {
-
+        connectionService.apply(memberId, request)
     }
 
     // 연결 수락

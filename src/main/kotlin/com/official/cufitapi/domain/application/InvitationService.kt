@@ -32,7 +32,7 @@ class InvitationService(
             throw InvalidRequestException("잘못된 사용자 초대코드")
         }
 
-        if (!invitationJpaRepository.existsByMemberIdAndCodeAndActivatedIsTrue(memberId, request.invitationCode)) {
+        if (!invitationJpaRepository.existsByMemberIdAndCodeAndIsActivatedIsTrue(memberId, request.invitationCode)) {
             throw InvalidRequestException("잘못된 사용자 초대코드")
         }
 

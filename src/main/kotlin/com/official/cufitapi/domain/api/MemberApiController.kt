@@ -15,8 +15,10 @@ class MemberApiController(
 
     // 유저 정보 조회
     @GetMapping("/members")
-    fun getMemberInfo() : ResponseEntity<MemberInfoResponse> {
-        memberService.getMemberInfo()
+    fun getMemberInfo(
+        memberId: Long
+    ) : ResponseEntity<MemberInfoResponse> {
+        memberService.getMemberInfo(memberId)
         return ResponseEntity.noContent().build()
     }
 

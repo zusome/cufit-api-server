@@ -9,11 +9,10 @@ class MatchMakerApiController(
 ) {
 
     // 본인이 등록한 후보자 목록 조회
-    // 추천순 (우리가 정한 score) , 최신순
-    @GetMapping("/matchmakers")
+    @GetMapping("/matchmakers/candidates")
     fun getCandidates(
         matchMakerId: Long
     ) {
-        matchMakerService.getCandidates(matchMakerId)
+        // matchMakerService.getCandidates(matchMakerId)
     }
 }

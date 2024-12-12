@@ -1,6 +1,6 @@
 package com.official.cufitapi.domain.enums
 
-enum class HeightIdealCharacteristicsUnit(
+enum class IdealHeightUnit(
     val value: Int
 ) {
     HEIGHT_150(150),

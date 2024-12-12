@@ -33,6 +33,7 @@ class Invitation(
 
 ) : BaseTimeEntity() {
 
-
-
+    fun deactivate() {
+        isActivated = false;
+    }
 }
