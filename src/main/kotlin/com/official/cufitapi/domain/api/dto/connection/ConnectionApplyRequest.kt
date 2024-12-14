@@ -1,6 +1,8 @@
 package com.official.cufitapi.domain.api.dto.connection
 
 data class ConnectionApplyRequest(
-    val name: String
+    val matchMakerId: Long,
+    val receiverId: Long,
+    val senderId: Long
 ) {
 }

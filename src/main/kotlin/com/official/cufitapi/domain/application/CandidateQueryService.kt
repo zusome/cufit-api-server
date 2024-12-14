@@ -26,4 +26,8 @@ class CandidateQueryService(
 //        }
 //    }
 //}
+
+    fun getConnectionList() {
+
+    }
 }

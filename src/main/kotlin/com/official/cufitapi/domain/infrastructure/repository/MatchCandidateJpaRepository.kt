@@ -5,8 +5,44 @@ import com.official.cufitapi.domain.infrastructure.entity.MatchCandidate
 import io.swagger.v3.oas.annotations.media.Schema
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
+import org.springframework.data.repository.query.Param
 
 interface MatchCandidateJpaRepository : JpaRepository<MatchCandidate, Long> {
+
+    @Query(
+        """
+            SELECT 
+            mc.id,
+            mc.member_id as memberId,
+            mc.ideal_mbti as idealMbti,
+            mc.ideal_age_range as idealAgeRange,
+            mc.ideal_height_range as idealHeightRange,
+            mc.height,
+            mc.station,
+            mc.job,
+            m.name,
+            m.email,
+            m.gender
+            FROM match_candidate mc
+            JOIN member m ON mc.member_id = m.id
+        """,
+        nativeQuery = true
+    )
+    fun findMemberByMatchCandidateId(@Param("id") candidateId: Long): MemberInfoByCandidateIdDto?
+
+    data class MemberInfoByCandidateIdDto(
+        val id: Long,
+        val memberId: Long,
+        val name: String,
+        val email: String,
+        val idealMbti: MBTILetter,
+        val idealAgeRange: String,
+        val idealHeightRange: String,
+        val height: Int,
+        val station: String,
+        val job: String,
+        val gender: String
+    )
 
     @Query(
         value = """
@@ -33,6 +69,7 @@ interface MatchCandidateJpaRepository : JpaRepository<MatchCandidate, Long> {
     )
     fun findAllCandidatesByMatchMaker(): List<CandidateInfo>
 
+
     data class CandidateMember(
         val memberId: Long,
         val name: String,
@@ -57,10 +94,21 @@ interface MatchCandidateJpaRepository : JpaRepository<MatchCandidate, Long> {
     )
 
     data class Image(
-        val imageUrl: String ,
+        val imageUrl: String,
         val profileOrder: Int
     ) {
 
     }
+
+    @Query(
+        ("SELECT COUNT(e) FROM YourEntity e " +
+                "WHERE e.matchMakerId = :matchMakerId " +
+                "AND e.senderId = :senderId " +
+                "AND DATE(e.createdDate) = CURRENT_DATE")
+    )
+    fun countByMatchMakerIdAndSenderIdAndCreatedDate(
+        @Param("matchMakerId") matchMakerId: Long?,
+        @Param("senderId") senderId: Long?
+    ): Long
 
 }

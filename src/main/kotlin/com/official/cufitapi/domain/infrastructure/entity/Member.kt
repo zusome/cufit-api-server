@@ -1,5 +1,6 @@
 package com.official.cufitapi.domain.infrastructure.entity
 
+import com.official.cufitapi.domain.enums.Gender
 import com.official.cufitapi.domain.enums.MemberType
 import jakarta.persistence.*
 
@@ -29,6 +30,12 @@ class Member(
     사용자 email
     */
     val email: String,
+
+    /*
+    성별
+    */
+    @Enumerated(value = EnumType.STRING)
+    val gender: Gender,
 
     /*
     나를 초대한 유저의 id
