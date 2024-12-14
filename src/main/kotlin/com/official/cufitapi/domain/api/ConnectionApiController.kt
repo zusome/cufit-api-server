@@ -1,8 +1,11 @@
 package com.official.cufitapi.domain.api
 
 import com.official.cufitapi.domain.api.dto.connection.ConnectionApplyRequest
+import com.official.cufitapi.domain.api.dto.connection.ConnectionUpdateRequest
 import com.official.cufitapi.domain.application.ConnectionService
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestParam
@@ -32,12 +35,24 @@ class ConnectionApiController(
         connectionService.apply(memberId, request)
     }
 
-//    // 연결 수락
-//    @PostMapping("/connections/approval")
-//    fun Connection(
-//        memberId: Long
-//    ) {
-//
-//    }
+    // 연결 수락
+    @PatchMapping("/connections/{connectionId}")
+    fun updateConnection (
+        @PathVariable connectionId: Long,
+        memberId: Long,
+        @RequestBody request: ConnectionUpdateRequest
+    ) {
+        connectionService.updateConnectionStatus(connectionId, request)
+    }
+
+    @GetMapping("/connections/received")
+    fun getReceivedConnections() {
+
+    }
+
+    @GetMapping("/connections/result")
+    fun getConnectionsResults() {
+
+    }
 
 }

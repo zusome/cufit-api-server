@@ -5,6 +5,7 @@ import com.official.cufitapi.domain.api.dto.MemberProfileRequest
 import com.official.cufitapi.domain.application.MemberService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 
@@ -31,6 +32,5 @@ class MemberApiController(
         memberService.updateMemberProfile(memberId, request)
         return ResponseEntity.noContent().build()
     }
-
 
 }

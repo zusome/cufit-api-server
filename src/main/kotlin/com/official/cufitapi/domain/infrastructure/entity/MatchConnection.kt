@@ -28,6 +28,10 @@ class MatchConnection(
     /*
     받는 사람 (MatchCandidate)
     */
-    val status: MatchStatus = MatchStatus.PROGRESSING
+    var status: MatchStatus = MatchStatus.PROGRESSING
 ) : BaseTimeEntity() {
+
+    fun updateStatus(status: MatchStatus) {
+        this.status = status
+    }
 }

@@ -19,12 +19,12 @@ class Member(
     /*
     사용자 이름
     */
-    val name: String,
+    var name: String,
 
     /*
     사용자 출생 연도
     */
-    val yearOfBirth: Int,
+    var yearOfBirth: Int,
 
     /*
     사용자 email
@@ -35,12 +35,17 @@ class Member(
     성별
     */
     @Enumerated(value = EnumType.STRING)
-    val gender: Gender,
+    var gender: Gender,
+
+    /*
+    전화번호
+    */
+    var phoneNumber: String? = null,
 
     /*
     나를 초대한 유저의 id
     */
     val inviteeId: Long,
 
-) : BaseTimeEntity() {
+    ) : BaseTimeEntity() {
 }

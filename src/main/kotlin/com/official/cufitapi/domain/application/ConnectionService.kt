@@ -2,11 +2,11 @@ package com.official.cufitapi.domain.application
 
 import com.official.cufitapi.common.exception.InvalidRequestException
 import com.official.cufitapi.domain.api.dto.connection.ConnectionApplyRequest
+import com.official.cufitapi.domain.api.dto.connection.ConnectionUpdateRequest
 import com.official.cufitapi.domain.enums.MatchStatus
 import com.official.cufitapi.domain.infrastructure.entity.MatchConnection
 import com.official.cufitapi.domain.infrastructure.repository.MatchCandidateJpaRepository
 import com.official.cufitapi.domain.infrastructure.repository.MatchConnectionJpaRepository
-import org.springdoc.webmvc.core.service.RequestService
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional
 @Transactional(readOnly = true)
 class ConnectionService(
     private val candidateJpaRepository: MatchCandidateJpaRepository,
-    private val requestService: RequestService,
     private val matchConnectionJpaRepository: MatchConnectionJpaRepository
 ) {
 
@@ -51,8 +50,21 @@ class ConnectionService(
         // TODO : 알림
     }
 
-    fun reject() {
-        // 연결 요청 제거
-        // push
+    @Transactional
+    fun updateConnectionStatus(connectionId: Long, request: ConnectionUpdateRequest) {
+        val connection = matchConnectionJpaRepository.findByIdOrNull(connectionId)
+            ?: throw InvalidRequestException("존재하지 않는 매칭연결")
+        connection.updateStatus(request.matchStatus)
+    }
+
+    fun getReceivedConnections(candidateId: Long) {
+        // TODO: MatchStatus=MatchStatus.Progressing 요청 중에 내가 받은 요청만 조회
+        matchConnectionJpaRepository.findAllByReceiverIdAndStatusOrderByCreatedDate(candidateId, MatchStatus.PROGRESSING)
+    }
+
+    fun getMatchResults() {
+        // TODO: MatchStatus=MatchStatus.Progressing 요청 중에 내가 보낸 요청만 조회
+        // TODO: MatchStatus=MatchStatus.REJECTED
+        // TODO: MatchStatus=MatchStatus.ACCEPTED -> 전화번호 값을 채워서 return
     }
 }
