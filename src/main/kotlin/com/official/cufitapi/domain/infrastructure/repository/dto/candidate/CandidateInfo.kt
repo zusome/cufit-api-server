@@ -1,14 +1,13 @@
-package com.official.cufitapi.domain.api.dto.candidate
+package com.official.cufitapi.domain.infrastructure.repository.dto.candidate
 
 import com.official.cufitapi.domain.enums.MBTILetter
-import io.swagger.v3.oas.annotations.media.Schema
+import com.official.cufitapi.domain.infrastructure.repository.MatchCandidateJpaRepository.Image
 
-data class CandidateResponse(
+data class CandidateInfo(
     val candidateId: Long,
     val images: List<Image>,
     val name: String,
     val age: String,
-    @Schema(description = "주선자와의 관계", example = "직장동료")
     val relation: String,
     val matchMakerName: String,
     val mbti: List<MBTILetter>,
@@ -16,10 +15,3 @@ data class CandidateResponse(
     val station: String,
     val job: String
 )
-
-data class Image(
-    val imageUrl: String ,
-    val profileOrder: Int
-) {
-
-}

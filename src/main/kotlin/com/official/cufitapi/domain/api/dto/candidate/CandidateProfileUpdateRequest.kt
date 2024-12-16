@@ -1,7 +1,6 @@
 package com.official.cufitapi.domain.api.dto.candidate
 
-import com.official.cufitapi.domain.api.dto.AgeRange
-import com.official.cufitapi.domain.api.dto.HeightRange
+import com.official.cufitapi.common.exception.InvalidRequestException
 import com.official.cufitapi.domain.enums.Gender
 import com.official.cufitapi.domain.enums.IdealAge
 import com.official.cufitapi.domain.enums.IdealHeightUnit
@@ -32,6 +31,8 @@ data class CandidateProfileUpdateRequest(
     val idealMbti: String
 ) {
     init {
-        yearOfBirth >= LocalDateTime.now().year
+        if (yearOfBirth >= LocalDateTime.now().year) {
+            throw InvalidRequestException("생년은 올해 이전 값이어야 합니다. : $yearOfBirth")
+        }
     }
 }
