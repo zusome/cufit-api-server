@@ -1,7 +1,11 @@
 package com.official.cufitapi.domain.application
 
 import com.official.cufitapi.domain.api.dto.notification.NotificationResponse
+import com.official.cufitapi.domain.enums.NotificationType
+import com.official.cufitapi.domain.infrastructure.entity.Notification
 import com.official.cufitapi.domain.infrastructure.repository.NotificationJpaRepository
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -11,21 +15,21 @@ class NotificationService(
     private val notificationJpaRepository: NotificationJpaRepository
 ) {
 
-    fun findAll(memberId : Long) : List<NotificationResponse> {
-        // 알람 최신순으로 정렬
-        return notificationJpaRepository.findAllByMemberIdOrderByCreatedDateDesc(memberId)
-            .map {
-                NotificationResponse(
-                    id = it.id!!,
-                    title = it.title,
-                    content = it.content,
-                    notificationType = it.notificationType,
-                    createdDate = it.createdDate!!
-                )
-            }
-    }
 
-    fun save() {
-        
+    @Transactional
+    fun save(
+        title: String,
+        content: String,
+        memberId: Long,
+        notificationType: NotificationType
+    ) {
+        notificationJpaRepository.save(
+            Notification(
+                title = title,
+                content = content,
+                memberId = memberId,
+                notificationType = notificationType
+            )
+        )
     }
 }

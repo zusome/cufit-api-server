@@ -1,5 +1,6 @@
 package com.official.cufitapi.domain.api
 
+import com.official.cufitapi.domain.api.docs.MemberApiDocs
 import com.official.cufitapi.domain.api.dto.MemberInfoResponse
 import com.official.cufitapi.domain.api.dto.MemberProfileRequest
 import com.official.cufitapi.domain.application.MemberService
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody
 @ApiV1Controller
 class MemberApiController(
     private val memberService: MemberService
-) {
+) : MemberApiDocs {
 
     // 유저 정보 조회
     @GetMapping("/members")

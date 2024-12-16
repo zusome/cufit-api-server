@@ -1,5 +1,6 @@
 package com.official.cufitapi.domain.api
 
+import com.official.cufitapi.domain.api.docs.AuthApiDocs
 import com.official.cufitapi.domain.api.dto.auth.SmsAuthValidationRequest
 import com.official.cufitapi.domain.application.SmsAuthenticationService
 import org.springframework.http.ResponseEntity
@@ -9,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody
 @ApiV1Controller
 class AuthApiController(
     private val smsAuthenticationService: SmsAuthenticationService
-) {
+) : AuthApiDocs {
 
     @PostMapping("/auth/sms/issue")
     fun issueSmsAuthCode(

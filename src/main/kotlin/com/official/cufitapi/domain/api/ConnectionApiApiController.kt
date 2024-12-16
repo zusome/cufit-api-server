@@ -1,5 +1,6 @@
 package com.official.cufitapi.domain.api
 
+import com.official.cufitapi.domain.api.docs.ConnectionApiDocs
 import com.official.cufitapi.domain.api.dto.connection.ConnectionApplyRequest
 import com.official.cufitapi.domain.api.dto.connection.ConnectionUpdateRequest
 import com.official.cufitapi.domain.application.ConnectionService
@@ -11,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestParam
 
 @ApiV1Controller
-class ConnectionApiController(
+class ConnectionApiApiController(
     private val connectionService: ConnectionService
-) {
+) : ConnectionApiDocs {
 
     // 연결 정보확인
     @GetMapping("/connections")

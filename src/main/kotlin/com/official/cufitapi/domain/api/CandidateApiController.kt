@@ -1,10 +1,10 @@
 package com.official.cufitapi.domain.api
 
-import org.springframework.web.bind.annotation.GetMapping
+import com.official.cufitapi.domain.api.docs.CandidateApiDocs
 import org.springframework.web.bind.annotation.PostMapping
 
 @ApiV1Controller
-class CandidateApiController {
+class CandidateApiController() : CandidateApiDocs {
 
     // 추천순 (우리가 정한 score) , 최신순
 
