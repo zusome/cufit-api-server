@@ -4,6 +4,7 @@ import com.official.cufitapi.domain.api.docs.ConnectionApiDocs
 import com.official.cufitapi.domain.api.dto.connection.ConnectionApplyRequest
 import com.official.cufitapi.domain.api.dto.connection.ConnectionUpdateRequest
 import com.official.cufitapi.domain.application.ConnectionService
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestParam
 
 @ApiV1Controller
-class ConnectionApiApiController(
+class ConnectionApiController(
     private val connectionService: ConnectionService
 ) : ConnectionApiDocs {
 
@@ -47,13 +48,13 @@ class ConnectionApiApiController(
     }
 
     @GetMapping("/connections/received")
-    fun getReceivedConnections() {
-
+    fun getReceivedConnections() : ResponseEntity<Unit> {
+        return ResponseEntity.noContent().build()
     }
 
     @GetMapping("/connections/result")
-    fun getConnectionsResults() {
-
+    fun getConnectionsResults() : ResponseEntity<Unit> {
+        return ResponseEntity.noContent().build()
     }
 
 }

@@ -26,7 +26,7 @@ class MatchConnection(
     */
     val receiverId: Long,
     /*
-    받는 사람 (MatchCandidate)
+    매칭 상태
     */
     var status: MatchStatus = MatchStatus.PROGRESSING
 ) : BaseTimeEntity() {

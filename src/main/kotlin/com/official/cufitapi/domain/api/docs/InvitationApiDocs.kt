@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody
 @Tag(name = "초대 관련 API")
 interface InvitationApiDocs {
 
-
     @Operation(
         summary = "초대코드 검증 API",
     )

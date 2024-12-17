@@ -3,10 +3,17 @@ package com.official.cufitapi.domain.application
 import com.official.cufitapi.common.exception.InvalidRequestException
 import com.official.cufitapi.domain.api.dto.connection.ConnectionApplyRequest
 import com.official.cufitapi.domain.api.dto.connection.ConnectionUpdateRequest
+import com.official.cufitapi.domain.api.dto.connection.ImageResponse
+import com.official.cufitapi.domain.api.dto.connection.ReceivedConnectionResponse
+import com.official.cufitapi.domain.enums.IdealAge
+import com.official.cufitapi.domain.enums.IdealHeightUnit
 import com.official.cufitapi.domain.enums.MatchStatus
 import com.official.cufitapi.domain.infrastructure.entity.MatchConnection
 import com.official.cufitapi.domain.infrastructure.repository.MatchCandidateJpaRepository
 import com.official.cufitapi.domain.infrastructure.repository.MatchConnectionJpaRepository
+import com.official.cufitapi.domain.infrastructure.repository.MemberJpaRepository
+import com.official.cufitapi.domain.infrastructure.repository.MemberProfileImageJpaRepository
+import io.swagger.v3.oas.annotations.media.Schema
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -15,7 +22,8 @@ import org.springframework.transaction.annotation.Transactional
 @Transactional(readOnly = true)
 class ConnectionService(
     private val candidateJpaRepository: MatchCandidateJpaRepository,
-    private val matchConnectionJpaRepository: MatchConnectionJpaRepository
+    private val matchConnectionJpaRepository: MatchConnectionJpaRepository,
+    private val memberProfileImageJpaRepository: MemberProfileImageJpaRepository
 ) {
 
     @Transactional
@@ -57,10 +65,25 @@ class ConnectionService(
         connection.updateStatus(request.matchStatus)
     }
 
-    fun getReceivedConnections(candidateId: Long) {
-        // TODO: MatchStatus=MatchStatus.Progressing 요청 중에 내가 받은 요청만 조회
-        matchConnectionJpaRepository.findAllByReceiverIdAndStatusOrderByCreatedDate(candidateId, MatchStatus.PROGRESSING)
-    }
+//    fun getReceivedConnections(candidateId: Long): List<ReceivedConnectionResponse> {
+//        // TODO: MatchStatus=MatchStatus.Progressing 요청 중에 내가 받은 요청만 조회
+//        return matchConnectionJpaRepository.findAllByReceiverIdAndStatusOrderByCreatedDate(candidateId, MatchStatus.PROGRESSING)
+//            .map {
+//                val senderInfo = candidateJpaRepository.findMemberByMatchCandidateId(it.senderId)
+//                    ?: throw InvalidRequestException("존재하지 않는 Member")
+//                val profileImage = memberProfileImageJpaRepository.findAllByMemberId(senderInfo.memberId)
+//
+//                return ReceivedConnectionResponse(
+//                    candidateId = senderInfo.id,
+//                    height = senderInfo.height,
+//                    idealAge =   senderInfo.idealAgeRange List<IdealAge>,
+//                    idealHeight: List<IdealHeightUnit>,
+//                    profileImages: List<ImageResponse>,
+//                )
+//
+//            }
+
+//    }
 
     fun getMatchResults() {
         // TODO: MatchStatus=MatchStatus.Progressing 요청 중에 내가 보낸 요청만 조회
