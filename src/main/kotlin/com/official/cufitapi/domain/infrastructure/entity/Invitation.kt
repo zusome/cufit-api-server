@@ -24,7 +24,7 @@ class Invitation(
     /*
     초대하는 사용자 ID
     */
-    val memberId: Long,
+    val senderId: Long,
     /*
     사용 여부
     : 초대코드는 사용되면, 삭제 되어야하지만 이후에 추적을 위해서, Soft Delete

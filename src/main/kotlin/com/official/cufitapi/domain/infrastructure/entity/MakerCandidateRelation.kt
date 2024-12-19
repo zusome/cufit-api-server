@@ -5,6 +5,9 @@ import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.Id
 
+/*
+   주선자 - 후보자 관계 Table
+ */
 @Entity
 class MakerCandidateRelation(
     @Id @GeneratedValue

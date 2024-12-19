@@ -42,10 +42,5 @@ class Member(
     */
     var phoneNumber: String? = null,
 
-    /*
-    나를 초대한 유저의 id
-    */
-    val inviteeId: Long,
-
     ) : BaseTimeEntity() {
 }
