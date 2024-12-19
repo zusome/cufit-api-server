@@ -4,6 +4,7 @@ import com.official.cufitapi.common.exception.InvalidRequestException
 import com.official.cufitapi.domain.api.dto.invitation.InvitationCodeGenerateRequest
 import com.official.cufitapi.domain.api.dto.invitation.InvitationCodeRequest
 import com.official.cufitapi.domain.api.dto.invitation.InvitationCodeResponse
+import com.official.cufitapi.domain.api.dto.invitation.InvitationResponse
 import com.official.cufitapi.domain.enums.MatchMakerCandidateRelationType
 import com.official.cufitapi.domain.enums.MemberType
 import com.official.cufitapi.domain.infrastructure.entity.Invitation
@@ -26,7 +27,7 @@ class InvitationService(
     }
 
     @Transactional
-    fun validate(memberId: Long, request: InvitationCodeRequest) {
+    fun validate(memberId: Long, request: InvitationCodeRequest): InvitationResponse {
         val member = memberJpaRepository.findByIdOrNull(memberId) ?: throw InvalidRequestException("존재하지 않는 사용자 id : $memberId")
         if (MemberType.invitationCodePrefix(member.currentType) != request.invitationCode.substring(0,2)) {
             throw InvalidRequestException("잘못된 사용자 초대코드")
@@ -40,6 +41,10 @@ class InvitationService(
         val invitation = invitationJpaRepository.findByCode(request.invitationCode) ?: throw InvalidRequestException("유효하지 않은 초대 코드")
         invitation.deactivate()
 
+        val invitee = memberJpaRepository.findByIdOrNull(invitation.senderId) ?: throw InvalidRequestException("초대 보낸 사용자를 찾을 수 없음")
+        return InvitationResponse(
+            inviteeName = invitee.name
+        )
     }
 
     @Transactional

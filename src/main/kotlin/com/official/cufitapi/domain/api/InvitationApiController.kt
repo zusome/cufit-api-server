@@ -4,6 +4,7 @@ import com.official.cufitapi.domain.api.docs.InvitationApiDocs
 import com.official.cufitapi.domain.api.dto.invitation.InvitationCodeGenerateRequest
 import com.official.cufitapi.domain.api.dto.invitation.InvitationCodeRequest
 import com.official.cufitapi.domain.api.dto.invitation.InvitationCodeResponse
+import com.official.cufitapi.domain.api.dto.invitation.InvitationResponse
 import com.official.cufitapi.domain.application.InvitationService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
@@ -19,9 +20,9 @@ class InvitationApiController(
     override fun validateInvitation(
         memberId: Long,
         @RequestBody request: InvitationCodeRequest
-    ) : ResponseEntity<Unit> {
-        invitationService.validate(memberId, request)
-        return ResponseEntity.noContent().build()
+    ) : ResponseEntity<InvitationResponse> {
+        val response = invitationService.validate(memberId, request)
+        return ResponseEntity.ok(response)
     }
 
 
