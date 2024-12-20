@@ -24,4 +24,8 @@ springdoc:
   swagger-ui:
     path: /swagger-ui.html
     enabled: true
-
+service:
+  authorization:
+    secret-key: ${AUTHORIZATION_SECRET_KEY:g8rrLgXxe3/OF+mwPQGINe5pxxh5AQddN6gNFE3iueY=}
+    access-timeout: ${AUTHORIZATION_ACCESS_TIMEOUT:86400000}
+    refresh-timeout: ${AUTHORIZATION_REFRESH_TIMEOUT:604800000}

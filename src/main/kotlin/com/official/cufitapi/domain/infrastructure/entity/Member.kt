@@ -1,46 +1,56 @@
 package com.official.cufitapi.domain.infrastructure.entity
 
-import com.official.cufitapi.domain.enums.Gender
 import com.official.cufitapi.domain.enums.MemberType
-import jakarta.persistence.*
+import jakarta.persistence.CascadeType
+import jakarta.persistence.Column
+import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.GenerationType
+import jakarta.persistence.Id
+import jakarta.persistence.OneToOne
+import org.hibernate.annotations.Comment
 
 /*
    사용자 Table
  */
 @Entity
 class Member(
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null,
-    /*
-    사용자의 현재 type
-    */
-    @Enumerated(value = EnumType.STRING)
-    val currentType: MemberType,
-    /*
-    사용자 이름
-    */
+
+    @Column(name = "name", unique = false, nullable = false)
+    @Comment("사용자 이름")
     var name: String,
 
-    /*
-    사용자 출생 연도
-    */
-    var yearOfBirth: Int,
+    @Column(name = "email", unique = true, nullable = true)
+    @Comment("사용자 이메일")
+    var email: String,
 
-    /*
-    사용자 email
-    */
-    val email: String,
+    @OneToOne(mappedBy = "member", cascade = [CascadeType.ALL], orphanRemoval = true)
+    var memberAuthorization: MemberAuthorization,
 
-    /*
-    성별
-    */
     @Enumerated(value = EnumType.STRING)
-    var gender: Gender,
+    @Column(name = "authority", unique = false, nullable = false)
+    var memberType: MemberType,
 
-    /*
-    전화번호
-    */
-    var phoneNumber: String? = null,
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var id: Long? = null
 
-    ) : BaseTimeEntity() {
+) : BaseTimeEntity() {
+    init {
+        memberAuthorization.member = this
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as Member
+
+        return id == other.id
+    }
+
+    override fun hashCode(): Int {
+        return id?.hashCode() ?: 0
+    }
 }
