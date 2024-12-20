@@ -5,7 +5,7 @@ import com.official.cufitapi.auth.api.dto.OidcLoginHttpResponse
 import com.official.cufitapi.auth.application.OidcProviderIdFindUseCase
 import com.official.cufitapi.auth.application.AuthorizationTokenCreationUseCase
 import com.official.cufitapi.auth.application.MemberRegistrationUseCase
-import com.official.cufitapi.auth.application.command.AccessTokenCreationCommand
+import com.official.cufitapi.auth.application.command.AuthorizationTokenCreationCommand
 import com.official.cufitapi.auth.application.command.MemberRegistrationCommand
 import com.official.cufitapi.auth.application.command.OidcProviderIdFindCommand
 import org.springframework.http.ResponseEntity
@@ -26,7 +26,7 @@ class AuthorizationApi(
     ): ResponseEntity<OidcLoginHttpResponse> {
         val providerId = oidcProviderIdFindUseCase.find(OidcProviderIdFindCommand(request.idToken, request.provider))
         val member = memberRegistrationUseCase.register(MemberRegistrationCommand(request.name, request.email, request.provider, providerId))
-        val authorizationToken = authorizationTokenCreationUseCase.create(AccessTokenCreationCommand(member))
+        val authorizationToken = authorizationTokenCreationUseCase.create(AuthorizationTokenCreationCommand(member))
         return ResponseEntity.ok(OidcLoginHttpResponse(member, authorizationToken))
     }
 }

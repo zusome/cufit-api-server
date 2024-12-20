@@ -1,61 +1,59 @@
 package com.official.cufitapi.auth.application
 
-import com.official.cufitapi.auth.application.command.AccessTokenCreationCommand
+import com.official.cufitapi.auth.application.command.AuthorizationTokenCreationCommand
+import com.official.cufitapi.auth.application.service.SecretKeyGenerator
 import com.official.cufitapi.auth.domain.vo.AccessToken
 import com.official.cufitapi.auth.domain.AuthorizationToken
 import com.official.cufitapi.auth.domain.vo.RefreshToken
+import com.official.cufitapi.common.config.property.AuthorizationProperties
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
-import io.jsonwebtoken.security.Keys
 import org.springframework.stereotype.Service
+import java.security.Key
 import java.util.Date
-import javax.crypto.SecretKey
 
 interface AuthorizationTokenCreationUseCase {
-    fun create(accessTokenCreationCommand: AccessTokenCreationCommand): AuthorizationToken
+    fun create(authorizationTokenCreationCommand: AuthorizationTokenCreationCommand): AuthorizationToken
 }
 
 @Service
-class AuthorizationTokenCreationService: AuthorizationTokenCreationUseCase {
+class AuthorizationTokenCreationService(
+    private val authorizationProperties: AuthorizationProperties,
+    private val secretKeyGenerator: SecretKeyGenerator
+): AuthorizationTokenCreationUseCase {
     
-    override fun create(accessTokenCreationCommand: AccessTokenCreationCommand): AuthorizationToken {
-        val accessToken = createAccessToken(accessTokenCreationCommand)
-        val refreshToken = refreshToken(accessTokenCreationCommand)
+    override fun create(authorizationTokenCreationCommand: AuthorizationTokenCreationCommand): AuthorizationToken {
+        val secretKey = secretKeyGenerator.generate(authorizationProperties.secretKey)
+        val accessToken = createAccessToken(secretKey, authorizationTokenCreationCommand)
+        val refreshToken = refreshToken(secretKey, authorizationTokenCreationCommand)
         return AuthorizationToken(accessToken, refreshToken)
     }
 
-    private fun refreshToken(accessTokenCreationCommand: AccessTokenCreationCommand): RefreshToken {
+    private fun refreshToken(secretKey: Key, authorizationTokenCreationCommand: AuthorizationTokenCreationCommand): RefreshToken {
         val refreshClaims = Jwts.claims()
-        refreshClaims.subject = accessTokenCreationCommand.memberId.toString() // 최소 정보만
+        refreshClaims.subject = authorizationTokenCreationCommand.memberId.toString() // 최소 정보만
         val refreshToken = Jwts.builder()
             .setHeaderParam("typ", "JWT")
             .setClaims(refreshClaims)
             .setIssuedAt(Date(System.currentTimeMillis()))
-            .setExpiration(Date(System.currentTimeMillis() + REFRESH_TOKEN_EXPIRATION))
-            .signWith(secretKey(), SignatureAlgorithm.HS256)
+            .setExpiration(Date(System.currentTimeMillis() + authorizationProperties.refreshTimeOut))
+            .signWith(secretKey, SignatureAlgorithm.HS256)
             .compact()
         return RefreshToken(refreshToken)
     }
 
-    private fun createAccessToken(accessTokenCreationCommand: AccessTokenCreationCommand): AccessToken {
+    private fun createAccessToken(secretKey: Key, authorizationTokenCreationCommand: AuthorizationTokenCreationCommand
+    ): AccessToken {
         val claims = Jwts.claims()
-        claims.subject = accessTokenCreationCommand.memberId.toString()
-        claims["authority"] = accessTokenCreationCommand.authority.name
+        claims.subject = authorizationTokenCreationCommand.memberId.toString()
+        claims["authority"] = authorizationTokenCreationCommand.authority.name
         val accessToken = Jwts.builder()
             .setHeaderParam("typ", "JWT")
             .setClaims(claims)
             .setIssuedAt(Date(System.currentTimeMillis()))
-            .setExpiration(Date(System.currentTimeMillis() + ACCESS_TOKEN_EXPIRATION))
-            .signWith(secretKey(), SignatureAlgorithm.HS256)
+            .setExpiration(Date(System.currentTimeMillis() + authorizationProperties.accessTimeOut))
+            .signWith(secretKey, SignatureAlgorithm.HS256)
             .compact()
         return AccessToken(accessToken)
-    }
-
-    private fun secretKey(): SecretKey? = Keys.hmacShaKeyFor(SECRET.toByteArray())
-
-    companion object {
-        private const val ACCESS_TOKEN_EXPIRATION: Long = 1000 * 60 * 60 * 24 // 1 day
-        private const val REFRESH_TOKEN_EXPIRATION: Long = 1000 * 60 * 60 * 24 * 7 // 3 day
-        private const val SECRET: String = ""
     }
 }
