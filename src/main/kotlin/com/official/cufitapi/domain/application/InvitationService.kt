@@ -29,11 +29,11 @@ class InvitationService(
     @Transactional
     fun validate(memberId: Long, request: InvitationCodeRequest): InvitationResponse {
         val member = memberJpaRepository.findByIdOrNull(memberId) ?: throw InvalidRequestException("존재하지 않는 사용자 id : $memberId")
-        if (MemberType.invitationCodePrefix(member.currentType) != request.invitationCode.substring(0,2)) {
+        if (MemberType.invitationCodePrefix(member.memberType) != request.invitationCode.substring(0,2)) {
             throw InvalidRequestException("잘못된 사용자 초대코드")
         }
 
-        if (!invitationJpaRepository.existsByMemberIdAndCodeAndIsActivatedIsTrue(memberId, request.invitationCode)) {
+        if (!invitationJpaRepository.existsBySenderIdAndCodeAndIsActivatedIsTrue(memberId, request.invitationCode)) {
             throw InvalidRequestException("잘못된 사용자 초대코드")
         }
 

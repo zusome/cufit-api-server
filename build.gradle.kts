@@ -61,7 +61,10 @@ dependencies {
 	// h2
 	implementation("com.h2database:h2") // H2 데이터베이스 의존성
 
-
+	// JWT
+	implementation("io.jsonwebtoken:jjwt-api:0.11.5")
+	implementation("io.jsonwebtoken:jjwt-impl:0.11.5")
+	implementation("io.jsonwebtoken:jjwt-jackson:0.11.5")
 }
 
 kotlin {
