@@ -22,7 +22,6 @@ noArg {
 }
 
 
-
 group = "com.official"
 version = "0.0.1-SNAPSHOT"
 
@@ -43,6 +42,7 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+	implementation("com.google.firebase:firebase-admin:9.4.2")
 
 	// WebFlux for WebClient
 	implementation("org.springframework.boot:spring-boot-starter-webflux")

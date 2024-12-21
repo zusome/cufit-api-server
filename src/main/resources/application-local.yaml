@@ -2,11 +2,14 @@ spring:
   config:
     activate:
       on-profile: local
+  threads:
+    virtual:
+      enabled: true
   datasource:
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/postgres
-    username: root
-    password: 1234
+    driver-class-name: ${DATASOURCE_DRIVER_CLASS_NAME:org.postgresql.Driver}
+    url: ${DATASOURCE_URL:jdbc:postgresql://localhost:5432/postgres}
+    username: ${DATASOURCE_USERNAME:root}
+    password: ${DATASOURCE_PASSWORD:1234}
   jpa:
     show-sql: true
     hibernate:
@@ -15,17 +18,16 @@ spring:
       hibernate:
         format_sql: true
         show_sql: true
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-  threads:
-    virtual:
-      enabled: true
-
+        dialect: ${HIBERNATE_DIALECT:org.hibernate.dialect.PostgreSQLDialect}
 springdoc:
   swagger-ui:
-    path: /swagger-ui.html
-    enabled: true
+    path: ${SWAGGER_UI_PATH:/swagger-ui.html}
+    enabled: ${SWAGGER_UI_ENABLED:true}
 service:
   authorization:
     secret-key: ${AUTHORIZATION_SECRET_KEY:g8rrLgXxe3/OF+mwPQGINe5pxxh5AQddN6gNFE3iueY=}
     access-timeout: ${AUTHORIZATION_ACCESS_TIMEOUT:86400000}
     refresh-timeout: ${AUTHORIZATION_REFRESH_TIMEOUT:604800000}
+  firebase:
+    file-path: ${FIREBASE_FILE_PATH:src/main/resources/firebase/}
+    file-name: ${FIREBASE_FILE_NAME:firebase.json}
