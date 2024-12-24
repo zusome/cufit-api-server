@@ -25,6 +25,18 @@ class AuthorizationMemberRepositoryAdapter(
                 )
             }
 
+    override fun findById(memberId: Long): AuthorizationMember {
+        val member = memberService.findById(memberId)
+        return AuthorizationMember(
+            username = member.name,
+            email = member.email,
+            providerId = member.memberAuthorization.providerId,
+            provider = Provider.of(member.memberAuthorization.provider),
+            authority = Authority.of(member.memberType.name),
+            memberId = member.id ?: throw RuntimeException()
+        )
+    }
+
     private fun registerCommand(authorizationMember: AuthorizationMember) =
         MemberRegisterCommand(
             name = authorizationMember.username,

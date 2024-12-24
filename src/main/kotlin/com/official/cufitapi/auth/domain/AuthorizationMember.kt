@@ -31,4 +31,7 @@ class AuthorizationMember(
         result = 31 * result + (memberId?.hashCode() ?: 0)
         return result
     }
+
+    fun isSameAuthority(authority: String): Boolean =
+        this.authority.isSameAuthority(authority)
 }

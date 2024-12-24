@@ -37,6 +37,10 @@ class MemberService(
     )
 
     @Transactional(readOnly = true)
+    fun findById(memberId: Long): Member = memberJpaRepository.findById(memberId)
+        .orElseThrow { InvalidRequestException("존재하지 않는 사용자 id: $memberId") }
+
+    @Transactional(readOnly = true)
     fun getMemberInfo(memberId: Long): MemberInfoResponse {
         val member = memberJpaRepository.findById(memberId)
             .orElseThrow { InvalidRequestException("존재하지 않는 사용자 id: $memberId") }
