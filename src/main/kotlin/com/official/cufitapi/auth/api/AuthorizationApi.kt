@@ -8,26 +8,22 @@ import com.official.cufitapi.auth.application.MemberRegistrationUseCase
 import com.official.cufitapi.auth.application.command.AuthorizationTokenCreationCommand
 import com.official.cufitapi.auth.application.command.MemberRegistrationCommand
 import com.official.cufitapi.auth.application.command.OidcProviderIdFindCommand
+import com.official.cufitapi.domain.api.ApiV1Controller
 import com.official.cufitapi.domain.api.docs.AuthApiDocs
-import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpHeaders
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestHeader
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
 
-
-@RequestMapping("/api/auth")
-@RestController
+@ApiV1Controller
 class AuthorizationApi(
     private val oidcProviderIdFindUseCase: OidcProviderIdFindUseCase,
     private val memberRegistrationUseCase: MemberRegistrationUseCase,
     private val authorizationTokenCreationUseCase: AuthorizationTokenCreationUseCase
 ): AuthApiDocs {
 
-    @PostMapping("/login/oidc")
+    @PostMapping("/auth/login/oidc")
     fun loginByOidc(
         @RequestHeader(HttpHeaders.AUTHORIZATION) authorization: String,
         @RequestBody request: OidcLoginHttpRequest
