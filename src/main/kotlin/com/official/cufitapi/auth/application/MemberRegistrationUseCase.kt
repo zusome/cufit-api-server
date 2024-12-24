@@ -21,7 +21,7 @@ class AuthorizationMemberRegistrationService(
 
     private fun authorizationMember(command: MemberRegistrationCommand) =
         AuthorizationMember(
-            name = command.name,
+            username = command.username,
             email = command.email,
             provider = Provider.of(command.provider),
             providerId = command.providerId,

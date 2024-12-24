@@ -16,7 +16,7 @@ class AuthorizationMemberRepositoryAdapter(
     override fun register(authorizationMember: AuthorizationMember): AuthorizationMember =
         memberService.register(registerCommand(authorizationMember))
             .let { AuthorizationMember(
-                    name = it.name,
+                    username = it.name,
                     email = it.email,
                     providerId = it.memberAuthorization.providerId,
                     provider = Provider.of(it.memberAuthorization.provider),
@@ -27,7 +27,7 @@ class AuthorizationMemberRepositoryAdapter(
 
     private fun registerCommand(authorizationMember: AuthorizationMember) =
         MemberRegisterCommand(
-            name = authorizationMember.name,
+            name = authorizationMember.username,
             email = authorizationMember.email,
             provider = authorizationMember.provider.provider,
             providerId = authorizationMember.providerId,

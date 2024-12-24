@@ -4,7 +4,7 @@ import com.official.cufitapi.auth.domain.vo.Authority
 import com.official.cufitapi.auth.domain.vo.Provider
 
 class AuthorizationMember(
-    val name: String,
+    val username: String,
     val email: String,
     val providerId: String,
     val provider: Provider,
