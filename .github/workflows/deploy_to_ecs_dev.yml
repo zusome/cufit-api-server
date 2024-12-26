@@ -69,10 +69,10 @@ jobs:
 
     - name: Gradle로 프로젝트 Build
       run: |
-        sed -i "s/ENV/${{env.SPRING_PROFILES_ACTIVE}}/" src/main/resources/application.yaml
-        sed -i "s/DB_URL/${{env.DATASOURCE_URL}}/" src/main/resources/application.yaml
-        sed -i "s/DB_USER/${{env.DATASOURCE_USERNAME}}/" src/main/resources/application.yaml
-        sed -i "s/DB_PW/${{env.DATASOURCE_PASSWORD}}/" src/main/resources/application.yaml
+        sed -i "s/ENV/${{env.SPRING_PROFILES_ACTIVE}}/g" src/main/resources/application.yaml
+        sed -i "s/DB_URL/${{env.DATASOURCE_URL}}/g" src/main/resources/application.yaml
+        sed -i "s/DB_USER/${{env.DATASOURCE_USERNAME}}/g" src/main/resources/application.yaml
+        sed -i "s/DB_PW/${{env.DATASOURCE_PASSWORD}}/g" src/main/resources/application.yaml
         ./gradlew build -x test
   
     - name: Configure AWS credentials
