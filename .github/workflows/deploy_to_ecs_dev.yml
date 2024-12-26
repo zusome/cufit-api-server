@@ -39,10 +39,10 @@ env:
                                                # file, e.g. .aws/task-definition.json
   CONTAINER_NAME: cicd-test          # set this to the name of the container in the
                                                # containerDefinitions section of your task definition
-  # DATASOURCE_USERNAME: ${{ secrets.DATASOURCE_USERNAME}}
-  # DATASOURCE_PASSWORD: ${{ secrets.DATASOURCE_PASSWORD}}
-  # DATASOURCE_URL: ${{ secrets.DATASOURCE_URL}}
-  # SPRING_PROFILES_ACTIVE: ${{vars.SPRING_PROFILES_ACTIVE}}
+  DATASOURCE_USERNAME: ${{ secrets.DATASOURCE_USERNAME}}
+  DATASOURCE_PASSWORD: ${{ secrets.DATASOURCE_PASSWORD}}
+  DATASOURCE_URL: ${{ secrets.DATASOURCE_URL}}
+  SPRING_PROFILES_ACTIVE: ${{vars.SPRING_PROFILES_ACTIVE}}
 permissions:
   contents: read
 
@@ -68,16 +68,11 @@ jobs:
       shell: bash
 
     - name: Gradle로 프로젝트 Build
-      env:
-        DATASOURCE_USERNAME: ${{ secrets.DATASOURCE_USERNAME}}
-        DATASOURCE_PASSWORD: ${{ secrets.DATASOURCE_PASSWORD}}
-        DATASOURCE_URL: ${{ secrets.DATASOURCE_URL}}
-        SPRING_PROFILES_ACTIVE: ${{vars.SPRING_PROFILES_ACTIVE}}
       run: |
-        export DATASOURCE_URL=${{env.DATASOURCE_URL}}
-        export DATASOURCE_USERNAME=${{env.DATASOURCE_USERNAME}}
-        export DATASOURCE_PASSWORD${{env.DATASOURCE_PASSWORD}}
-        export SPRING_PROFILES_ACTIVE=${{env.SPRING_PROFILES_ACTIVE}}
+        sed -i "s/ENV/${{env.SPRING_PROFILES_ACTIVE}}" src/main/resorces/application.yaml
+        sed -i "s/DB_URL/${{env.DATASOURCE_URL}}" src/main/resorces/application.yaml
+        sed -i "s/DB_USER/${{env.DATASOURCE_USERNAME}}" src/main/resorces/application.yaml
+        sed -i "s/DB_PW/${{env.DATASOURCE_PASSWORD}}" src/main/resorces/application.yaml
         ./gradlew build -x test
   
     - name: Configure AWS credentials
