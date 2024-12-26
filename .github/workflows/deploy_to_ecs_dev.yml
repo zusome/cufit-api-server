@@ -48,7 +48,7 @@ permissions:
 
 jobs:
   Deploy:
-    name: Build
+    name: Build by Gradle and Deploy to ECS
     runs-on: ubuntu-latest
     environment: dev
     
@@ -69,10 +69,10 @@ jobs:
 
     - name: Gradle로 프로젝트 Build
       run: |
-        sed -i "s/ENV/${{env.SPRING_PROFILES_ACTIVE}}" src/main/resorces/application.yaml
-        sed -i "s/DB_URL/${{env.DATASOURCE_URL}}" src/main/resorces/application.yaml
-        sed -i "s/DB_USER/${{env.DATASOURCE_USERNAME}}" src/main/resorces/application.yaml
-        sed -i "s/DB_PW/${{env.DATASOURCE_PASSWORD}}" src/main/resorces/application.yaml
+        sed -i "s/ENV/${{env.SPRING_PROFILES_ACTIVE}}/" src/main/resorces/application.yaml
+        sed -i "s/DB_URL/${{env.DATASOURCE_URL}}/" src/main/resorces/application.yaml
+        sed -i "s/DB_USER/${{env.DATASOURCE_USERNAME}}/" src/main/resorces/application.yaml
+        sed -i "s/DB_PW/${{env.DATASOURCE_PASSWORD}}/" src/main/resorces/application.yaml
         ./gradlew build -x test
   
     - name: Configure AWS credentials
