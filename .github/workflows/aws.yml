@@ -39,7 +39,10 @@ env:
                                                # file, e.g. .aws/task-definition.json
   CONTAINER_NAME: cicd-test          # set this to the name of the container in the
                                                # containerDefinitions section of your task definition
-
+  DATASOURCE_USERNAME: ${{ secrets.DATASOURCE_USERNAME}}
+  DATASOURCE_PASSWORD: ${{ secrets.DATASOURCE_PASSWORD}}
+  DATASOURCE_URL: ${{ secrets.DATASOURCE_URL}}
+  SPRING_PROFILES_ACTIVE: ${{vars.SPRING_PROFILES_ACTIVE}}
 permissions:
   contents: read
 
@@ -47,7 +50,7 @@ jobs:
   Deploy:
     name: Build
     runs-on: ubuntu-latest
-    # environment: production
+    environment: dev
     
     steps:
     - name: Checkout
