@@ -73,7 +73,12 @@ jobs:
         DATASOURCE_PASSWORD: ${{ secrets.DATASOURCE_PASSWORD}}
         DATASOURCE_URL: ${{ secrets.DATASOURCE_URL}}
         SPRING_PROFILES_ACTIVE: ${{vars.SPRING_PROFILES_ACTIVE}}
-      run: ./gradlew build -x test
+      run: |
+        export DATASOURCE_URL=${{env.DATASOURCE_URL}}
+        export DATASOURCE_USERNAME=${{env.DATASOURCE_USERNAME}}
+        export DATASOURCE_PASSWORD${{env.DATASOURCE_PASSWORD}}
+        export SPRING_PROFILES_ACTIVE=${{env.SPRING_PROFILES_ACTIVE}}
+        ./gradlew build -x test
   
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
