@@ -6,9 +6,11 @@ import com.google.firebase.FirebaseOptions
 import com.google.firebase.messaging.FirebaseMessaging
 import com.official.cufitapi.common.config.property.FirebaseProperties
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
+@ConditionalOnProperty(prefix = "spring.profiles.active", name = ["push-message"], havingValue = "local")
 @Configuration
 class PushMessageConfig(
     private val firebaseProperties: FirebaseProperties
