@@ -11,20 +11,27 @@ interface MemberRegistrationUseCase {
     fun register(idToken: MemberRegistrationCommand): AuthorizationMember
 }
 
+interface MemberFindUseCase {
+    fun findById(memberId: Long): AuthorizationMember
+}
+
 @Service
 class AuthorizationMemberRegistrationService(
     private val authorizationMemberRepository: AuthorizationMemberRepository
-) : MemberRegistrationUseCase {
+) : MemberRegistrationUseCase, MemberFindUseCase {
 
     override fun register(command: MemberRegistrationCommand): AuthorizationMember =
         authorizationMemberRepository.register(authorizationMember(command))
 
     private fun authorizationMember(command: MemberRegistrationCommand) =
         AuthorizationMember(
-            name = command.name,
+            username = command.username,
             email = command.email,
             provider = Provider.of(command.provider),
             providerId = command.providerId,
             authority = Authority.BASIC,
         )
+
+    override fun findById(memberId: Long): AuthorizationMember =
+        authorizationMemberRepository.findById(memberId)
 }

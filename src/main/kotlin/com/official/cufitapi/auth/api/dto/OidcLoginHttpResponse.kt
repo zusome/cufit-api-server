@@ -8,15 +8,11 @@ data class OidcLoginHttpResponse(
     @JsonProperty("access_token")
     val accessToken: String,
 
-    @JsonProperty("refresh_token")
-    val refreshToken: String,
-
-    @JsonProperty("authority")
-    val authority: String
+    @JsonProperty("member_type")
+    val memberType: String
 ) {
     constructor(authorizationMember: AuthorizationMember, authorizationToken: AuthorizationToken) : this(
         accessToken = authorizationToken.accessToken.accessToken,
-        refreshToken = authorizationToken.refreshToken.refreshToken,
-        authority = authorizationMember.authority.name
+        memberType = authorizationMember.authority.name
     )
 }

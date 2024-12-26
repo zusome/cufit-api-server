@@ -4,7 +4,7 @@ import com.official.cufitapi.auth.domain.vo.Authority
 import com.official.cufitapi.auth.domain.vo.Provider
 
 class AuthorizationMember(
-    val name: String,
+    val username: String,
     val email: String,
     val providerId: String,
     val provider: Provider,
@@ -31,4 +31,7 @@ class AuthorizationMember(
         result = 31 * result + (memberId?.hashCode() ?: 0)
         return result
     }
+
+    fun isSameAuthority(authority: String): Boolean =
+        this.authority.isSameAuthority(authority)
 }
