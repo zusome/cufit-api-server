@@ -18,6 +18,12 @@ spring:
         format_sql: false
         show_sql: false
         dialect: ${HIBERNATE_DIALECT}
+  modulith:
+    events:
+      republish-outstanding-events-on-restart: true
+      externalization:
+        enabled: true
+      completion-mode: update
 springdoc:
   swagger-ui:
     path: ${SWAGGER_UI_PATH}
