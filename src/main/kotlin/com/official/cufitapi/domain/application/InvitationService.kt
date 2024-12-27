@@ -5,6 +5,8 @@ import com.official.cufitapi.domain.api.dto.invitation.InvitationCodeGenerateReq
 import com.official.cufitapi.domain.api.dto.invitation.InvitationCodeRequest
 import com.official.cufitapi.domain.api.dto.invitation.InvitationCodeResponse
 import com.official.cufitapi.domain.api.dto.invitation.InvitationResponse
+import com.official.cufitapi.domain.application.command.InvitationCodeGenerationCommand
+import com.official.cufitapi.domain.domain.vo.InvitationCode
 import com.official.cufitapi.domain.enums.MatchMakerCandidateRelationType
 import com.official.cufitapi.domain.enums.MemberType
 import com.official.cufitapi.domain.infrastructure.entity.Invitation
@@ -15,12 +17,17 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import kotlin.random.Random
 
+
+interface InvitationTokenGenerationUseCase {
+    fun generate(invitationCodeGenerateCommand: InvitationCodeGenerationCommand) : InvitationCode
+}
+
 @Service
 @Transactional(readOnly = true)
 class InvitationService(
     private val invitationJpaRepository: InvitationJpaRepository,
     private val memberJpaRepository: MemberJpaRepository
-) {
+) : InvitationTokenGenerationUseCase {
 
     companion object {
         private const val BASE_62_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
@@ -48,20 +55,19 @@ class InvitationService(
     }
 
     @Transactional
-    fun generateInvitationCode(memberId: Long, request: InvitationCodeGenerateRequest) : InvitationCodeResponse {
+    override fun generate(command: InvitationCodeGenerationCommand) : InvitationCode {
+        val memberId = command.memberId
         val sender = memberJpaRepository.findByIdOrNull(memberId) ?: throw InvalidRequestException("잘못된 사용자 id 요청 : $memberId")
-        val invitationCodePrefix = MemberType.invitationCodePrefix(request.memberType)
-        val invitationCodeSuffix = MatchMakerCandidateRelationType.invitationCodeSuffix(request.relationType)
+        val invitationCodePrefix = MemberType.invitationCodePrefix(command.memberType)
+        val invitationCodeSuffix = MatchMakerCandidateRelationType.invitationCodeSuffix(command.relationType)
         val invitationCode =  invitationCodePrefix + generateRandomBase62String() + invitationCodeSuffix
         val invitation = invitationJpaRepository.save(
             Invitation(
             code = invitationCode,
-            relationType = request.relationType,
+            relationType = command.relationType,
             senderId = sender.id!!
         ))
-        return InvitationCodeResponse(
-            invitationCode = invitation.code
-        )
+        return InvitationCode(invitation.code)
     }
 
     private fun generateRandomBase62String(length: Int = 8): String {
