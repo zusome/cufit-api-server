@@ -1,11 +1,9 @@
 package com.official.cufitapi.domain.application
 
 import com.official.cufitapi.common.exception.InvalidRequestException
-import com.official.cufitapi.domain.api.dto.invitation.InvitationCodeGenerateRequest
-import com.official.cufitapi.domain.api.dto.invitation.InvitationCodeRequest
-import com.official.cufitapi.domain.api.dto.invitation.InvitationCodeResponse
 import com.official.cufitapi.domain.api.dto.invitation.InvitationResponse
 import com.official.cufitapi.domain.application.command.InvitationCodeGenerationCommand
+import com.official.cufitapi.domain.application.command.InvitationCodeValidationCommand
 import com.official.cufitapi.domain.domain.vo.InvitationCode
 import com.official.cufitapi.domain.enums.MatchMakerCandidateRelationType
 import com.official.cufitapi.domain.enums.MemberType
@@ -17,6 +15,9 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import kotlin.random.Random
 
+interface InvitationTokenValidationUseCase {
+    fun validate(command: InvitationCodeValidationCommand) : String
+}
 
 interface InvitationTokenGenerationUseCase {
     fun generate(invitationCodeGenerateCommand: InvitationCodeGenerationCommand) : InvitationCode
@@ -27,31 +28,31 @@ interface InvitationTokenGenerationUseCase {
 class InvitationService(
     private val invitationJpaRepository: InvitationJpaRepository,
     private val memberJpaRepository: MemberJpaRepository
-) : InvitationTokenGenerationUseCase {
+) : InvitationTokenGenerationUseCase, InvitationTokenValidationUseCase {
 
     companion object {
         private const val BASE_62_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
     }
 
     @Transactional
-    fun validate(memberId: Long, request: InvitationCodeRequest): InvitationResponse {
+    override fun validate(command: InvitationCodeValidationCommand): String {
+        val memberId = command.memberId
+        val invitationCode = command.invitationCode.code
         val member = memberJpaRepository.findByIdOrNull(memberId) ?: throw InvalidRequestException("존재하지 않는 사용자 id : $memberId")
-        if (MemberType.invitationCodePrefix(member.memberType) != request.invitationCode.substring(0,2)) {
+        if (MemberType.invitationCodePrefix(member.memberType) != invitationCode.substring(0,2)) {
             throw InvalidRequestException("잘못된 사용자 초대코드")
         }
 
-        if (!invitationJpaRepository.existsBySenderIdAndCodeAndIsActivatedIsTrue(memberId, request.invitationCode)) {
+        if (!invitationJpaRepository.existsBySenderIdAndCodeAndIsActivatedIsTrue(memberId, invitationCode)) {
             throw InvalidRequestException("잘못된 사용자 초대코드")
         }
 
         // 검증 성공하면, 초대코드 Soft Delete
-        val invitation = invitationJpaRepository.findByCode(request.invitationCode) ?: throw InvalidRequestException("유효하지 않은 초대 코드")
+        val invitation = invitationJpaRepository.findByCode(invitationCode) ?: throw InvalidRequestException("유효하지 않은 초대 코드")
         invitation.deactivate()
 
         val invitee = memberJpaRepository.findByIdOrNull(invitation.senderId) ?: throw InvalidRequestException("초대 보낸 사용자를 찾을 수 없음")
-        return InvitationResponse(
-            inviteeName = invitee.name
-        )
+        return invitee.name
     }
 
     @Transactional

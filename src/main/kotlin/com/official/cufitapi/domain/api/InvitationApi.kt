@@ -7,17 +7,19 @@ import com.official.cufitapi.domain.api.dto.invitation.InvitationCodeGenerateReq
 import com.official.cufitapi.domain.api.dto.invitation.InvitationCodeRequest
 import com.official.cufitapi.domain.api.dto.invitation.InvitationCodeResponse
 import com.official.cufitapi.domain.api.dto.invitation.InvitationResponse
-import com.official.cufitapi.domain.application.InvitationService
 import com.official.cufitapi.domain.application.InvitationTokenGenerationUseCase
+import com.official.cufitapi.domain.application.InvitationTokenValidationUseCase
 import com.official.cufitapi.domain.application.command.InvitationCodeGenerationCommand
+import com.official.cufitapi.domain.application.command.InvitationCodeValidationCommand
+import com.official.cufitapi.domain.domain.vo.InvitationCode
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 
 @ApiV1Controller
 class InvitationApi(
-    private val invitationService: InvitationService,
-    private val invitationTokenGenerationUseCase: InvitationTokenGenerationUseCase
+    private val invitationTokenGenerationUseCase: InvitationTokenGenerationUseCase,
+    private val invitationTokenValidationUseCase: InvitationTokenValidationUseCase
 ) : InvitationApiDocs {
 
     // 초대 코드 검증
@@ -26,8 +28,12 @@ class InvitationApi(
         @Authorization(AuthorizationType.ALL) memberId: Long,
         @RequestBody request: InvitationCodeRequest
     ): ResponseEntity<InvitationResponse> {
-        val response = invitationService.validate(memberId, request)
-        return ResponseEntity.ok(response)
+        val inviteeName = invitationTokenValidationUseCase.validate(
+            InvitationCodeValidationCommand(
+                memberId = memberId,
+                invitationCode = InvitationCode(code = request.invitationCode)
+            ))
+        return ResponseEntity.ok(InvitationResponse(inviteeName))
     }
 
 
