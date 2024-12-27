@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 
 @ApiV1Controller
-class NotificationApiController(
+class NotificationApi(
     private val notificationQueryService: NotificationQueryService,
     private val notificationService: NotificationService
 ) : NotificationApiDocs {

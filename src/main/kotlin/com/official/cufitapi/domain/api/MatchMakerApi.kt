@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 
 @ApiV1Controller
-class MatchMakerApiController(
+class MatchMakerApi(
     private val matchMakerService: MatchMakerService
 ) : MatchMakerApiDocs {
 

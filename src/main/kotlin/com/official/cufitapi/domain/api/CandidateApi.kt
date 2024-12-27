@@ -4,7 +4,7 @@ import com.official.cufitapi.domain.api.docs.CandidateApiDocs
 import org.springframework.web.bind.annotation.PostMapping
 
 @ApiV1Controller
-class CandidateApiController() : CandidateApiDocs {
+class CandidateApi() : CandidateApiDocs {
 
     // 추천순 (우리가 정한 score) , 최신순
 
