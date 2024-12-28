@@ -1,5 +1,7 @@
 package com.official.cufitapi.domain.api
 
+import com.official.cufitapi.common.annotation.Authorization
+import com.official.cufitapi.common.annotation.AuthorizationType
 import com.official.cufitapi.domain.api.docs.MemberApiDocs
 import com.official.cufitapi.domain.api.dto.MemberInfoResponse
 import com.official.cufitapi.domain.api.dto.MemberProfileRequest
@@ -17,7 +19,7 @@ class MemberApi(
     // 유저 정보 조회
     @GetMapping("/members")
     fun getMemberInfo(
-        memberId: Long
+        @Authorization(AuthorizationType.ALL) memberId: Long
     ) : ResponseEntity<MemberInfoResponse> {
         memberService.getMemberInfo(memberId)
         return ResponseEntity.noContent().build()
@@ -26,7 +28,7 @@ class MemberApi(
     // 프로필 작성
     @PostMapping("/members/profile")
     fun updateProfile(
-        memberId: Long,
+        @Authorization(AuthorizationType.ALL) memberId: Long,
         @RequestBody request: MemberProfileRequest
     ) : ResponseEntity<Unit> {
         memberService.updateMemberProfile(memberId, request)

@@ -1,5 +1,7 @@
 package com.official.cufitapi.domain.api
 
+import com.official.cufitapi.common.annotation.Authorization
+import com.official.cufitapi.common.annotation.AuthorizationType
 import com.official.cufitapi.domain.api.docs.MatchMakerApiDocs
 import com.official.cufitapi.domain.application.MatchMakerService
 import org.springframework.http.ResponseEntity
@@ -15,7 +17,7 @@ class MatchMakerApi(
     @GetMapping("/matchmakers/{matchMakerId}/candidates")
     fun getRegisteredCandidates(
         @PathVariable matchMakerId: Long,
-        memberId: Long
+        @Authorization(AuthorizationType.ALL) memberId: Long
     ) : ResponseEntity<Unit>{
         // matchMakerService.getCandidates(matchMakerId)
         return ResponseEntity.noContent().build()
