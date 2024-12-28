@@ -1,5 +1,7 @@
 package com.official.cufitapi.domain.api
 
+import com.official.cufitapi.common.annotation.Authorization
+import com.official.cufitapi.common.annotation.AuthorizationType
 import com.official.cufitapi.domain.api.dto.auth.SmsAuthValidationRequest
 import com.official.cufitapi.domain.application.SmsAuthenticationService
 import org.springframework.http.ResponseEntity
@@ -13,7 +15,7 @@ class SmsApi(
 ) {
     @PostMapping("/auth/sms/issue")
     fun issueSmsAuthCode(
-        memberId: Long
+        @Authorization(AuthorizationType.ALL) memberId: Long
     ) : ResponseEntity<Any> {
         smsAuthenticationService.issueSmsAuthCode()
         return ResponseEntity.noContent().build()
@@ -21,7 +23,7 @@ class SmsApi(
 
     @PostMapping("/auth/sms/validation")
     fun validateSmsAuthCode(
-        memberId: Long,
+        @Authorization(AuthorizationType.ALL) memberId: Long,
         @RequestBody request: SmsAuthValidationRequest
     ) : ResponseEntity<Any> {
         smsAuthenticationService.validateSmsAuthCode(memberId, request)

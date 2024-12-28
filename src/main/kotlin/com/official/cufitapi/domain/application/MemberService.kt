@@ -4,10 +4,10 @@ import com.official.cufitapi.common.exception.InvalidRequestException
 import com.official.cufitapi.domain.api.dto.MemberInfoResponse
 import com.official.cufitapi.domain.api.dto.MemberProfileRequest
 import com.official.cufitapi.domain.enums.MemberType
-import com.official.cufitapi.domain.infrastructure.entity.Member
-import com.official.cufitapi.domain.infrastructure.entity.MemberAuthorization
-import com.official.cufitapi.domain.infrastructure.repository.InvitationJpaRepository
-import com.official.cufitapi.domain.infrastructure.repository.MemberJpaRepository
+import com.official.cufitapi.domain.infrastructure.persistence.MemberEntity
+import com.official.cufitapi.domain.infrastructure.persistence.MemberAuthorizationEntity
+import com.official.cufitapi.domain.infrastructure.persistence.InvitationJpaRepository
+import com.official.cufitapi.domain.infrastructure.persistence.MemberJpaRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -19,17 +19,17 @@ class MemberService(
 ) {
 
     @Transactional
-    fun register(memberRegisterCommand: MemberRegisterCommand): Member {
+    fun register(memberRegisterCommand: MemberRegisterCommand): MemberEntity {
         return memberJpaRepository.findByProviderAndProviderId(
             memberRegisterCommand.provider,
             memberRegisterCommand.providerId
         ) ?: memberJpaRepository.save(init(memberRegisterCommand))
     }
 
-    private fun init(memberRegisterCommand: MemberRegisterCommand): Member = Member(
+    private fun init(memberRegisterCommand: MemberRegisterCommand): MemberEntity = MemberEntity(
         name = memberRegisterCommand.name,
         email = memberRegisterCommand.email,
-        memberAuthorization = MemberAuthorization(
+        memberAuthorization = MemberAuthorizationEntity(
             provider = memberRegisterCommand.provider,
             providerId = memberRegisterCommand.providerId,
         ),
@@ -37,7 +37,7 @@ class MemberService(
     )
 
     @Transactional(readOnly = true)
-    fun findById(memberId: Long): Member = memberJpaRepository.findById(memberId)
+    fun findById(memberId: Long): MemberEntity = memberJpaRepository.findById(memberId)
         .orElseThrow { InvalidRequestException("존재하지 않는 사용자 id: $memberId") }
 
     @Transactional(readOnly = true)

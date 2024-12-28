@@ -1,9 +1,9 @@
 package com.official.cufitapi.domain.application
 
 import com.official.cufitapi.common.exception.InvalidRequestException
-import com.official.cufitapi.domain.infrastructure.repository.MatchCandidateJpaRepository
-import com.official.cufitapi.domain.infrastructure.repository.MatchMakerJpaRepository
-import com.official.cufitapi.domain.infrastructure.repository.MemberProfileImageJpaRepository
+import com.official.cufitapi.domain.infrastructure.persistence.MatchCandidateJpaRepository
+import com.official.cufitapi.domain.infrastructure.persistence.MatchMakerJpaRepository
+import com.official.cufitapi.domain.infrastructure.persistence.MemberProfileImageJpaRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

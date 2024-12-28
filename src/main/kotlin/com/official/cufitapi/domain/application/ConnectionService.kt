@@ -3,17 +3,11 @@ package com.official.cufitapi.domain.application
 import com.official.cufitapi.common.exception.InvalidRequestException
 import com.official.cufitapi.domain.api.dto.connection.ConnectionApplyRequest
 import com.official.cufitapi.domain.api.dto.connection.ConnectionUpdateRequest
-import com.official.cufitapi.domain.api.dto.connection.ImageResponse
-import com.official.cufitapi.domain.api.dto.connection.ReceivedConnectionResponse
-import com.official.cufitapi.domain.enums.IdealAge
-import com.official.cufitapi.domain.enums.IdealHeightUnit
 import com.official.cufitapi.domain.enums.MatchStatus
-import com.official.cufitapi.domain.infrastructure.entity.MatchConnection
-import com.official.cufitapi.domain.infrastructure.repository.MatchCandidateJpaRepository
-import com.official.cufitapi.domain.infrastructure.repository.MatchConnectionJpaRepository
-import com.official.cufitapi.domain.infrastructure.repository.MemberJpaRepository
-import com.official.cufitapi.domain.infrastructure.repository.MemberProfileImageJpaRepository
-import io.swagger.v3.oas.annotations.media.Schema
+import com.official.cufitapi.domain.infrastructure.persistence.MatchConnectionEntity
+import com.official.cufitapi.domain.infrastructure.persistence.MatchCandidateJpaRepository
+import com.official.cufitapi.domain.infrastructure.persistence.MatchConnectionJpaRepository
+import com.official.cufitapi.domain.infrastructure.persistence.MemberProfileImageJpaRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -47,7 +41,7 @@ class ConnectionService(
         }
 
         // 요청 정보 DB에 저장
-        val connection = MatchConnection(
+        val connection = MatchConnectionEntity(
             matchMakerId =  request.matchMakerId,
             receiverId = request.receiverId,
             senderId = request.senderId,

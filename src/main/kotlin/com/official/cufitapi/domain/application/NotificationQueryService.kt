@@ -1,7 +1,7 @@
 package com.official.cufitapi.domain.application
 
 import com.official.cufitapi.domain.api.dto.notification.NotificationResponse
-import com.official.cufitapi.domain.infrastructure.repository.NotificationJpaRepository
+import com.official.cufitapi.domain.infrastructure.persistence.NotificationJpaRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
