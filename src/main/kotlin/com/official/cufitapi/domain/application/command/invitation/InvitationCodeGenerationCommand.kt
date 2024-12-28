@@ -1,4 +1,4 @@
-package com.official.cufitapi.domain.application.command
+package com.official.cufitapi.domain.application.command.invitation
 
 import com.official.cufitapi.domain.enums.MatchMakerCandidateRelationType
 import com.official.cufitapi.domain.enums.MemberType

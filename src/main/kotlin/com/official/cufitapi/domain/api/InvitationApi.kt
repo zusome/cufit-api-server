@@ -9,9 +9,9 @@ import com.official.cufitapi.domain.api.dto.invitation.InvitationCodeResponse
 import com.official.cufitapi.domain.api.dto.invitation.InvitationResponse
 import com.official.cufitapi.domain.application.InvitationTokenGenerationUseCase
 import com.official.cufitapi.domain.application.InvitationTokenValidationUseCase
-import com.official.cufitapi.domain.application.command.InvitationCodeGenerationCommand
-import com.official.cufitapi.domain.application.command.InvitationCodeValidationCommand
-import com.official.cufitapi.domain.domain.vo.InvitationCode
+import com.official.cufitapi.domain.application.command.invitation.InvitationCodeGenerationCommand
+import com.official.cufitapi.domain.application.command.invitation.InvitationCodeValidationCommand
+import com.official.cufitapi.domain.domain.invitation.vo.InvitationCode
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -32,7 +32,8 @@ class InvitationApi(
             InvitationCodeValidationCommand(
                 memberId = memberId,
                 invitationCode = InvitationCode(code = request.invitationCode)
-            ))
+            )
+        )
         return ResponseEntity.ok(InvitationResponse(inviteeName))
     }
 

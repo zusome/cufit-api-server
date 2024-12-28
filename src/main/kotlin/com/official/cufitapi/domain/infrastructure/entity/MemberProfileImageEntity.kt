@@ -4,13 +4,15 @@ import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import jakarta.persistence.Table
 import java.util.UUID
 
 /*
    사용자 프로필 이미지 Table
  */
 @Entity
-class MemberProfileImage(
+@Table(name = "member_profile_image")
+class MemberProfileImageEntity(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int? = null,
 

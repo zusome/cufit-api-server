@@ -4,12 +4,14 @@ import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import jakarta.persistence.Table
 
 /*
    주선자 Table
  */
 @Entity
-class MatchMaker(
+@Table(name = "match_maker")
+class MatchMakerEntity(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
     /*

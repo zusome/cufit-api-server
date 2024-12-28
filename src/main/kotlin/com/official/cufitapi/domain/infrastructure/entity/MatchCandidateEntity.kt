@@ -8,13 +8,15 @@ import jakarta.persistence.Enumerated
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import jakarta.persistence.Table
 
 
 /*
    후보자 Table
  */
 @Entity
-class MatchCandidate(
+@Table(name = "match_candidate")
+class MatchCandidateEntity(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
     /*

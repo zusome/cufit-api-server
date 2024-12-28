@@ -10,13 +10,15 @@ import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.OneToOne
+import jakarta.persistence.Table
 import org.hibernate.annotations.Comment
 
 /*
    사용자 Table
  */
 @Entity
-class Member(
+@Table(name = "member")
+class MemberEntity(
 
     @Column(name = "name", unique = false, nullable = false)
     @Comment("사용자 이름")
@@ -26,8 +28,8 @@ class Member(
     @Comment("사용자 이메일")
     var email: String,
 
-    @OneToOne(mappedBy = "member", cascade = [CascadeType.ALL], orphanRemoval = true)
-    var memberAuthorization: MemberAuthorization,
+    @OneToOne(mappedBy = "memberEntity", cascade = [CascadeType.ALL], orphanRemoval = true)
+    var memberAuthorization: MemberAuthorizationEntity,
 
     @Enumerated(value = EnumType.STRING)
     @Column(name = "authority", unique = false, nullable = false)
@@ -45,7 +47,7 @@ class Member(
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as Member
+        other as MemberEntity
 
         return id == other.id
     }

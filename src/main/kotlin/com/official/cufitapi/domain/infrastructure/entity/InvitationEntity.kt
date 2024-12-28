@@ -5,12 +5,14 @@ import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import jakarta.persistence.Table
 
 /*
    초대 Table
  */
 @Entity
-class Invitation(
+@Table(name = "invitation")
+class InvitationEntity(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
     /*

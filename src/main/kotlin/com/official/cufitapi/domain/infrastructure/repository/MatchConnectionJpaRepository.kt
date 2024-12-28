@@ -1,13 +1,12 @@
 package com.official.cufitapi.domain.infrastructure.repository
 
 import com.official.cufitapi.domain.enums.MatchStatus
-import com.official.cufitapi.domain.infrastructure.entity.MatchConnection
+import com.official.cufitapi.domain.infrastructure.entity.MatchConnectionEntity
 import org.springframework.data.jpa.repository.JpaRepository
-import org.springframework.data.jpa.repository.Query
 
-interface MatchConnectionJpaRepository : JpaRepository<MatchConnection, Long> {
+interface MatchConnectionJpaRepository : JpaRepository<MatchConnectionEntity, Long> {
 
-    fun findAllByReceiverIdAndStatusOrderByCreatedDate(receiverId: Long, status: MatchStatus) : List<MatchConnection>
+    fun findAllByReceiverIdAndStatusOrderByCreatedDate(receiverId: Long, status: MatchStatus) : List<MatchConnectionEntity>
 
 
 }

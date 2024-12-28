@@ -1,13 +1,12 @@
 package com.official.cufitapi.domain.application
 
 import com.official.cufitapi.common.exception.InvalidRequestException
-import com.official.cufitapi.domain.api.dto.invitation.InvitationResponse
-import com.official.cufitapi.domain.application.command.InvitationCodeGenerationCommand
-import com.official.cufitapi.domain.application.command.InvitationCodeValidationCommand
-import com.official.cufitapi.domain.domain.vo.InvitationCode
+import com.official.cufitapi.domain.application.command.invitation.InvitationCodeGenerationCommand
+import com.official.cufitapi.domain.application.command.invitation.InvitationCodeValidationCommand
+import com.official.cufitapi.domain.domain.invitation.vo.InvitationCode
 import com.official.cufitapi.domain.enums.MatchMakerCandidateRelationType
 import com.official.cufitapi.domain.enums.MemberType
-import com.official.cufitapi.domain.infrastructure.entity.Invitation
+import com.official.cufitapi.domain.infrastructure.entity.InvitationEntity
 import com.official.cufitapi.domain.infrastructure.repository.InvitationJpaRepository
 import com.official.cufitapi.domain.infrastructure.repository.MemberJpaRepository
 import org.springframework.data.repository.findByIdOrNull
@@ -63,7 +62,7 @@ class InvitationService(
         val invitationCodeSuffix = MatchMakerCandidateRelationType.invitationCodeSuffix(command.relationType)
         val invitationCode =  invitationCodePrefix + generateRandomBase62String() + invitationCodeSuffix
         val invitation = invitationJpaRepository.save(
-            Invitation(
+            InvitationEntity(
             code = invitationCode,
             relationType = command.relationType,
             senderId = sender.id!!

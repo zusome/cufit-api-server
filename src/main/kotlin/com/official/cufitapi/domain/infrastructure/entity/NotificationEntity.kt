@@ -7,7 +7,8 @@ import jakarta.persistence.*
    알림 Table
  */
 @Entity
-class Notification(
+@Table(name = "notification")
+class NotificationEntity(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
     val title: String,

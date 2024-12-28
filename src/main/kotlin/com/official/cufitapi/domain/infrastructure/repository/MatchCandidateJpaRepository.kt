@@ -1,13 +1,13 @@
 package com.official.cufitapi.domain.infrastructure.repository
 
 import com.official.cufitapi.domain.enums.MBTILetter
-import com.official.cufitapi.domain.infrastructure.entity.MatchCandidate
+import com.official.cufitapi.domain.infrastructure.entity.MatchCandidateEntity
 import com.official.cufitapi.domain.infrastructure.repository.dto.candidate.CandidateInfo
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 
-interface MatchCandidateJpaRepository : JpaRepository<MatchCandidate, Long> {
+interface MatchCandidateJpaRepository : JpaRepository<MatchCandidateEntity, Long> {
 
     @Query(
         """

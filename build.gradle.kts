@@ -69,6 +69,9 @@ dependencies {
 	implementation("io.jsonwebtoken:jjwt-api:0.11.5")
 	implementation("io.jsonwebtoken:jjwt-impl:0.11.5")
 	implementation("io.jsonwebtoken:jjwt-jackson:0.11.5")
+
+	// coroutine
+	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0")
 }
 dependencyManagement {
 	imports {

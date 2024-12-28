@@ -5,12 +5,14 @@ import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import jakarta.persistence.Table
 
 /*
    연결 Table
  */
 @Entity
-class MatchConnection(
+@Table(name = "match_connection")
+class MatchConnectionEntity(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
     /*
