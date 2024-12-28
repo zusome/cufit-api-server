@@ -1,11 +1,8 @@
 package com.official.cufitapi.domain.application
 
-import com.official.cufitapi.domain.api.dto.notification.NotificationResponse
 import com.official.cufitapi.domain.enums.NotificationType
-import com.official.cufitapi.domain.infrastructure.entity.Notification
-import com.official.cufitapi.domain.infrastructure.repository.NotificationJpaRepository
-import jakarta.persistence.EnumType
-import jakarta.persistence.Enumerated
+import com.official.cufitapi.domain.infrastructure.persistence.NotificationEntity
+import com.official.cufitapi.domain.infrastructure.persistence.NotificationJpaRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -24,7 +21,7 @@ class NotificationService(
         notificationType: NotificationType
     ) {
         notificationJpaRepository.save(
-            Notification(
+            NotificationEntity(
                 title = title,
                 content = content,
                 memberId = memberId,

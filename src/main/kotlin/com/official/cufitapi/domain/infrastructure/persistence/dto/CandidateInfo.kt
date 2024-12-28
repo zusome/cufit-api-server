@@ -1,4 +1,4 @@
-package com.official.cufitapi.domain.infrastructure.repository.dto.candidate
+package com.official.cufitapi.domain.infrastructure.persistence.dto
 
 import com.official.cufitapi.domain.enums.MBTILetter
 

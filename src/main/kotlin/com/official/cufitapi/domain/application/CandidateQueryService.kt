@@ -1,7 +1,6 @@
 package com.official.cufitapi.domain.application
 
-import com.official.cufitapi.domain.api.dto.candidate.CandidateResponse
-import com.official.cufitapi.domain.infrastructure.repository.MatchCandidateJpaRepository
+import com.official.cufitapi.domain.infrastructure.persistence.MatchCandidateJpaRepository
 import org.springframework.stereotype.Service
 
 @Service

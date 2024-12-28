@@ -1,8 +1,7 @@
-package com.official.cufitapi.domain.infrastructure.repository
+package com.official.cufitapi.domain.infrastructure.persistence
 
 import com.official.cufitapi.domain.enums.MBTILetter
-import com.official.cufitapi.domain.infrastructure.entity.MatchCandidateEntity
-import com.official.cufitapi.domain.infrastructure.repository.dto.candidate.CandidateInfo
+import com.official.cufitapi.domain.infrastructure.persistence.dto.CandidateInfo
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param

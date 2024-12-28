@@ -1,13 +1,14 @@
 package com.official.cufitapi.domain.application
 
 import com.official.cufitapi.domain.application.command.candidate.CandidateProfileUpdateCommand
-import com.official.cufitapi.domain.infrastructure.repository.MatchCandidateJpaRepository
+import com.official.cufitapi.domain.infrastructure.persistence.MatchCandidateJpaRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 interface CandidateProfileUpdateUseCase {
     fun update(candidateProfileUpdateCommand: CandidateProfileUpdateCommand)
 }
+
 
 @Service
 @Transactional(readOnly = true)

@@ -1,7 +1,6 @@
-package com.official.cufitapi.domain.infrastructure.repository
+package com.official.cufitapi.domain.infrastructure.persistence
 
 import com.official.cufitapi.domain.enums.MatchStatus
-import com.official.cufitapi.domain.infrastructure.entity.MatchConnectionEntity
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface MatchConnectionJpaRepository : JpaRepository<MatchConnectionEntity, Long> {

@@ -4,10 +4,10 @@ import com.official.cufitapi.common.exception.InvalidRequestException
 import com.official.cufitapi.domain.api.dto.connection.ConnectionApplyRequest
 import com.official.cufitapi.domain.api.dto.connection.ConnectionUpdateRequest
 import com.official.cufitapi.domain.enums.MatchStatus
-import com.official.cufitapi.domain.infrastructure.entity.MatchConnectionEntity
-import com.official.cufitapi.domain.infrastructure.repository.MatchCandidateJpaRepository
-import com.official.cufitapi.domain.infrastructure.repository.MatchConnectionJpaRepository
-import com.official.cufitapi.domain.infrastructure.repository.MemberProfileImageJpaRepository
+import com.official.cufitapi.domain.infrastructure.persistence.MatchConnectionEntity
+import com.official.cufitapi.domain.infrastructure.persistence.MatchCandidateJpaRepository
+import com.official.cufitapi.domain.infrastructure.persistence.MatchConnectionJpaRepository
+import com.official.cufitapi.domain.infrastructure.persistence.MemberProfileImageJpaRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

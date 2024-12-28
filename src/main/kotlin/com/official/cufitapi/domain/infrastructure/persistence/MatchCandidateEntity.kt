@@ -1,4 +1,4 @@
-package com.official.cufitapi.domain.infrastructure.entity
+package com.official.cufitapi.domain.infrastructure.persistence
 
 import com.official.cufitapi.domain.enums.Gender
 import com.official.cufitapi.domain.enums.MemberType

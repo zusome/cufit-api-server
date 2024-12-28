@@ -1,4 +1,4 @@
-package com.official.cufitapi.domain.infrastructure.entity
+package com.official.cufitapi.domain.infrastructure.persistence
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity

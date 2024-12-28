@@ -1,6 +1,5 @@
-package com.official.cufitapi.domain.infrastructure.repository
+package com.official.cufitapi.domain.infrastructure.persistence
 
-import com.official.cufitapi.domain.infrastructure.entity.InvitationEntity
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface InvitationJpaRepository : JpaRepository<InvitationEntity, Long> {

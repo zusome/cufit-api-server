@@ -1,11 +1,10 @@
-package com.official.cufitapi.domain.infrastructure.repository
+package com.official.cufitapi.domain.infrastructure.persistence
 
-import com.official.cufitapi.domain.infrastructure.entity.Notification
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 
-interface NotificationJpaRepository : JpaRepository<Notification, Long> {
+interface NotificationJpaRepository : JpaRepository<NotificationEntity, Long> {
     @Query(
         value = """
             SELECT * 
@@ -15,5 +14,5 @@ interface NotificationJpaRepository : JpaRepository<Notification, Long> {
         """,
         nativeQuery = true
     )
-    fun findAllByMemberIdOrderByCreatedDateDesc(@Param("memberId") memberId: Long): List<Notification>
+    fun findAllByMemberIdOrderByCreatedDateDesc(@Param("memberId") memberId: Long): List<NotificationEntity>
 }

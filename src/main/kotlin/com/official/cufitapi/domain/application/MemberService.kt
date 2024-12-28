@@ -4,10 +4,10 @@ import com.official.cufitapi.common.exception.InvalidRequestException
 import com.official.cufitapi.domain.api.dto.MemberInfoResponse
 import com.official.cufitapi.domain.api.dto.MemberProfileRequest
 import com.official.cufitapi.domain.enums.MemberType
-import com.official.cufitapi.domain.infrastructure.entity.MemberEntity
-import com.official.cufitapi.domain.infrastructure.entity.MemberAuthorizationEntity
-import com.official.cufitapi.domain.infrastructure.repository.InvitationJpaRepository
-import com.official.cufitapi.domain.infrastructure.repository.MemberJpaRepository
+import com.official.cufitapi.domain.infrastructure.persistence.MemberEntity
+import com.official.cufitapi.domain.infrastructure.persistence.MemberAuthorizationEntity
+import com.official.cufitapi.domain.infrastructure.persistence.InvitationJpaRepository
+import com.official.cufitapi.domain.infrastructure.persistence.MemberJpaRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

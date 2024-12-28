@@ -6,9 +6,9 @@ import com.official.cufitapi.domain.application.command.invitation.InvitationCod
 import com.official.cufitapi.domain.domain.invitation.vo.InvitationCode
 import com.official.cufitapi.domain.enums.MatchMakerCandidateRelationType
 import com.official.cufitapi.domain.enums.MemberType
-import com.official.cufitapi.domain.infrastructure.entity.InvitationEntity
-import com.official.cufitapi.domain.infrastructure.repository.InvitationJpaRepository
-import com.official.cufitapi.domain.infrastructure.repository.MemberJpaRepository
+import com.official.cufitapi.domain.infrastructure.persistence.InvitationEntity
+import com.official.cufitapi.domain.infrastructure.persistence.InvitationJpaRepository
+import com.official.cufitapi.domain.infrastructure.persistence.MemberJpaRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -66,7 +66,8 @@ class InvitationService(
             code = invitationCode,
             relationType = command.relationType,
             senderId = sender.id!!
-        ))
+        )
+        )
         return InvitationCode(invitation.code)
     }
 

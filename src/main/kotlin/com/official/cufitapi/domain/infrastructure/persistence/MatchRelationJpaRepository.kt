@@ -1,6 +1,5 @@
-package com.official.cufitapi.domain.infrastructure.repository
+package com.official.cufitapi.domain.infrastructure.persistence
 
-import com.official.cufitapi.domain.infrastructure.entity.MakerCandidateRelationEntity
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface MatchRelationJpaRepository : JpaRepository<MakerCandidateRelationEntity, Long> {
