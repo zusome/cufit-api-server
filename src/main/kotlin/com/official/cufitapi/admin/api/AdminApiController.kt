@@ -1,7 +1,6 @@
-package com.official.cufitapi.domain.api
+package com.official.cufitapi.admin.api
 
 import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
 
 @AdminApiV1Controller
 class AdminApiController {
@@ -11,6 +10,6 @@ class AdminApiController {
     @PostMapping
     fun registerCandidate(
     ) {
-
+        // TODO : implementation
     }
 }
