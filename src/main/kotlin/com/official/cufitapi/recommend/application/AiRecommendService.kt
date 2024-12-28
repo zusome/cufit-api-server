@@ -1,4 +1,4 @@
-package com.official.cufitapi.domain.application
+package com.official.cufitapi.recommend.application
 
 import org.springframework.stereotype.Service
 
