@@ -10,8 +10,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
-@ConditionalOnProperty(prefix = "spring.profiles.active", name = ["push-message"], havingValue = "local")
-@Configuration
+// @ConditionalOnProperty(prefix = "spring.profiles.active", name = ["push-message"], havingValue = "local")
+// @Configuration
 class PushMessageConfig(
     private val firebaseProperties: FirebaseProperties
 ) {
