@@ -2,7 +2,7 @@
     "containerDefinitions": [
         {
             "name": "cicd-test",
-            "image": "534420079206.dkr.ecr.ap-northeast-2.amazonaws.com/01_cicid_test:kyh",
+            "image": "534420079206.dkr.ecr.ap-northeast-2.amazonaws.com/01_cicid_test:latest",
             "cpu": 256,
             "memoryReservation": 512,
             "stopTimeout": 2,
