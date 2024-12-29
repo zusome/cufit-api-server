@@ -31,7 +31,7 @@ class AuthorizationApi(
     ): ResponseEntity<OidcLoginHttpResponse> {
         log.info("Authorization: $authorization")
         log.info("request: $request")
-        log.info("request filed: email = ${request.email}, provider = ${request.provider}, username = ${request.username}")
+        log.info("request filed: email = ${request.email}, provider = ${request.provider}, username = ${request.username}, userIdentifier = ${request.userIdentifier}")
         val idToken = authorization.replace(BEARER, BLANK)
         val providerId = oidcProviderIdFindUseCase.find(OidcProviderIdFindCommand(idToken, request.provider))
         val member = memberRegistrationUseCase.register(MemberRegistrationCommand(request.username, request.email, request.provider, providerId))
