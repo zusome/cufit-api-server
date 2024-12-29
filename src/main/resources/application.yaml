@@ -34,6 +34,5 @@ service:
     access-timeout: ${AUTHORIZATION_ACCESS_TIMEOUT:86400000}
     refresh-timeout: ${AUTHORIZATION_REFRESH_TIMEOUT:604800000}
   firebase:
-    resource: ${FIREBASE_RESOURCE:classpath:firebase/firebase.json}
-    scopes:
-      - https://www.googleapis.com/auth/cloud-platform
+    file-path: ${FIREBASE_FILE_PATH:src/main/resources/firebase/}
+    file-name: ${FIREBASE_FILE_NAME:firebase.json}
