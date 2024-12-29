@@ -2,11 +2,11 @@ package com.official.cufitapi.auth.domain
 
 import com.official.cufitapi.auth.domain.vo.OidcPublicKeyId
 
-class OidcPublicKeys(
+data class OidcPublicKeys(
     val keys: List<OidcPublicKey>
 ) {
     fun match(oidcPublicKeyId: OidcPublicKeyId): OidcPublicKey =
-        keys.firstOrNull { it.equals(oidcPublicKeyId) } ?: throw RuntimeException()
+        keys.firstOrNull { it.match(oidcPublicKeyId) } ?: throw RuntimeException()
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
