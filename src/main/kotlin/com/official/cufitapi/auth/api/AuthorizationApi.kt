@@ -10,6 +10,7 @@ import com.official.cufitapi.auth.application.command.MemberRegistrationCommand
 import com.official.cufitapi.auth.application.command.OidcProviderIdFindCommand
 import com.official.cufitapi.domain.api.ApiV1Controller
 import com.official.cufitapi.domain.api.docs.AuthApiDocs
+import org.slf4j.LoggerFactory
 import org.springframework.http.HttpHeaders
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
@@ -28,6 +29,9 @@ class AuthorizationApi(
         @RequestHeader(HttpHeaders.AUTHORIZATION) authorization: String,
         @RequestBody request: OidcLoginHttpRequest
     ): ResponseEntity<OidcLoginHttpResponse> {
+        log.info("Authorization: $authorization")
+        log.info("request: $request")
+        log.info("request filed: email = ${request.email}, provider = ${request.provider}, username = ${request.username}")
         val idToken = authorization.replace(BEARER, BLANK)
         val providerId = oidcProviderIdFindUseCase.find(OidcProviderIdFindCommand(idToken, request.provider))
         val member = memberRegistrationUseCase.register(MemberRegistrationCommand(request.username, request.email, request.provider, providerId))
@@ -36,6 +40,7 @@ class AuthorizationApi(
     }
 
     companion object {
+        private val log = LoggerFactory.getLogger(AuthorizationApi::class.java)
         private const val BEARER = "Bearer "
         private const val BLANK = ""
     }
