@@ -28,7 +28,7 @@ class MemberEntity(
     @Comment("사용자 이메일")
     var email: String,
 
-    @OneToOne(mappedBy = "memberEntity", cascade = [CascadeType.ALL], orphanRemoval = true)
+    @OneToOne(mappedBy = "member", cascade = [CascadeType.ALL], orphanRemoval = true)
     var memberAuthorization: MemberAuthorizationEntity,
 
     @Enumerated(value = EnumType.STRING)
