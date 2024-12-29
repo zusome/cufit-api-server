@@ -101,10 +101,12 @@ jobs:
     - name: Fill in the new image ID in the Amazon ECS task definition
       id: task-def
       uses: aws-actions/amazon-ecs-render-task-definition@v1
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
       with:
         task-definition: ${{ env.ECS_TASK_DEFINITION }}
         container-name: ${{ env.CONTAINER_NAME }}
-        image: "${{env.ECR_REGISTRY}}/${{env.ECR_REPOSITORY}}:latest"
+        image: "${{ env.ECR_REGISTRY }}/${{env.ECR_REPOSITORY}}:latest"
 
     - name: Deploy Amazon ECS task definition
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
