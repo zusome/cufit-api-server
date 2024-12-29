@@ -3,6 +3,10 @@ package com.official.cufitapi.auth.api.dto
 import com.fasterxml.jackson.annotation.JsonProperty
 
 data class OidcLoginHttpRequest(
+
+    @JsonProperty("userIdentifier")
+    val userIdentifier: String,
+
     @JsonProperty("username")
     val username: String = "큐피트",
 
