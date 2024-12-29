@@ -7,10 +7,12 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.OneToOne
+import jakarta.persistence.Table
 
 /*
    사용자 Table
  */
+@Table(name = "member_authorization")
 @Entity
 class MemberAuthorization(
 
