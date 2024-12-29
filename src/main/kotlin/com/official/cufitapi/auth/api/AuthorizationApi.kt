@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestHeader
 class AuthorizationApi(
     private val oidcProviderIdFindUseCase: OidcProviderIdFindUseCase,
     private val memberRegistrationUseCase: MemberRegistrationUseCase,
-    private val authorizationTokenCreationUseCase: AuthorizationTokenCreationUseCase
+    private val authorizationTokenCreationUseCase: AuthorizationTokenCreationUseCase,
 ): AuthApiDocs {
 
     @PostMapping("/auth/login/oidc")
