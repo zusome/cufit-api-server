@@ -28,16 +28,16 @@ name: Deploy to Amazon ECS
 
 on:
   push:
-    branches: [ "develop", "production","env/init" ]
+    branches: [ "develop" ]
 
 env:
   AWS_REGION: ap-northeast-2            # set this to your preferred AWS region, e.g. us-west-1
-  ECR_REPOSITORY: 01_cicid_test          # set this to your Amazon ECR repository name
-  ECS_SERVICE: cicd-test             # set this to your Amazon ECS service name
-  ECS_CLUSTER: cicd-test            # set this to your Amazon ECS cluster name
+  ECR_REPOSITORY: cufit-backcore          # set this to your Amazon ECR repository name
+  ECS_SERVICE: backend             # set this to your Amazon ECS service name
+  ECS_CLUSTER: cufit            # set this to your Amazon ECS cluster name
   ECS_TASK_DEFINITION: first-run-task-definition.json # set this to the path to your Amazon ECS task definition
                                                # file, e.g. .aws/task-definition.json
-  CONTAINER_NAME: cicd-test          # set this to the name of the container in the
+  CONTAINER_NAME: cufit-backcore          # set this to the name of the container in the
                                                # containerDefinitions section of your task definition
   DATASOURCE_USERNAME: ${{ secrets.DATASOURCE_USERNAME}}
   DATASOURCE_PASSWORD: ${{ secrets.DATASOURCE_PASSWORD}}
@@ -94,11 +94,12 @@ jobs:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         IMAGE_TAG: ${{ github.sha }}
       run: |
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-        echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
-        # docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:latest .
-        # docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+        # docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        # docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        # echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:latest .
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+        echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:latest" >> $GITHUB_OUTPUT
 
     - name: Fill in the new image ID in the Amazon ECS task definition
       id: task-def
@@ -108,7 +109,6 @@ jobs:
       with:
         task-definition: ${{ env.ECS_TASK_DEFINITION }}
         container-name: ${{ env.CONTAINER_NAME }}
-        # image: "${{ env.ECR_REGISTRY }}/${{env.ECR_REPOSITORY}}:latest"
         image: ${{ steps.build-image.outputs.image }}
     - name: Deploy Amazon ECS task definition
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
