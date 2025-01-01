@@ -32,7 +32,7 @@
         }
     ],
     "family": "first-run-task-definition",
-    "executionRoleArn": "arn:aws:iam::534420079206:role/ecsTaskExecutionRole",
+    "executionRoleArn": "arn:aws:iam::084375587480:role/ecsTaskRole",
     "networkMode": "awsvpc",
     "revision": 7,
     "volumes": [],
