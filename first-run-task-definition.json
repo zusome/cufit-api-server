@@ -1,7 +1,7 @@
 {
     "containerDefinitions": [
         {
-            "name": "cufit",
+            "name": "cufit-backcore",
             "image": "084375587480.dkr.ecr.ap-northeast-2.amazonaws.com/cufit-backcore:latest",
             "cpu": 256,
             "memoryReservation": 512,
