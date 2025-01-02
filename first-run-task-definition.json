@@ -1,7 +1,7 @@
 {
     "containerDefinitions": [
         {
-            "name": "cicd-test",
+            "name": "cufit-backcore",
             "image": "534420079206.dkr.ecr.ap-northeast-2.amazonaws.com/01_cicid_test:latest",
             "stopTimeout": 2,
             "portMappings": [
@@ -69,7 +69,7 @@
     "requiresCompatibilities": [
         "FARGATE"
     ],
-    "cpu": "1 vCPU",
+    "cpu": "0.25 vCPU",
     "memory": "512",
     "tags": []
 }
