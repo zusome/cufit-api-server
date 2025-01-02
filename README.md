@@ -10,3 +10,4 @@
 생성형 AI와 증강시켜줄 지식기반 벡터DB는 bedrock에서 제공하는 기능을 사용합니다 (Claude 3.5 sonet, OpenSearch, S3)
 
 webhook test
+2
