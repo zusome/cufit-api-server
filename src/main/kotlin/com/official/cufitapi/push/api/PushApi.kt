@@ -2,6 +2,7 @@ package com.official.cufitapi.push.api
 
 import com.official.cufitapi.common.annotation.Authorization
 import com.official.cufitapi.common.annotation.AuthorizationType
+import com.official.cufitapi.common.api.HttpResponse
 import com.official.cufitapi.domain.api.ApiV1Controller
 import com.official.cufitapi.push.api.dto.DeviceTokenRegisterRequest
 import com.official.cufitapi.push.api.dto.MemberAlarmAgreementRequest
@@ -10,6 +11,7 @@ import com.official.cufitapi.push.appliaction.DeviceTokenRegisterUseCase
 import com.official.cufitapi.push.appliaction.MemberAlarmAgreementRegisterUseCase
 import com.official.cufitapi.push.appliaction.command.DeviceTokenRegisterCommand
 import com.official.cufitapi.push.appliaction.command.MemberAlarmAgreeCommand
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -24,7 +26,7 @@ class PushApi(
     fun agree(
         @Authorization(AuthorizationType.ALL) memberId: Long,
         @RequestBody request: MemberAlarmAgreementRequest
-    ): ResponseEntity<MemberAlarmAgreementResponse> {
+    ): HttpResponse<MemberAlarmAgreementResponse> {
         val memberAlarmAgreement = memberAlarmAgreementRegisterUseCase.agree(
             MemberAlarmAgreeCommand(
                 memberId,
@@ -32,15 +34,17 @@ class PushApi(
                 request.alarmType
             )
         )
-        return ResponseEntity.ok()
-            .body(MemberAlarmAgreementResponse(memberAlarmAgreement.agree, memberAlarmAgreement.alarmType))
+        return HttpResponse.of(
+            HttpStatus.OK,
+            MemberAlarmAgreementResponse(memberAlarmAgreement.agree, memberAlarmAgreement.alarmType)
+        )
     }
 
     @PostMapping("/push/device")
     fun registerDeviceToken(
         @Authorization(AuthorizationType.ALL) memberId: Long,
         @RequestBody request: DeviceTokenRegisterRequest
-    ): ResponseEntity<Unit> {
+    ): HttpResponse<Unit> {
         deviceTokenRegisterUseCase.registerDeviceToken(
             DeviceTokenRegisterCommand(
                 memberId,
@@ -48,6 +52,6 @@ class PushApi(
                 request.deviceToken
             )
         )
-        return ResponseEntity.ok().build()
+        return HttpResponse.of(HttpStatus.OK, Unit)
     }
 }

@@ -1,5 +1,6 @@
 package com.official.cufitapi.domain.api.docs
 
+import com.official.cufitapi.common.api.HttpResponse
 import com.official.cufitapi.domain.api.dto.invitation.InvitationCodeGenerateRequest
 import com.official.cufitapi.domain.api.dto.invitation.InvitationCodeRequest
 import com.official.cufitapi.domain.api.dto.invitation.InvitationCodeResponse
@@ -28,7 +29,7 @@ interface InvitationApiDocs {
     fun validateInvitation(
         memberId: Long,
         @RequestBody request: InvitationCodeRequest
-    ) : ResponseEntity<InvitationResponse>
+    ) : HttpResponse<InvitationResponse>
 
 
     @Operation(
@@ -42,5 +43,5 @@ interface InvitationApiDocs {
     fun generate(
         memberId: Long,
         @RequestBody request: InvitationCodeGenerateRequest
-    ) : ResponseEntity<InvitationCodeResponse>
+    ) : HttpResponse<InvitationCodeResponse>
 }

@@ -2,10 +2,12 @@ package com.official.cufitapi.domain.api
 
 import com.official.cufitapi.common.annotation.Authorization
 import com.official.cufitapi.common.annotation.AuthorizationType
+import com.official.cufitapi.common.api.HttpResponse
 import com.official.cufitapi.domain.api.docs.CandidateApiDocs
 import com.official.cufitapi.domain.api.dto.candidate.CandidateProfileUpdateRequest
 import com.official.cufitapi.domain.application.CandidateProfileUpdateUseCase
 import com.official.cufitapi.domain.application.command.candidate.CandidateProfileUpdateCommand
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -22,7 +24,7 @@ class CandidateApi(
     fun updateCandidateProfile(
         @Authorization(AuthorizationType.ALL) memberId: Long,
         @RequestBody request: CandidateProfileUpdateRequest
-    ): ResponseEntity<Unit> {
+    ): HttpResponse<Unit> {
         candidateProfileUpdateUseCase.update(
             CandidateProfileUpdateCommand(
                 memberId = memberId,
@@ -38,7 +40,7 @@ class CandidateApi(
                 idealMbti = request.idealMbti
             )
         )
-        return ResponseEntity.noContent().build()
+        return HttpResponse.of(HttpStatus.NO_CONTENT, Unit)
     }
 
 
