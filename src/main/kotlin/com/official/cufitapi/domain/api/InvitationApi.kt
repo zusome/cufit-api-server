@@ -7,14 +7,13 @@ import com.official.cufitapi.domain.api.docs.InvitationApiDocs
 import com.official.cufitapi.domain.api.dto.invitation.InvitationCodeGenerateRequest
 import com.official.cufitapi.domain.api.dto.invitation.InvitationCodeRequest
 import com.official.cufitapi.domain.api.dto.invitation.InvitationCodeResponse
-import com.official.cufitapi.domain.api.dto.invitation.InvitationResponse
+import com.official.cufitapi.domain.api.dto.invitation.InvitationValidationResponse
 import com.official.cufitapi.domain.application.InvitationTokenGenerationUseCase
 import com.official.cufitapi.domain.application.InvitationTokenValidationUseCase
 import com.official.cufitapi.domain.application.command.invitation.InvitationCodeGenerationCommand
 import com.official.cufitapi.domain.application.command.invitation.InvitationCodeValidationCommand
 import com.official.cufitapi.domain.domain.invitation.vo.InvitationCode
 import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 
@@ -29,14 +28,14 @@ class InvitationApi(
     override fun validateInvitation(
         @Authorization(AuthorizationType.ALL) memberId: Long,
         @RequestBody request: InvitationCodeRequest
-    ): HttpResponse<InvitationResponse> {
-        val inviteeName = invitationTokenValidationUseCase.validate(
+    ): HttpResponse<InvitationValidationResponse> {
+        val memberType = invitationTokenValidationUseCase.validate(
             InvitationCodeValidationCommand(
                 memberId = memberId,
                 invitationCode = InvitationCode(code = request.invitationCode)
             )
         )
-        return HttpResponse.of(HttpStatus.OK, InvitationResponse(inviteeName))
+        return HttpResponse.of(HttpStatus.OK, InvitationValidationResponse(memberType))
     }
 
 

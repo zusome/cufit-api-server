@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional
 import kotlin.random.Random
 
 interface InvitationTokenValidationUseCase {
-    fun validate(command: InvitationCodeValidationCommand) : String
+    fun validate(command: InvitationCodeValidationCommand) : MemberType
 }
 
 interface InvitationTokenGenerationUseCase {
@@ -34,7 +34,7 @@ class InvitationService(
     }
 
     @Transactional
-    override fun validate(command: InvitationCodeValidationCommand): String {
+    override fun validate(command: InvitationCodeValidationCommand): MemberType {
         val memberId = command.memberId
         val invitationCode = command.invitationCode.code
         val member = memberJpaRepository.findByIdOrNull(memberId) ?: throw InvalidRequestException("존재하지 않는 사용자 id : $memberId")
@@ -51,7 +51,7 @@ class InvitationService(
         invitation.deactivate()
 
         val invitee = memberJpaRepository.findByIdOrNull(invitation.senderId) ?: throw InvalidRequestException("초대 보낸 사용자를 찾을 수 없음")
-        return invitee.name
+        return member.memberType
     }
 
     @Transactional

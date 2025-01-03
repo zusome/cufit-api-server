@@ -4,7 +4,7 @@ import com.official.cufitapi.common.api.HttpResponse
 import com.official.cufitapi.domain.api.dto.invitation.InvitationCodeGenerateRequest
 import com.official.cufitapi.domain.api.dto.invitation.InvitationCodeRequest
 import com.official.cufitapi.domain.api.dto.invitation.InvitationCodeResponse
-import com.official.cufitapi.domain.api.dto.invitation.InvitationResponse
+import com.official.cufitapi.domain.api.dto.invitation.InvitationValidationResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
@@ -29,7 +29,7 @@ interface InvitationApiDocs {
     fun validateInvitation(
         memberId: Long,
         @RequestBody request: InvitationCodeRequest
-    ) : HttpResponse<InvitationResponse>
+    ) : HttpResponse<InvitationValidationResponse>
 
 
     @Operation(
