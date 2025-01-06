@@ -2,6 +2,7 @@ package com.official.cufitapi.domain.auth.api
 
 import com.official.cufitapi.common.annotation.Authorization
 import com.official.cufitapi.common.annotation.AuthorizationType
+import com.official.cufitapi.common.annotation.AuthorizationUser
 import com.official.cufitapi.common.api.ApiV1Controller
 import com.official.cufitapi.domain.auth.api.docs.AuthApiDocs
 import com.official.cufitapi.common.api.dto.HttpResponse
@@ -18,7 +19,7 @@ class SmsAuthorizationApi(
 
     @PostMapping("/auth/sms/issue")
     fun issueSmsAuthCode(
-        @Authorization(AuthorizationType.ALL) memberId: Long
+        @Authorization(AuthorizationType.ALL) authorizationUser: AuthorizationUser
     ): HttpResponse<Unit> {
         smsAuthenticationService.issueSmsAuthCode()
         return HttpResponse.of(HttpStatus.NO_CONTENT, Unit)
@@ -26,10 +27,10 @@ class SmsAuthorizationApi(
 
     @PostMapping("/auth/sms/validation")
     fun validateSmsAuthCode(
-        @Authorization(AuthorizationType.ALL) memberId: Long,
+        @Authorization(AuthorizationType.ALL) authorizationUser: AuthorizationUser,
         @RequestBody request: SmsAuthValidationRequest
     ): HttpResponse<Unit> {
-        smsAuthenticationService.validateSmsAuthCode(memberId, request)
+        smsAuthenticationService.validateSmsAuthCode(authorizationUser.userId, request)
         return HttpResponse.of(HttpStatus.NO_CONTENT, Unit)
     }
 }
