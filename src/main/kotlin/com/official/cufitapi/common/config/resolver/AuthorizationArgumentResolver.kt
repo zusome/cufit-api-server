@@ -1,9 +1,9 @@
 package com.official.cufitapi.common.config.resolver
 
-import com.official.cufitapi.auth.application.AuthorizationTokenParsingUseCase
-import com.official.cufitapi.auth.application.MemberFindUseCase
 import com.official.cufitapi.common.annotation.Authorization
 import com.official.cufitapi.common.annotation.AuthorizationUser
+import com.official.cufitapi.domain.auth.application.AuthorizationTokenParsingUseCase
+import com.official.cufitapi.domain.auth.application.MemberFindUseCase
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.core.MethodParameter
 import org.springframework.http.HttpHeaders
