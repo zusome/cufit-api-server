@@ -2,6 +2,7 @@ package com.official.cufitapi.domain.api
 
 import com.official.cufitapi.common.annotation.Authorization
 import com.official.cufitapi.common.annotation.AuthorizationType
+import com.official.cufitapi.common.annotation.AuthorizationUser
 import com.official.cufitapi.common.api.HttpResponse
 import com.official.cufitapi.domain.api.docs.InvitationApiDocs
 import com.official.cufitapi.domain.api.dto.invitation.InvitationCodeGenerateRequest
@@ -26,12 +27,12 @@ class InvitationApi(
     // 초대 코드 검증
     @PostMapping("/invitations/code")
     override fun validateInvitation(
-        @Authorization(AuthorizationType.ALL) memberId: Long,
+        @Authorization(AuthorizationType.ALL) authorizationUser: AuthorizationUser,
         @RequestBody request: InvitationCodeRequest
     ): HttpResponse<InvitationValidationResponse> {
         val memberType = invitationTokenValidationUseCase.validate(
             InvitationCodeValidationCommand(
-                memberId = memberId,
+                memberId = authorizationUser.userId,
                 invitationCode = InvitationCode(code = request.invitationCode)
             )
         )
@@ -41,12 +42,12 @@ class InvitationApi(
 
     @PostMapping("/invitations")
     override fun generate(
-        @Authorization(AuthorizationType.ALL) memberId: Long,
+        @Authorization(AuthorizationType.ALL) authorizationUser: AuthorizationUser,
         @RequestBody request: InvitationCodeGenerateRequest
     ): HttpResponse<InvitationCodeResponse> {
         val invitationCode = invitationTokenGenerationUseCase.generate(
             InvitationCodeGenerationCommand(
-                memberId = memberId,
+                memberId = authorizationUser.userId,
                 memberType = request.memberType,
                 relationType = request.relationType
             )

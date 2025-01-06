@@ -10,8 +10,8 @@ data class InvitationCodeRequest(
     val invitationCode: String
 ) {
     init {
-        if (invitationCode.length != 10) {
-            throw InvalidRequestException("초대코드는 10글자 입니다.")
-        }
+        // if (invitationCode.length != 10) {
+        //     throw InvalidRequestException("초대코드는 10글자 입니다.")
+        // }
     }
 }

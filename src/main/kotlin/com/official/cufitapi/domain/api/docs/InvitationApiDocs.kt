@@ -1,5 +1,8 @@
 package com.official.cufitapi.domain.api.docs
 
+import com.official.cufitapi.common.annotation.Authorization
+import com.official.cufitapi.common.annotation.AuthorizationType
+import com.official.cufitapi.common.annotation.AuthorizationUser
 import com.official.cufitapi.common.api.HttpResponse
 import com.official.cufitapi.domain.api.dto.invitation.InvitationCodeGenerateRequest
 import com.official.cufitapi.domain.api.dto.invitation.InvitationCodeRequest
@@ -9,8 +12,6 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
-
-import org.springframework.http.ResponseEntity
 
 import org.springframework.web.bind.annotation.RequestBody
 
@@ -27,7 +28,7 @@ interface InvitationApiDocs {
         ApiResponse(responseCode = "500", description = "서버 에러")
     )
     fun validateInvitation(
-        memberId: Long,
+        @Authorization(AuthorizationType.ALL) authorizationUser: AuthorizationUser,
         @RequestBody request: InvitationCodeRequest
     ) : HttpResponse<InvitationValidationResponse>
 
@@ -41,7 +42,7 @@ interface InvitationApiDocs {
         ApiResponse(responseCode = "500", description = "서버 에러")
     )
     fun generate(
-        memberId: Long,
+        @Authorization(AuthorizationType.ALL) authorizationUser: AuthorizationUser,
         @RequestBody request: InvitationCodeGenerateRequest
     ) : HttpResponse<InvitationCodeResponse>
 }

@@ -23,7 +23,6 @@ class AuthorizationArgumentResolver(
         return parameter.hasParameterAnnotation(Authorization::class.java)
     }
 
-    @Throws(Exception::class)
     override fun resolveArgument(
         parameter: MethodParameter,
         mavContainer: ModelAndViewContainer?,
