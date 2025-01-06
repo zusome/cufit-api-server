@@ -2,6 +2,7 @@ package com.official.cufitapi.domain.notification.api
 
 import com.official.cufitapi.common.annotation.Authorization
 import com.official.cufitapi.common.annotation.AuthorizationType
+import com.official.cufitapi.common.annotation.AuthorizationUser
 import com.official.cufitapi.common.api.ApiV1Controller
 import com.official.cufitapi.domain.notification.api.docs.NotificationApiDocs
 import com.official.cufitapi.common.api.dto.HttpResponse
@@ -19,8 +20,8 @@ class NotificationApi(
 
     @GetMapping("/notifications")
     fun getNotificationList(
-        @Authorization(AuthorizationType.ALL) memberId: Long
+        @Authorization(AuthorizationType.ALL) authorizationUser: AuthorizationUser
     ): HttpResponse<List<NotificationResponse>> {
-        return HttpResponse.of(HttpStatus.OK, notificationQueryService.findAll(memberId))
+        return HttpResponse.of(HttpStatus.OK, notificationQueryService.findAll(authorizationUser.userId))
     }
 }

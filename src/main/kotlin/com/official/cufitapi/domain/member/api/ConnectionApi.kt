@@ -2,6 +2,7 @@ package com.official.cufitapi.domain.member.api
 
 import com.official.cufitapi.common.annotation.Authorization
 import com.official.cufitapi.common.annotation.AuthorizationType
+import com.official.cufitapi.common.annotation.AuthorizationUser
 import com.official.cufitapi.common.api.ApiV1Controller
 import com.official.cufitapi.common.api.dto.HttpResponse
 import com.official.cufitapi.domain.member.api.docs.ConnectionApiDocs
@@ -23,7 +24,7 @@ class ConnectionApi(
     // 연결 정보확인
     @GetMapping("/connections")
     fun getConnectionList(
-        @Authorization(AuthorizationType.ALL) memberId: Long
+        @Authorization(AuthorizationType.ALL) authorizationUser: AuthorizationUser
     ) {
     }
 
@@ -34,17 +35,17 @@ class ConnectionApi(
     // 12시간 이내로 둘 다 의사를 표현하지 않으면 연결 요청이 자동으로 종료됨. -> Cache
     @PostMapping("/connections")
     fun applyConnection(
-        @Authorization(AuthorizationType.ALL) memberId: Long,
+        @Authorization(AuthorizationType.ALL) authorizationUser: AuthorizationUser,
         @RequestBody request: ConnectionApplyRequest
     ) {
-        connectionService.apply(memberId, request)
+        connectionService.apply(authorizationUser.userId, request)
     }
 
     // 연결 수락
     @PatchMapping("/connections/{connectionId}")
     fun updateConnection(
         @PathVariable connectionId: Long,
-        @Authorization(AuthorizationType.ALL) memberId: Long,
+        @Authorization(AuthorizationType.ALL) authorizationUser: AuthorizationUser,
         @RequestBody request: ConnectionUpdateRequest
     ) {
         connectionService.updateConnectionStatus(connectionId, request)
@@ -52,14 +53,14 @@ class ConnectionApi(
 
     @GetMapping("/connections/received")
     fun getReceivedConnections(
-        @Authorization(AuthorizationType.ALL) memberId: Long
+        @Authorization(AuthorizationType.ALL) authorizationUser: AuthorizationUser
     ): HttpResponse<Unit> {
         return HttpResponse.of(HttpStatus.NO_CONTENT, Unit)
     }
 
     @GetMapping("/connections/result")
     fun getConnectionsResults(
-        @Authorization(AuthorizationType.ALL) memberId: Long
+        @Authorization(AuthorizationType.ALL) authorizationUser: AuthorizationUser
     ): HttpResponse<Unit> {
         return HttpResponse.of(HttpStatus.NO_CONTENT, Unit)
     }

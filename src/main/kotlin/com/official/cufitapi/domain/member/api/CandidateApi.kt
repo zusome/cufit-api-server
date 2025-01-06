@@ -2,6 +2,7 @@ package com.official.cufitapi.domain.member.api
 
 import com.official.cufitapi.common.annotation.Authorization
 import com.official.cufitapi.common.annotation.AuthorizationType
+import com.official.cufitapi.common.annotation.AuthorizationUser
 import com.official.cufitapi.common.api.ApiV1Controller
 import com.official.cufitapi.domain.member.api.docs.CandidateApiDocs
 import com.official.cufitapi.common.api.dto.HttpResponse
@@ -23,12 +24,12 @@ class CandidateApi(
     // 후보자 프로필 업데이트 API
     @PostMapping("/candidates")
     fun updateCandidateProfile(
-        @Authorization(AuthorizationType.ALL) memberId: Long,
+        @Authorization(AuthorizationType.ALL) authorizationUser: AuthorizationUser,
         @RequestBody request: CandidateProfileUpdateRequest
     ): HttpResponse<Unit> {
         candidateProfileUpdateUseCase.update(
             CandidateProfileUpdateCommand(
-                memberId = memberId,
+                memberId = authorizationUser.userId,
                 name = request.name,
                 gender = request.gender,
                 yearOfBirth = request.yearOfBirth,

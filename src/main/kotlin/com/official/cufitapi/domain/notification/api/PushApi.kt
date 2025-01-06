@@ -2,6 +2,7 @@ package com.official.cufitapi.domain.notification.api
 
 import com.official.cufitapi.common.annotation.Authorization
 import com.official.cufitapi.common.annotation.AuthorizationType
+import com.official.cufitapi.common.annotation.AuthorizationUser
 import com.official.cufitapi.common.api.ApiV1Controller
 import com.official.cufitapi.common.api.dto.HttpResponse
 import com.official.cufitapi.domain.notification.api.dto.DeviceTokenRegisterRequest
@@ -23,12 +24,12 @@ class PushApi(
 
     @PostMapping("/push/agree")
     fun agree(
-        @Authorization(AuthorizationType.ALL) memberId: Long,
+        @Authorization(AuthorizationType.ALL) authorizationUser: AuthorizationUser,
         @RequestBody request: MemberAlarmAgreementRequest
     ): HttpResponse<MemberAlarmAgreementResponse> {
         val memberAlarmAgreement = memberAlarmAgreementRegisterUseCase.agree(
             MemberAlarmAgreeCommand(
-                memberId,
+                authorizationUser.userId,
                 request.agree,
                 request.alarmType
             )
@@ -41,12 +42,12 @@ class PushApi(
 
     @PostMapping("/push/device")
     fun registerDeviceToken(
-        @Authorization(AuthorizationType.ALL) memberId: Long,
+        @Authorization(AuthorizationType.ALL) authorizationUser: AuthorizationUser,
         @RequestBody request: DeviceTokenRegisterRequest
     ): HttpResponse<Unit> {
         deviceTokenRegisterUseCase.registerDeviceToken(
             DeviceTokenRegisterCommand(
-                memberId,
+                authorizationUser.userId,
                 request.platform,
                 request.deviceToken
             )

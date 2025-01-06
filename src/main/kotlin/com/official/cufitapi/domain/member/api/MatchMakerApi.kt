@@ -2,6 +2,7 @@ package com.official.cufitapi.domain.member.api
 
 import com.official.cufitapi.common.annotation.Authorization
 import com.official.cufitapi.common.annotation.AuthorizationType
+import com.official.cufitapi.common.annotation.AuthorizationUser
 import com.official.cufitapi.common.api.ApiV1Controller
 import com.official.cufitapi.common.api.dto.HttpResponse
 import com.official.cufitapi.domain.member.api.docs.MatchMakerApiDocs
@@ -19,7 +20,7 @@ class MatchMakerApi(
     @GetMapping("/matchmakers/{matchMakerId}/candidates")
     fun getRegisteredCandidates(
         @PathVariable matchMakerId: Long,
-        @Authorization(AuthorizationType.ALL) memberId: Long
+        @Authorization(AuthorizationType.ALL) authorizationUser: AuthorizationUser,
     ): HttpResponse<Unit> {
         // matchMakerService.getCandidates(matchMakerId)
         return HttpResponse.of(HttpStatus.NO_CONTENT, Unit)
