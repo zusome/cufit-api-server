@@ -3,12 +3,13 @@ package com.official.cufitapi.domain.member.api
 import com.official.cufitapi.common.annotation.Authorization
 import com.official.cufitapi.common.annotation.AuthorizationType
 import com.official.cufitapi.common.annotation.AuthorizationUser
-import com.official.cufitapi.common.api.HttpResponse
-import com.official.cufitapi.domain.api.docs.MemberApiDocs
-import com.official.cufitapi.domain.api.dto.MemberInfoResponse
-import com.official.cufitapi.domain.api.dto.MemberProfileRequest
-import com.official.cufitapi.domain.api.dto.MemberTypeInfoResponse
-import com.official.cufitapi.domain.application.MemberService
+import com.official.cufitapi.common.api.ApiV1Controller
+import com.official.cufitapi.common.api.dto.HttpResponse
+import com.official.cufitapi.domain.member.api.docs.MemberApiDocs
+import com.official.cufitapi.domain.member.api.dto.MemberTypeInfoResponse
+import com.official.cufitapi.domain.member.api.dto.MemberInfoResponse
+import com.official.cufitapi.domain.member.api.dto.MemberProfileRequest
+import com.official.cufitapi.domain.member.application.MemberService
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
@@ -27,26 +28,26 @@ class MemberApi(
         val member = memberService.findById(authorizationUser.userId)
         return HttpResponse.of(
             HttpStatus.NO_CONTENT,
-            MemberTypeInfoResponse(member.name.isBlank(), member.memberType.name)
+            MemberTypeInfoResponse(member.name.isNotBlank(), member.memberType.name)
         )
     }
 
     // 유저 정보 조회
     @GetMapping("/members")
     fun getMemberInfo(
-        @Authorization(AuthorizationType.ALL) memberId: Long
+        @Authorization(AuthorizationType.ALL) authorizationUser: AuthorizationUser
     ): HttpResponse<MemberInfoResponse> {
-        val memberInfo = memberService.getMemberInfo(memberId)
+        val memberInfo = memberService.getMemberInfo(authorizationUser.userId)
         return HttpResponse.of(HttpStatus.NO_CONTENT, memberInfo)
     }
 
     // 프로필 작성
     @PostMapping("/members/profile")
     fun updateProfile(
-        @Authorization(AuthorizationType.ALL) memberId: Long,
+        @Authorization(AuthorizationType.ALL) authorizationUser: AuthorizationUser,
         @RequestBody request: MemberProfileRequest
     ): HttpResponse<Unit> {
-        memberService.updateMemberProfile(memberId, request)
+        memberService.updateMemberProfile(authorizationUser.userId, request)
         return HttpResponse.of(HttpStatus.OK, Unit)
     }
 }

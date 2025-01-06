@@ -1,5 +1,8 @@
-package com.official.cufitapi.common.api.docs
+package com.official.cufitapi.domain.member.api.docs
 
+import com.official.cufitapi.common.annotation.Authorization
+import com.official.cufitapi.common.annotation.AuthorizationType
+import com.official.cufitapi.common.annotation.AuthorizationUser
 import com.official.cufitapi.common.api.dto.HttpResponse
 import com.official.cufitapi.domain.member.api.dto.MemberTypeInfoResponse
 import io.swagger.v3.oas.annotations.Operation
@@ -17,5 +20,7 @@ interface MemberApiDocs {
         ApiResponse(responseCode = "200", description = "성공"),
         ApiResponse(responseCode = "500", description = "서버 에러")
     )
-    fun getMemberTypeInfo(memberId: Long): HttpResponse<MemberTypeInfoResponse>
+    fun getMemberTypeInfo(
+        @Authorization(AuthorizationType.ALL) authorizationUser: AuthorizationUser
+    ): HttpResponse<MemberTypeInfoResponse>
 }

@@ -4,7 +4,7 @@ import com.official.cufitapi.common.annotation.Authorization
 import com.official.cufitapi.common.annotation.AuthorizationType
 import com.official.cufitapi.common.api.ApiV1Controller
 import com.official.cufitapi.common.api.dto.HttpResponse
-import com.official.cufitapi.common.api.docs.ConnectionApiDocs
+import com.official.cufitapi.domain.member.api.docs.ConnectionApiDocs
 import com.official.cufitapi.domain.member.api.dto.connection.ConnectionApplyRequest
 import com.official.cufitapi.domain.member.api.dto.connection.ConnectionUpdateRequest
 import com.official.cufitapi.domain.member.application.ConnectionService

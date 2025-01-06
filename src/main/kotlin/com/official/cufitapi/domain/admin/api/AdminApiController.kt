@@ -1,8 +1,9 @@
 package com.official.cufitapi.domain.admin.api
 
+import com.official.cufitapi.domain.admin.api.docs.AdminApiV1Controller
 import org.springframework.web.bind.annotation.PostMapping
 
-@com.official.cufitapi.domain.admin.api.AdminApiV1Controller
+@AdminApiV1Controller
 class AdminApiController {
 
 

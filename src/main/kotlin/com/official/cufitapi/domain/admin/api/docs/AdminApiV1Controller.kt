@@ -1,4 +1,4 @@
-package com.official.cufitapi.domain.admin.api
+package com.official.cufitapi.domain.admin.api.docs
 
 import org.springframework.stereotype.Component
 import org.springframework.web.bind.annotation.RequestMapping

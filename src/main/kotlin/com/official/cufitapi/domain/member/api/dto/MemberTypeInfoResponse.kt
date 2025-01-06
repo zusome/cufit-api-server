@@ -1,4 +1,4 @@
-package com.official.cufitapi.domain.api.dto
+package com.official.cufitapi.domain.member.api.dto
 
 data class MemberTypeInfoResponse(
     val isProfileCompleted: Boolean,

@@ -4,7 +4,7 @@ import com.official.cufitapi.common.annotation.Authorization
 import com.official.cufitapi.common.annotation.AuthorizationType
 import com.official.cufitapi.common.api.ApiV1Controller
 import com.official.cufitapi.common.api.dto.HttpResponse
-import com.official.cufitapi.common.api.docs.MatchMakerApiDocs
+import com.official.cufitapi.domain.member.api.docs.MatchMakerApiDocs
 import com.official.cufitapi.domain.member.application.MatchMakerService
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping

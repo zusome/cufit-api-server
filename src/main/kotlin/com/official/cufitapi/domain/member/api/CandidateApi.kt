@@ -3,7 +3,7 @@ package com.official.cufitapi.domain.member.api
 import com.official.cufitapi.common.annotation.Authorization
 import com.official.cufitapi.common.annotation.AuthorizationType
 import com.official.cufitapi.common.api.ApiV1Controller
-import com.official.cufitapi.common.api.docs.CandidateApiDocs
+import com.official.cufitapi.domain.member.api.docs.CandidateApiDocs
 import com.official.cufitapi.common.api.dto.HttpResponse
 import com.official.cufitapi.domain.member.api.dto.candidate.CandidateProfileUpdateRequest
 import com.official.cufitapi.domain.member.application.CandidateProfileUpdateUseCase

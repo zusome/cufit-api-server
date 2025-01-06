@@ -1,4 +1,4 @@
-package com.official.cufitapi.common.api.docs
+package com.official.cufitapi.domain.notification.api.docs
 
 import io.swagger.v3.oas.annotations.tags.Tag
 

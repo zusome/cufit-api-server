@@ -1,10 +1,11 @@
 package com.official.cufitapi.domain.auth.api
 
 import com.official.cufitapi.common.api.ApiV1Controller
-import com.official.cufitapi.common.api.docs.AuthApiDocs
+import com.official.cufitapi.domain.auth.api.docs.AuthApiDocs
 import com.official.cufitapi.common.api.dto.HttpResponse
 import com.official.cufitapi.domain.auth.api.dto.OidcLoginHttpRequest
 import com.official.cufitapi.domain.auth.api.dto.OidcLoginHttpResponse
+import com.official.cufitapi.domain.auth.api.dto.TestLoginHttpRequest
 import com.official.cufitapi.domain.auth.application.AuthorizationTokenCreationUseCase
 import com.official.cufitapi.domain.auth.application.MemberRegistrationUseCase
 import com.official.cufitapi.domain.auth.application.OidcProviderIdFindUseCase
@@ -17,6 +18,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestHeader
+import java.util.UUID
 
 @ApiV1Controller
 class AuthorizationApi(
@@ -44,6 +46,22 @@ class AuthorizationApi(
                 request.email,
                 request.provider,
                 providerId
+            )
+        )
+        val authorizationToken = authorizationTokenCreationUseCase.create(AuthorizationTokenCreationCommand(member))
+        return HttpResponse.of(HttpStatus.OK, OidcLoginHttpResponse(member, authorizationToken))
+    }
+
+    @PostMapping("/auth/login/test")
+    fun loginByOidc(
+        @RequestBody request: TestLoginHttpRequest
+    ): HttpResponse<OidcLoginHttpResponse> {
+        val member = memberRegistrationUseCase.register(
+            MemberRegistrationCommand(
+                request.username,
+                request.email,
+                request.provider,
+                UUID.randomUUID().toString()
             )
         )
         val authorizationToken = authorizationTokenCreationUseCase.create(AuthorizationTokenCreationCommand(member))

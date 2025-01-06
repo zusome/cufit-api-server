@@ -3,6 +3,7 @@ package com.official.cufitapi.domain.member.application
 import com.official.cufitapi.common.exception.InvalidRequestException
 import com.official.cufitapi.domain.member.application.command.invitation.InvitationCodeGenerationCommand
 import com.official.cufitapi.domain.member.application.command.invitation.InvitationCodeValidationCommand
+import com.official.cufitapi.domain.member.domain.invitation.vo.InvitationCode
 import com.official.cufitapi.domain.member.enums.MatchMakerCandidateRelationType
 import com.official.cufitapi.domain.member.enums.MemberType
 import com.official.cufitapi.domain.member.infrastructure.persistence.InvitationEntity
@@ -56,7 +57,7 @@ class InvitationService(
     }
 
     @Transactional
-    override fun generate(command: InvitationCodeGenerationCommand): com.official.cufitapi.domain.member.domain.invitation.vo.InvitationCode {
+    override fun generate(command: InvitationCodeGenerationCommand): InvitationCode {
         val memberId = command.memberId
         val sender =
             memberJpaRepository.findByIdOrNull(memberId) ?: throw InvalidRequestException("잘못된 사용자 id 요청 : $memberId")
@@ -70,7 +71,7 @@ class InvitationService(
                 senderId = sender.id!!
             )
         )
-        return com.official.cufitapi.domain.member.domain.invitation.vo.InvitationCode(invitation.code)
+        return InvitationCode(invitation.code)
     }
 
     private fun generateRandomBase62String(length: Int = 8): String {

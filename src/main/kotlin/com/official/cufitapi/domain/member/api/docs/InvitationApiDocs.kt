@@ -1,13 +1,13 @@
-package com.official.cufitapi.common.api.docs
+package com.official.cufitapi.domain.member.api.docs
 
 import com.official.cufitapi.common.annotation.Authorization
 import com.official.cufitapi.common.annotation.AuthorizationType
 import com.official.cufitapi.common.annotation.AuthorizationUser
-import com.official.cufitapi.common.api.HttpResponse
-import com.official.cufitapi.domain.api.dto.invitation.InvitationCodeGenerateRequest
-import com.official.cufitapi.domain.api.dto.invitation.InvitationCodeRequest
-import com.official.cufitapi.domain.api.dto.invitation.InvitationCodeResponse
-import com.official.cufitapi.domain.api.dto.invitation.InvitationValidationResponse
+import com.official.cufitapi.common.api.dto.HttpResponse
+import com.official.cufitapi.domain.member.api.dto.invitation.InvitationValidationResponse
+import com.official.cufitapi.domain.member.api.dto.invitation.InvitationCodeGenerateRequest
+import com.official.cufitapi.domain.member.api.dto.invitation.InvitationCodeRequest
+import com.official.cufitapi.domain.member.api.dto.invitation.InvitationCodeResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses

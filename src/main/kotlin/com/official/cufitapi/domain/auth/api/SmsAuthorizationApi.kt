@@ -3,7 +3,7 @@ package com.official.cufitapi.domain.auth.api
 import com.official.cufitapi.common.annotation.Authorization
 import com.official.cufitapi.common.annotation.AuthorizationType
 import com.official.cufitapi.common.api.ApiV1Controller
-import com.official.cufitapi.common.api.docs.AuthApiDocs
+import com.official.cufitapi.domain.auth.api.docs.AuthApiDocs
 import com.official.cufitapi.common.api.dto.HttpResponse
 import com.official.cufitapi.domain.member.api.dto.auth.SmsAuthValidationRequest
 import com.official.cufitapi.domain.member.application.SmsAuthenticationService
