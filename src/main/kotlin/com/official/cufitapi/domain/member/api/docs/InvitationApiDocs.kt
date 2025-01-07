@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody
 interface InvitationApiDocs {
 
     @Operation(
-        summary = "초대코드 생성 API"
+        summary = "초대코드 검증 API"
     )
     @ApiResponses(
         ApiResponse(responseCode = "200", description = "성공"),
@@ -33,7 +33,7 @@ interface InvitationApiDocs {
 
 
     @Operation(
-        summary = "초대코드 검증 API",
+        summary = "초대코드 생성 API",
     )
     @ApiResponses(
         ApiResponse(responseCode = "200", description = "성공"),
