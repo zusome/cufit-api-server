@@ -70,6 +70,6 @@
         "FARGATE"
     ],
     "cpu": "0.5 vCPU",
-    "memory": "864 MB",
+    "memory": "512",
     "tags": []
 }
