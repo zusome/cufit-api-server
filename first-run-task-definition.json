@@ -5,7 +5,7 @@
             "image": "084375587480.dkr.ecr.ap-northeast-2.amazonaws.com/cufit-backcore:latest",
             "stopTimeout": 2,
             "cpu": 0,
-            "memoryReservation": 800,
+            "memoryReservation": 512,
             "portMappings": [
                 {
                     "name": "app",
