@@ -64,12 +64,6 @@
     "placementConstraints": [],
     "compatibilities": [
         "EC2",
-        "FARGATE"
     ],
-    "requiresCompatibilities": [
-        "FARGATE"
-    ],
-    "cpu": "0.5 vCPU",
-    "memory": "512",
     "tags": []
 }
