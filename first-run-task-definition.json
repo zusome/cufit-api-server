@@ -62,8 +62,5 @@
         }
     ],
     "placementConstraints": [],
-    "compatibilities": [
-        "EC2",
-    ],
     "tags": []
 }
