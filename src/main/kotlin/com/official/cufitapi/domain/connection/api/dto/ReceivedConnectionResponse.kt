@@ -1,4 +1,4 @@
-package com.official.cufitapi.domain.member.api.dto.connection
+package com.official.cufitapi.domain.connection.api.dto
 
 import com.official.cufitapi.domain.member.enums.IdealHeightUnit
 import io.swagger.v3.oas.annotations.media.Schema

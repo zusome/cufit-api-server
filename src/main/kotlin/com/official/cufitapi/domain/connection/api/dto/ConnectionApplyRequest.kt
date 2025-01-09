@@ -1,4 +1,4 @@
-package com.official.cufitapi.domain.member.api.dto.connection
+package com.official.cufitapi.domain.connection.api.dto
 
 data class ConnectionApplyRequest(
     val matchMakerId: Long,

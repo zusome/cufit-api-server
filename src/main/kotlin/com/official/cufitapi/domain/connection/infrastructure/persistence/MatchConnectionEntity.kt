@@ -1,6 +1,7 @@
-package com.official.cufitapi.domain.member.infrastructure.persistence
+package com.official.cufitapi.domain.connection.infrastructure.persistence
 
-import com.official.cufitapi.domain.member.enums.MatchStatus
+import com.official.cufitapi.domain.connection.domain.vo.MatchStatus
+import com.official.cufitapi.common.jpa.BaseTimeEntity
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType

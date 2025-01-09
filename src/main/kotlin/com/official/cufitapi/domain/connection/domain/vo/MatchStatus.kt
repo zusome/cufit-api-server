@@ -1,4 +1,4 @@
-package com.official.cufitapi.domain.member.enums
+package com.official.cufitapi.domain.connection.domain.vo
 
 enum class MatchStatus {
     PROGRESSING,
@@ -15,5 +15,9 @@ enum class MatchStatus {
         fun received(): List<MatchStatus> {
             return listOf(PROGRESSING)
         }
+
+        fun of(matchStatus: String): MatchStatus =
+            entries.firstOrNull { it.name == matchStatus }
+                ?: throw IllegalArgumentException("Unknown match status: $matchStatus")
     }
 }

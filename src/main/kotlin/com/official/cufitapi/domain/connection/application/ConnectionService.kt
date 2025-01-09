@@ -1,12 +1,12 @@
-package com.official.cufitapi.domain.member.application
+package com.official.cufitapi.domain.connection.application
 
 import com.official.cufitapi.common.exception.InvalidRequestException
-import com.official.cufitapi.domain.member.api.dto.connection.ConnectionUpdateRequest
-import com.official.cufitapi.domain.member.api.dto.connection.ConnectionApplyRequest
-import com.official.cufitapi.domain.member.enums.MatchStatus
+import com.official.cufitapi.domain.connection.application.command.ConnectionApplyCommand
+import com.official.cufitapi.domain.connection.application.command.ConnectionUpdateCommand
+import com.official.cufitapi.domain.connection.infrastructure.persistence.MatchConnectionEntity
+import com.official.cufitapi.domain.connection.infrastructure.persistence.MatchConnectionJpaRepository
+import com.official.cufitapi.domain.connection.domain.vo.MatchStatus
 import com.official.cufitapi.domain.member.infrastructure.persistence.MatchCandidateJpaRepository
-import com.official.cufitapi.domain.member.infrastructure.persistence.MatchConnectionEntity
-import com.official.cufitapi.domain.member.infrastructure.persistence.MatchConnectionJpaRepository
 import com.official.cufitapi.domain.member.infrastructure.persistence.MemberProfileImageJpaRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -21,19 +21,19 @@ class ConnectionService(
 ) {
 
     @Transactional
-    fun apply(memberId: Long, request: ConnectionApplyRequest) {
+    fun apply(command: ConnectionApplyCommand) {
         // 요청 개수 확인 후 3개 보다 많으면 요청 Reject
         val count = candidateJpaRepository.countByMatchMakerIdAndSenderIdAndCreatedDate(
-            matchMakerId = request.matchMakerId,
-            senderId = request.senderId
+            matchMakerId = command.matchMakerId,
+            senderId = command.senderId
         )
         if (count > 3) {
             throw InvalidRequestException("요청은 하루에 3개 이상 보낼 수 없습니다.")
         }
 
-        val sender = candidateJpaRepository.findMemberByMatchCandidateId(request.senderId)
+        val sender = candidateJpaRepository.findMemberByMatchCandidateId(command.senderId)
             ?: throw InvalidRequestException("존재하지 않는 Sender")
-        val receiver = candidateJpaRepository.findMemberByMatchCandidateId(request.receiverId)
+        val receiver = candidateJpaRepository.findMemberByMatchCandidateId(command.receiverId)
             ?: throw InvalidRequestException("존재하지 않는 Receiver")
 
         // 성별 확인
@@ -43,9 +43,9 @@ class ConnectionService(
 
         // 요청 정보 DB에 저장
         val connection = MatchConnectionEntity(
-            matchMakerId = request.matchMakerId,
-            receiverId = request.receiverId,
-            senderId = request.senderId,
+            matchMakerId = command.matchMakerId,
+            receiverId = command.receiverId,
+            senderId = command.senderId,
             status = MatchStatus.PROGRESSING
         )
         matchConnectionJpaRepository.save(connection)
@@ -54,10 +54,10 @@ class ConnectionService(
     }
 
     @Transactional
-    fun updateConnectionStatus(connectionId: Long, request: ConnectionUpdateRequest) {
-        val connection = matchConnectionJpaRepository.findByIdOrNull(connectionId)
+    fun updateConnectionStatus(command: ConnectionUpdateCommand) {
+        val connection = matchConnectionJpaRepository.findByIdOrNull(command.connectionId)
             ?: throw InvalidRequestException("존재하지 않는 매칭연결")
-        connection.updateStatus(request.matchStatus)
+        connection.updateStatus(MatchStatus.of(command.matchStatus))
     }
 
 //    fun getReceivedConnections(candidateId: Long): List<ReceivedConnectionResponse> {

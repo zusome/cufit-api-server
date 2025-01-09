@@ -1,7 +1,7 @@
 package com.official.cufitapi.domain.invitation.infrastructure.persistence
 
 import com.official.cufitapi.domain.member.enums.MatchMakerCandidateRelationType
-import com.official.cufitapi.domain.member.infrastructure.persistence.BaseTimeEntity
+import com.official.cufitapi.common.jpa.BaseTimeEntity
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType

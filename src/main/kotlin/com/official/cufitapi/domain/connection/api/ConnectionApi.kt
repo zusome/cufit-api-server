@@ -1,14 +1,16 @@
-package com.official.cufitapi.domain.member.api
+package com.official.cufitapi.domain.connection.api
 
 import com.official.cufitapi.common.annotation.Authorization
 import com.official.cufitapi.common.annotation.AuthorizationType
 import com.official.cufitapi.common.annotation.AuthorizationUser
 import com.official.cufitapi.common.api.ApiV1Controller
 import com.official.cufitapi.common.api.dto.HttpResponse
-import com.official.cufitapi.domain.member.api.docs.ConnectionApiDocs
-import com.official.cufitapi.domain.member.api.dto.connection.ConnectionApplyRequest
-import com.official.cufitapi.domain.member.api.dto.connection.ConnectionUpdateRequest
-import com.official.cufitapi.domain.member.application.ConnectionService
+import com.official.cufitapi.domain.connection.api.docs.ConnectionApiDocs
+import com.official.cufitapi.domain.connection.api.dto.ConnectionApplyRequest
+import com.official.cufitapi.domain.connection.api.dto.ConnectionUpdateRequest
+import com.official.cufitapi.domain.connection.application.ConnectionService
+import com.official.cufitapi.domain.connection.application.command.ConnectionApplyCommand
+import com.official.cufitapi.domain.connection.application.command.ConnectionUpdateCommand
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
@@ -38,7 +40,7 @@ class ConnectionApi(
         @Authorization(AuthorizationType.ALL) authorizationUser: AuthorizationUser,
         @RequestBody request: ConnectionApplyRequest
     ) {
-        connectionService.apply(authorizationUser.userId, request)
+        connectionService.apply(ConnectionApplyCommand(authorizationUser.userId, request.matchMakerId, request.receiverId, request.senderId))
     }
 
     // 연결 수락
@@ -48,7 +50,7 @@ class ConnectionApi(
         @Authorization(AuthorizationType.ALL) authorizationUser: AuthorizationUser,
         @RequestBody request: ConnectionUpdateRequest
     ) {
-        connectionService.updateConnectionStatus(connectionId, request)
+        connectionService.updateConnectionStatus(ConnectionUpdateCommand(connectionId, request.matchStatus))
     }
 
     @GetMapping("/connections/received")

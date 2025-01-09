@@ -1,5 +1,6 @@
 package com.official.cufitapi.domain.member.infrastructure.persistence
 
+import com.official.cufitapi.common.jpa.BaseTimeEntity
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue

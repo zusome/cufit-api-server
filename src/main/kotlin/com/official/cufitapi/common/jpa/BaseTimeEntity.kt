@@ -1,4 +1,4 @@
-package com.official.cufitapi.domain.member.infrastructure.persistence
+package com.official.cufitapi.common.jpa
 
 import jakarta.persistence.Column
 import jakarta.persistence.EntityListeners
