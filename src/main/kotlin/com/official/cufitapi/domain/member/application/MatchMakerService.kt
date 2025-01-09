@@ -22,7 +22,7 @@ class MatchMakerService(
         val matchMaker = matchMakerJpaRepository.findByIdOrNull(matchMakerId)
             ?: throw InvalidRequestException("존재하지 않는 주선자입니다.")
 
-        if (matchMaker.memberId != memberId) {
+        if (matchMaker.member.id != memberId) {
             throw InvalidRequestException("주선자의 권한이 없습니다.")
         }
         // 후보자 목록 (후보자와 주선자의 관계)

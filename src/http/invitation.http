@@ -1,0 +1,29 @@
+### 초대 코드 생성
+POST http://{{host}}/api/v1/invitations
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+
+{
+  "memberType": "MATCHMAKER",
+  "relationType": "FRIEND"
+}
+
+> {%
+    client.test("Generate InvitationCode", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+        client.assert(response.contentType.mimeType === "application/json", "Expected 'application/json'");
+        client.assert(response.body.payload.invitationCode.length > 0); // 토큰 길이가 0보다 크면 통과
+    });
+
+    client.log(response.body.payload.invitationCode);
+    client.global.set("invitation_code", response.body.payload.invitationCode)
+%}
+
+### 초대 코드 검증
+POST http://{{host}}/api/v1/invitations/code
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+
+{
+  "invitationCode": "{{invitation_code}}"
+}

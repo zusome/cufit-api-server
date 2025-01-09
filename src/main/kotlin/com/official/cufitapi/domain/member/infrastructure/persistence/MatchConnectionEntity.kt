@@ -6,30 +6,24 @@ import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.Table
+import org.hibernate.annotations.Comment
 
-/*
-   연결 Table
- */
 @Entity
 @Table(name = "match_connection")
 class MatchConnectionEntity(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
-    /*
-    신청자 (MatchMaker)
-    */
+
+    @Comment("매칭 신청자")
     val matchMakerId: Long,
-    /*
-    보내는 사람 (MatchCandidate)
-    */
+
+    @Comment("보내는 사람")
     val senderId: Long,
-    /*
-    받는 사람 (MatchCandidate)
-    */
+
+    @Comment("받는 사람")
     val receiverId: Long,
-    /*
-    매칭 상태
-    */
+
+    @Comment("매칭 상태")
     var status: MatchStatus = MatchStatus.PROGRESSING
 ) : BaseTimeEntity() {
 

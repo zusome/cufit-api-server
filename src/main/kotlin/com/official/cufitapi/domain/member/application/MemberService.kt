@@ -33,7 +33,7 @@ class MemberService(
             provider = memberRegisterCommand.provider,
             providerId = memberRegisterCommand.providerId,
         ),
-        memberType = MemberType.of(memberRegisterCommand.authority)
+        memberType = MemberType.ofName(memberRegisterCommand.authority)
     )
 
     @Transactional(readOnly = true)
