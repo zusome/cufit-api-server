@@ -1,6 +1,5 @@
-package com.official.cufitapi.domain.member.application
+package com.official.cufitapi.domain.notification.appliaction
 
-import com.official.cufitapi.domain.member.enums.NotificationType
 import com.official.cufitapi.domain.notification.infrastructure.persistence.NotificationEntity
 import com.official.cufitapi.domain.notification.infrastructure.persistence.NotificationJpaRepository
 import org.springframework.stereotype.Service

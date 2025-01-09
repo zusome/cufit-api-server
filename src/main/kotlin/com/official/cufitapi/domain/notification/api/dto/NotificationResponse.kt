@@ -1,7 +1,7 @@
-package com.official.cufitapi.domain.member.api.dto.notification
+package com.official.cufitapi.domain.notification.api.dto
 
 import com.fasterxml.jackson.annotation.JsonFormat
-import com.official.cufitapi.domain.member.enums.NotificationType
+import com.official.cufitapi.domain.notification.appliaction.NotificationType
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.LocalDateTime
 

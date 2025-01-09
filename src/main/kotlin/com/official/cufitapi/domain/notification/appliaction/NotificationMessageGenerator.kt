@@ -1,4 +1,4 @@
-package com.official.cufitapi.domain.member.application
+package com.official.cufitapi.domain.notification.appliaction
 
 /*
     <프로필 멘트>

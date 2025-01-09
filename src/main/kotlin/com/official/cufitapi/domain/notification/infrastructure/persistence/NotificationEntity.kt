@@ -1,6 +1,6 @@
 package com.official.cufitapi.domain.notification.infrastructure.persistence
 
-import com.official.cufitapi.domain.member.enums.NotificationType
+import com.official.cufitapi.domain.notification.appliaction.NotificationType
 import com.official.cufitapi.common.jpa.BaseTimeEntity
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
