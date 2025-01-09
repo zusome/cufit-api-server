@@ -1,13 +1,14 @@
-package com.official.cufitapi.domain.member.application
+package com.official.cufitapi.domain.invitation.application
 
 import com.official.cufitapi.common.exception.InvalidRequestException
-import com.official.cufitapi.domain.member.application.command.invitation.InvitationCodeGenerationCommand
-import com.official.cufitapi.domain.member.application.command.invitation.InvitationCodeValidationCommand
-import com.official.cufitapi.domain.member.domain.invitation.vo.InvitationCode
+import com.official.cufitapi.domain.invitation.application.command.InvitationCodeGenerationCommand
+import com.official.cufitapi.domain.invitation.application.command.InvitationCodeValidationCommand
+import com.official.cufitapi.domain.invitation.domain.vo.InvitationCode
+import com.official.cufitapi.domain.invitation.infrastructure.persistence.InvitationEntity
+import com.official.cufitapi.domain.invitation.infrastructure.persistence.InvitationJpaRepository
+// 의존성 개선 필요
 import com.official.cufitapi.domain.member.enums.MatchMakerCandidateRelationType
 import com.official.cufitapi.domain.member.enums.MemberType
-import com.official.cufitapi.domain.member.infrastructure.persistence.InvitationEntity
-import com.official.cufitapi.domain.member.infrastructure.persistence.InvitationJpaRepository
 import com.official.cufitapi.domain.member.infrastructure.persistence.MatchCandidateEntity
 import com.official.cufitapi.domain.member.infrastructure.persistence.MatchCandidateJpaRepository
 import com.official.cufitapi.domain.member.infrastructure.persistence.MatchMakerEntity
@@ -18,12 +19,12 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import kotlin.random.Random
 
-interface InvitationTokenValidationUseCase {
-    fun validate(command: InvitationCodeValidationCommand): MemberType
+interface InvitationTokenGenerationUseCase {
+    fun generate(invitationCodeGenerateCommand: InvitationCodeGenerationCommand): InvitationCode
 }
 
-interface InvitationTokenGenerationUseCase {
-    fun generate(invitationCodeGenerateCommand: InvitationCodeGenerationCommand): com.official.cufitapi.domain.member.domain.invitation.vo.InvitationCode
+interface InvitationTokenValidationUseCase {
+    fun validate(command: InvitationCodeValidationCommand): MemberType
 }
 
 @Service

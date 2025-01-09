@@ -1,4 +1,4 @@
-package com.official.cufitapi.domain.member.api.dto.invitation
+package com.official.cufitapi.domain.invitation.api.dto
 
 import com.official.cufitapi.domain.member.enums.MemberType
 import io.swagger.v3.oas.annotations.media.Schema
