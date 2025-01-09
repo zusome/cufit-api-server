@@ -1,4 +1,4 @@
-package com.official.cufitapi.domain.member.enums
+package com.official.cufitapi.domain.member.domain.vo
 
 enum class MBTI {
     ISTJ,
@@ -43,14 +43,14 @@ enum class MBTILetter(
         fun convert(mbtiList: List<String>): List<MBTILetter> {
             return mbtiList.map { value ->
                 when (value) {
-                    "E" -> MBTILetter.E
-                    "I" -> MBTILetter.I
-                    "N" -> MBTILetter.N
-                    "S" -> MBTILetter.S
-                    "F" -> MBTILetter.F
-                    "T" -> MBTILetter.T
-                    "P" -> MBTILetter.P
-                    "K" -> MBTILetter.J
+                    "E" -> E
+                    "I" -> I
+                    "N" -> N
+                    "S" -> S
+                    "F" -> F
+                    "T" -> T
+                    "P" -> P
+                    "K" -> J
                     else -> throw IllegalArgumentException("Invalid MBTI letter: $value")
                 }
             }

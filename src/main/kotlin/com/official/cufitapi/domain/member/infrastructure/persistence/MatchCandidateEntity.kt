@@ -1,6 +1,6 @@
 package com.official.cufitapi.domain.member.infrastructure.persistence
 
-import com.official.cufitapi.domain.member.enums.Gender
+import com.official.cufitapi.domain.member.domain.vo.Gender
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType

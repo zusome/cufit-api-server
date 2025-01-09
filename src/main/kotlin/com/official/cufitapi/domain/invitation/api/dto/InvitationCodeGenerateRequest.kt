@@ -1,7 +1,7 @@
 package com.official.cufitapi.domain.invitation.api.dto
 
-import com.official.cufitapi.domain.member.enums.MatchMakerCandidateRelationType
-import com.official.cufitapi.domain.member.enums.MemberType
+import com.official.cufitapi.domain.member.domain.vo.MatchMakerCandidateRelationType
+import com.official.cufitapi.domain.member.domain.vo.MemberType
 import io.swagger.v3.oas.annotations.media.Schema
 
 @Schema(name = "초대코드 생성 요청")

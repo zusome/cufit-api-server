@@ -3,7 +3,7 @@ package com.official.cufitapi.domain.member.application
 import com.official.cufitapi.common.exception.InvalidRequestException
 import com.official.cufitapi.domain.member.api.dto.MemberInfoResponse
 import com.official.cufitapi.domain.member.api.dto.MemberProfileRequest
-import com.official.cufitapi.domain.member.enums.MemberType
+import com.official.cufitapi.domain.member.domain.vo.MemberType
 import com.official.cufitapi.domain.invitation.infrastructure.persistence.InvitationJpaRepository
 import com.official.cufitapi.domain.member.infrastructure.persistence.MemberAuthorizationEntity
 import com.official.cufitapi.domain.member.infrastructure.persistence.MemberEntity

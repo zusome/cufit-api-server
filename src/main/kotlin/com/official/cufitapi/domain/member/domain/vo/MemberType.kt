@@ -1,4 +1,4 @@
-package com.official.cufitapi.domain.member.enums
+package com.official.cufitapi.domain.member.domain.vo
 
 enum class MemberType(
     val description: String,

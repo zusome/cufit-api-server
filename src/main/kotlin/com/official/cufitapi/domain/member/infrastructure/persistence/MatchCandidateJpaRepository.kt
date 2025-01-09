@@ -1,6 +1,6 @@
 package com.official.cufitapi.domain.member.infrastructure.persistence
 
-import com.official.cufitapi.domain.member.enums.MBTILetter
+import com.official.cufitapi.domain.member.domain.vo.MBTILetter
 import com.official.cufitapi.domain.member.infrastructure.persistence.dto.CandidateInfo
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query

@@ -1,4 +1,4 @@
-package com.official.cufitapi.domain.member.enums
+package com.official.cufitapi.domain.member.domain.vo
 
 import com.official.cufitapi.common.exception.InvalidRequestException
 

@@ -1,7 +1,7 @@
 package com.official.cufitapi.domain.member.infrastructure.persistence
 
 import com.official.cufitapi.common.jpa.BaseTimeEntity
-import com.official.cufitapi.domain.member.enums.MemberType
+import com.official.cufitapi.domain.member.domain.vo.MemberType
 import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity

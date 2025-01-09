@@ -1,6 +1,6 @@
 package com.official.cufitapi.domain.invitation.api.dto
 
-import com.official.cufitapi.domain.member.enums.MemberType
+import com.official.cufitapi.domain.member.domain.vo.MemberType
 import io.swagger.v3.oas.annotations.media.Schema
 
 @Schema(name = "초대 검증 응답")

@@ -7,8 +7,8 @@ import com.official.cufitapi.domain.invitation.domain.vo.InvitationCode
 import com.official.cufitapi.domain.invitation.infrastructure.persistence.InvitationEntity
 import com.official.cufitapi.domain.invitation.infrastructure.persistence.InvitationJpaRepository
 // 의존성 개선 필요
-import com.official.cufitapi.domain.member.enums.MatchMakerCandidateRelationType
-import com.official.cufitapi.domain.member.enums.MemberType
+import com.official.cufitapi.domain.member.domain.vo.MatchMakerCandidateRelationType
+import com.official.cufitapi.domain.member.domain.vo.MemberType
 import com.official.cufitapi.domain.member.infrastructure.persistence.MatchCandidateEntity
 import com.official.cufitapi.domain.member.infrastructure.persistence.MatchCandidateJpaRepository
 import com.official.cufitapi.domain.member.infrastructure.persistence.MatchMakerEntity

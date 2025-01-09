@@ -1,6 +1,6 @@
 package com.official.cufitapi.domain.member.infrastructure.persistence
 
-import com.official.cufitapi.domain.member.enums.MatchMakerCandidateRelationType
+import com.official.cufitapi.domain.member.domain.vo.MatchMakerCandidateRelationType
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.Id

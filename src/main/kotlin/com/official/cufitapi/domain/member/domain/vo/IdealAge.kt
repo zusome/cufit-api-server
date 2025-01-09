@@ -1,4 +1,4 @@
-package com.official.cufitapi.domain.member.enums
+package com.official.cufitapi.domain.member.domain.vo
 
 enum class IdealAge(
     val description: String
@@ -9,10 +9,10 @@ enum class IdealAge(
 
     companion object {
         @JvmStatic
-        fun convertToIdealAgeList(idealAgeRangeString: String): List<com.official.cufitapi.domain.member.enums.IdealAge> {
+        fun convertToIdealAgeList(idealAgeRangeString: String): List<IdealAge> {
             return idealAgeRangeString.split(",")
                 .map {
-                    com.official.cufitapi.domain.member.enums.IdealAge.valueOf(it)
+                    IdealAge.valueOf(it)
                 }
         }
     }
