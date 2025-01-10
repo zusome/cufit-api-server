@@ -1,7 +1,8 @@
-package com.official.cufitapi.domain.api.dto.notification
+package com.official.cufitapi.notification.api.dto
 
 import com.fasterxml.jackson.annotation.JsonFormat
 import com.official.cufitapi.domain.enums.NotificationType
+import com.official.cufitapi.notification.domain.Notification
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.LocalDateTime
 
@@ -17,4 +18,14 @@ data class NotificationResponse(
     val notificationType: NotificationType,
     @JsonFormat(shape = JsonFormat.Shape.STRING,  pattern="yyyy-MM-dd'T'HH:mm:ss")
     val createdDate: LocalDateTime
-)
+) {
+    companion object {
+        fun of(notification: Notification) = NotificationResponse(
+            id = notification.id,
+            title = notification.title,
+            content = notification.content,
+            notificationType = notification.type,
+            createdDate = notification.createdDate
+        )
+    }
+}
