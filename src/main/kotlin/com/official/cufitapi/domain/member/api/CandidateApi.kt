@@ -24,10 +24,10 @@ class CandidateApi(
     // 후보자 프로필 업데이트 API
     @PostMapping("/candidates")
     fun updateCandidateProfile(
-        @Authorization(AuthorizationType.ALL) authorizationUser: AuthorizationUser,
+        @Authorization(AuthorizationType.CANDIDATE) authorizationUser: AuthorizationUser,
         @RequestBody request: CandidateProfileUpdateRequest
     ): HttpResponse<Unit> {
-        candidateProfileUpdateUseCase.update(
+        candidateProfileUpdateUseCase.updateProfile(
             CandidateProfileUpdateCommand(
                 memberId = authorizationUser.userId,
                 name = request.name,
@@ -39,11 +39,11 @@ class CandidateApi(
                 mbti = request.mbti,
                 idealHeightRange = request.idealHeightRange,
                 idealAgeRange = request.idealAgeRange,
-                idealMbti = request.idealMbti
+                idealMbti = request.idealMbti,
+                email = request.email,
+                phoneNumber = request.phoneNumber
             )
         )
         return HttpResponse.of(HttpStatus.NO_CONTENT, Unit)
     }
-
-
 }

@@ -63,7 +63,9 @@ class MatchMakerApi(
             job = matchCandidateEntity.job,
             name = matchCandidateEntity.name,
             yearOfBirth = matchCandidateEntity.yearOfBirth,
-            email = matchCandidateEntity.email
+            email = matchCandidateEntity.email,
+            gender = matchCandidateEntity.gender?.name,
+            phoneNumber = matchCandidateEntity.phoneNumber
         )
 
     private fun mapToOtherCandidates(matchCandidateEntity: MatchCandidateEntity) =
@@ -79,6 +81,8 @@ class MatchMakerApi(
             job = matchCandidateEntity.job,
             name = matchCandidateEntity.name,
             yearOfBirth = matchCandidateEntity.yearOfBirth,
-            email = matchCandidateEntity.email
+            email = matchCandidateEntity.email,
+            gender = matchCandidateEntity.gender?.name,
+            phoneNumber = matchCandidateEntity.phoneNumber
         )
 }

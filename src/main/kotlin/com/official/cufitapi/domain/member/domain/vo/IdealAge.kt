@@ -9,11 +9,7 @@ enum class IdealAge(
 
     companion object {
         @JvmStatic
-        fun convertToIdealAgeList(idealAgeRangeString: String): List<IdealAge> {
-            return idealAgeRangeString.split(",")
-                .map {
-                    IdealAge.valueOf(it)
-                }
-        }
+        fun convertToIdealAgeList(idealAgeRangeString: String): List<IdealAge> =
+            idealAgeRangeString.split(",").map { IdealAge.valueOf(it) }
     }
 }

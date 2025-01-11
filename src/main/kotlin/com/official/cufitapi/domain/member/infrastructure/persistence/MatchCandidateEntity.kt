@@ -81,4 +81,30 @@ class MatchCandidateEntity(
     fun hasProfile(): Boolean {
         return idealMbti != null || idealAgeRange != null || idealHeightRange != null || height != null || station != null || job != null || name != null || yearOfBirth != null || email != null
     }
+
+    fun updateProfile(
+        idealMbti: String,
+        idealAgeRange: String,
+        idealHeightRange: String,
+        gender: Gender,
+        height: Int,
+        station: String,
+        job: String,
+        name: String,
+        yearOfBirth: Int,
+        email: String,
+        phoneNumber: String
+    ) {
+        this.idealMbti = idealMbti
+        this.idealAgeRange = idealAgeRange
+        this.idealHeightRange = idealHeightRange
+        this.gender = gender
+        this.height = height
+        this.station = station
+        this.job = job
+        this.name = name
+        this.yearOfBirth = yearOfBirth
+        this.email = email
+        this.phoneNumber = phoneNumber
+    }
 }

@@ -11,6 +11,8 @@ import java.time.LocalDateTime
 data class CandidateProfileUpdateRequest(
     @Schema(description = "이름", example = "홍길동")
     val name: String,
+    @Schema(description = "이메일", example = "test@test-test.test")
+    val email: String,
     @Schema(description = "성별", example = "MALE,FEMALE")
     val gender: Gender,
     @Schema(description = "생년", example = "1990")
@@ -28,7 +30,9 @@ data class CandidateProfileUpdateRequest(
     @Schema(description = "이상형 나이", example = "EQUAL,OLDER")
     val idealAgeRange: List<IdealAge>,
     @Schema(description = "이상형 MBTI", example = "ESFP")
-    val idealMbti: String
+    val idealMbti: String,
+    @Schema(description = "핸드폰 번호", example = "010-1234-5678")
+    val phoneNumber: String
 ) {
     init {
         if (yearOfBirth >= LocalDateTime.now().year) {

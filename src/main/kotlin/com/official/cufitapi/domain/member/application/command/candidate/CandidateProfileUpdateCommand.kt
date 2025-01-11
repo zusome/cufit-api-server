@@ -15,6 +15,8 @@ data class CandidateProfileUpdateCommand(
     val mbti: String,
     val idealHeightRange: List<IdealHeightUnit>,
     val idealAgeRange: List<IdealAge>,
-    val idealMbti: String
+    val idealMbti: String,
+    val email: String,
+    val phoneNumber: String
 ) {
 }

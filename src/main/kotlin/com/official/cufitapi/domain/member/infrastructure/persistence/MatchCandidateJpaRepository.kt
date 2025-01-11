@@ -8,6 +8,8 @@ import org.springframework.data.repository.query.Param
 
 interface MatchCandidateJpaRepository : JpaRepository<MatchCandidateEntity, Long> {
 
+    fun findByMemberId(memberId: Long): MatchCandidateEntity?
+
     @Query(
         """
             SELECT 
