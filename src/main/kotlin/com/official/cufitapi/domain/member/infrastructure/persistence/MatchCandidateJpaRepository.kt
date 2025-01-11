@@ -84,4 +84,10 @@ interface MatchCandidateJpaRepository : JpaRepository<MatchCandidateEntity, Long
 
     @Query("SELECT COUNT(1) FROM match_candidate e WHERE e.member_id IN :memberIds", nativeQuery = true)
     fun countByMemberIdIn(memberIds: List<Long>): Long
+
+    @Query("SELECT e FROM MatchCandidateEntity e WHERE e.member.id IN :memberIds")
+    fun findAllByMemberIdIn(memberIds: List<Long>): List<MatchCandidateEntity>
+
+    @Query("SELECT e FROM MatchCandidateEntity e WHERE e.member.id NOT IN :memberIds")
+    fun findAllByMemberIdNotIn(memberIds: List<Long>): List<MatchCandidateEntity>
 }

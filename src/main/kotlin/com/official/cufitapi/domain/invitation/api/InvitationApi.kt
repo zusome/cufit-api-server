@@ -10,19 +10,19 @@ import com.official.cufitapi.domain.invitation.api.dto.InvitationCodeGenerateReq
 import com.official.cufitapi.domain.invitation.api.dto.InvitationCodeRequest
 import com.official.cufitapi.domain.invitation.api.dto.InvitationCodeResponse
 import com.official.cufitapi.domain.invitation.api.dto.InvitationValidationResponse
-import com.official.cufitapi.domain.invitation.application.InvitationTokenGenerationUseCase
-import com.official.cufitapi.domain.invitation.application.InvitationTokenValidationUseCase
-import com.official.cufitapi.domain.invitation.application.command.InvitationCodeGenerationCommand
-import com.official.cufitapi.domain.invitation.application.command.InvitationCodeValidationCommand
-import com.official.cufitapi.domain.invitation.domain.vo.InvitationCode
+import com.official.cufitapi.domain.invitation.application.InvitationCardGenerationUseCase
+import com.official.cufitapi.domain.invitation.application.InvitationCardAcceptUseCase
+import com.official.cufitapi.domain.invitation.application.command.InvitationCardGenerationCommand
+import com.official.cufitapi.domain.invitation.application.command.InvitationCardAcceptCommand
+import com.official.cufitapi.domain.invitation.domain.vo.InvitationCard
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 
 @ApiV1Controller
 class InvitationApi(
-    private val invitationTokenGenerationUseCase: InvitationTokenGenerationUseCase,
-    private val invitationTokenValidationUseCase: InvitationTokenValidationUseCase
+    private val invitationCardGenerationUseCase: InvitationCardGenerationUseCase,
+    private val invitationCardAcceptUseCase: InvitationCardAcceptUseCase
 ) : InvitationApiDocs {
 
     // 초대 코드 생성
@@ -31,8 +31,8 @@ class InvitationApi(
         @Authorization(AuthorizationType.ALL) authorizationUser: AuthorizationUser,
         @RequestBody request: InvitationCodeGenerateRequest
     ): HttpResponse<InvitationCodeResponse> {
-        val invitationCode = invitationTokenGenerationUseCase.generate(
-            InvitationCodeGenerationCommand(
+        val invitationCode = invitationCardGenerationUseCase.generate(
+            InvitationCardGenerationCommand(
                 memberId = authorizationUser.userId,
                 memberType = request.memberType,
                 relationType = request.relationType
@@ -47,10 +47,10 @@ class InvitationApi(
         @Authorization(AuthorizationType.ALL) authorizationUser: AuthorizationUser,
         @RequestBody request: InvitationCodeRequest
     ): HttpResponse<InvitationValidationResponse> {
-        val memberType = invitationTokenValidationUseCase.validate(
-            InvitationCodeValidationCommand(
-                memberId = authorizationUser.userId,
-                invitationCode = InvitationCode(code = request.invitationCode)
+        val memberType = invitationCardAcceptUseCase.accept(
+            InvitationCardAcceptCommand(
+                inviteeId = authorizationUser.userId,
+                invitationCode = InvitationCard(code = request.invitationCode)
             )
         )
         return HttpResponse.of(HttpStatus.OK, InvitationValidationResponse(memberType))

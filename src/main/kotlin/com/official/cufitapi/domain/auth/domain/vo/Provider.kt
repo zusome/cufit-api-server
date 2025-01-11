@@ -3,8 +3,8 @@ package com.official.cufitapi.domain.auth.domain.vo
 enum class Provider(
     val provider: String,
 ) {
+    ADMIN("admin"),
     APPLE("apple"),
-    TEST("test"),
     ;
 
     companion object {

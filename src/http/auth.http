@@ -1,12 +1,12 @@
-### 테스트용 회원 가입
+### 어드민 회원 가입
 ## provider 는 test 고정이다.
 POST http://{{host}}/api/v1/auth/login/test
 Content-Type: application/json
 
 {
-  "email": "test5",
-  "provider": "test",
-  "username": "test5"
+  "email": "admin",
+  "provider": "admin",
+  "username": "admin"
 }
 
 > {%
@@ -18,4 +18,48 @@ Content-Type: application/json
 
     client.log(response.body.payload.access_token);
     client.global.set("access_token", response.body.payload.access_token)
+%}
+
+### 주선자용 회원 가입
+## provider 는 test 고정이다.
+POST http://{{host}}/api/v1/auth/login/test
+Content-Type: application/json
+
+{
+  "email": "matchmaker",
+  "provider": "apple",
+  "username": "matchmaker"
+}
+
+> {%
+    client.test("SignIn Or Login", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+        client.assert(response.contentType.mimeType === "application/json", "Expected 'application/json'");
+        client.assert(response.body.payload.access_token.length > 0); // 토큰 길이가 0보다 크면 통과
+    });
+
+    client.log(response.body.payload.access_token);
+    client.global.set("matchmaker_access_token", response.body.payload.access_token)
+%}
+
+
+### 후보자 초대용 회원 가입
+POST http://{{host}}/api/v1/auth/login/test
+Content-Type: application/json
+
+{
+  "email": "candidate",
+  "provider": "apple",
+  "username": "candidate"
+}
+
+> {%
+    client.test("SignIn Or Login", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+        client.assert(response.contentType.mimeType === "application/json", "Expected 'application/json'");
+        client.assert(response.body.payload.access_token.length > 0); // 토큰 길이가 0보다 크면 통과
+    });
+
+    client.log(response.body.payload.access_token);
+    client.global.set("candidate_access_token", response.body.payload.access_token)
 %}
