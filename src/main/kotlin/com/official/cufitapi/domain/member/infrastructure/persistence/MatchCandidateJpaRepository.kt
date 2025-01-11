@@ -81,4 +81,7 @@ interface MatchCandidateJpaRepository : JpaRepository<MatchCandidateEntity, Long
         @Param("matchMakerId") matchMakerId: Long?,
         @Param("senderId") senderId: Long?
     ): Long
+
+    @Query("SELECT COUNT(1) FROM match_candidate e WHERE e.member_id IN :memberIds", nativeQuery = true)
+    fun countByMemberIdIn(memberIds: List<Long>): Long
 }

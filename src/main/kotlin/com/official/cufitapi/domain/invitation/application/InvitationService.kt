@@ -14,6 +14,8 @@ import com.official.cufitapi.domain.member.infrastructure.persistence.MatchCandi
 import com.official.cufitapi.domain.member.infrastructure.persistence.MatchMakerEntity
 import com.official.cufitapi.domain.member.infrastructure.persistence.MatchMakerJpaRepository
 import com.official.cufitapi.domain.member.infrastructure.persistence.MemberJpaRepository
+import com.official.cufitapi.domain.member.infrastructure.persistence.MemberRelationEntity
+import com.official.cufitapi.domain.member.infrastructure.persistence.MemberRelationJpaRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -32,6 +34,7 @@ interface InvitationTokenValidationUseCase {
 class InvitationService(
     private val invitationJpaRepository: InvitationJpaRepository,
     private val memberJpaRepository: MemberJpaRepository,
+    private val memberRelationJpaRepository: MemberRelationJpaRepository,
     private val matchMakerJpaRepository: MatchMakerJpaRepository,
     private val matchCandidateJpaRepository: MatchCandidateJpaRepository
 ) : InvitationTokenGenerationUseCase, InvitationTokenValidationUseCase {
@@ -71,13 +74,20 @@ class InvitationService(
         }
         val invitation = invitationJpaRepository.findByCode(invitationCode) ?: throw InvalidRequestException("유효하지 않은 초대 코드")
         invitation.deactivate() // 초대 코드 사용 완료
-        memberJpaRepository.findByIdOrNull(invitation.senderId) ?: throw InvalidRequestException("초대 보낸 사용자를 찾을 수 없음")
-        val member = memberJpaRepository.findByIdOrNull(memberId) ?: throw InvalidRequestException("존재하지 않는 사용자 id : $memberId")
+
+        val inviter = memberJpaRepository.findByIdOrNull(invitation.senderId) ?: throw InvalidRequestException("초대 보낸 사용자를 찾을 수 없음")
+        val invitee = memberJpaRepository.findByIdOrNull(memberId) ?: throw InvalidRequestException("존재하지 않는 사용자 id : $memberId")
         val memberType = MemberType.ofCode(invitationCode.substring(0, 2))
-        member.memberType = memberType
-        when (member.memberType) {
-            MemberType.CANDIDATE -> { matchCandidateJpaRepository.save(MatchCandidateEntity(member = member)) }
-            MemberType.MATCHMAKER -> { matchMakerJpaRepository.save(MatchMakerEntity(member = member)) }
+        val memberRelationEntity = MemberRelationEntity(
+            inviterId = inviter.id!!,
+            inviteeId = invitee.id!!,
+            relationType = invitation.relationType
+        )
+        memberRelationJpaRepository.save(memberRelationEntity)
+        invitee.memberType = memberType
+        when (invitee.memberType) {
+            MemberType.CANDIDATE -> { matchCandidateJpaRepository.save(MatchCandidateEntity(member = invitee)) }
+            MemberType.MATCHMAKER -> { matchMakerJpaRepository.save(MatchMakerEntity(member = invitee)) }
             else -> {}
         }
         return memberType
