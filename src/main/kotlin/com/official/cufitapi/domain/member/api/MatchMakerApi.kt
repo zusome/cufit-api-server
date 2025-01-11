@@ -26,7 +26,7 @@ class MatchMakerApi(
     fun candidateCount(
         @Authorization(AuthorizationType.MATCHMAKER) authorizationUser: AuthorizationUser,
     ): HttpResponse<CandidateCountResponse> {
-        val candidateCount = matchMakerService.candidateCount(authorizationUser.userId)
+        val candidateCount = matchMakerService.availableCandidateCount(authorizationUser.userId)
         return HttpResponse.of(HttpStatus.OK, CandidateCountResponse(candidateCount))
     }
 
@@ -35,7 +35,7 @@ class MatchMakerApi(
     fun candidates(
         @Authorization(AuthorizationType.MATCHMAKER) authorizationUser: AuthorizationUser,
     ): HttpResponse<CandidatesInfoResponse> {
-        val candidates = matchMakerService.candidates(authorizationUser.userId)
+        val candidates = matchMakerService.availableCandidates(authorizationUser.userId)
         val candidateInfoResponse = CandidatesInfoResponse(candidates.map(::mapToCandidates))
         return HttpResponse.of(HttpStatus.OK, candidateInfoResponse)
     }
@@ -45,7 +45,7 @@ class MatchMakerApi(
     fun otherCandidates(
         @Authorization(AuthorizationType.MATCHMAKER) authorizationUser: AuthorizationUser,
     ): HttpResponse<OtherCandidatesInfoResponse> {
-        val otherCandidates = matchMakerService.otherCandidates(authorizationUser.userId)
+        val otherCandidates = matchMakerService.availableOtherCandidates(authorizationUser.userId)
         val otherCandidateInfoResponse = OtherCandidatesInfoResponse(otherCandidates.map(::mapToOtherCandidates))
         return HttpResponse.of(HttpStatus.OK, otherCandidateInfoResponse)
     }

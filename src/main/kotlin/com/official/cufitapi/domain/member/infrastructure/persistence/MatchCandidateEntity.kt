@@ -77,4 +77,8 @@ class MatchCandidateEntity(
     fun deactivateMatching() {
         isMatchingAgreed = false
     }
+
+    fun hasProfile(): Boolean {
+        return idealMbti != null || idealAgeRange != null || idealHeightRange != null || height != null || station != null || job != null || name != null || yearOfBirth != null || email != null
+    }
 }
