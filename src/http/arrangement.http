@@ -1,0 +1,5 @@
+### Get all arrangements
+GET http://{{host}}/api/v1/arrangements/candidates?targetId={{$random.integer(100)}}
+Content-Type: application/json
+Authorization: Bearer {{matchmaker_access_token}}
+
