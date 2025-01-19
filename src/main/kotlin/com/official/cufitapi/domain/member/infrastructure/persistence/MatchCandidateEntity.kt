@@ -26,7 +26,7 @@ class MatchCandidateEntity(
     var isMatchingAgreed: Boolean = true,
 
     @Column(name = "ideal_mbti", unique = false, nullable = true)
-    @Comment("MBTI")
+    @Comment("이상형 MBTI")
     var idealMbti: String? = null,
 
     @Column(name = "ideal_age_range", unique = false, nullable = true)
@@ -36,6 +36,10 @@ class MatchCandidateEntity(
     @Column(name = "ideal_height_range", unique = false, nullable = true)
     @Comment("이상형 키대")
     var idealHeightRange: String? = null,
+
+    @Column(name = "mbti", unique = false, nullable = true)
+    @Comment("MBTI")
+    var mbti: String? = null,
 
     @Column(name = "height", unique = false, nullable = true)
     @Comment("신장")
@@ -86,25 +90,27 @@ class MatchCandidateEntity(
         idealMbti: String,
         idealAgeRange: String,
         idealHeightRange: String,
-        gender: Gender,
+        mbti: String,
         height: Int,
         station: String,
         job: String,
         name: String,
         yearOfBirth: Int,
         email: String,
+        gender: Gender,
         phoneNumber: String
     ) {
         this.idealMbti = idealMbti
         this.idealAgeRange = idealAgeRange
         this.idealHeightRange = idealHeightRange
-        this.gender = gender
+        this.mbti = mbti
         this.height = height
         this.station = station
         this.job = job
         this.name = name
         this.yearOfBirth = yearOfBirth
         this.email = email
+        this.gender = gender
         this.phoneNumber = phoneNumber
     }
 
