@@ -20,17 +20,18 @@ class CandidateService(
         val matchCandidate = (matchCandidateJpaRepository.findByMemberId(command.memberId)
             ?: throw IllegalArgumentException("후보자가 아닙니다."))
         matchCandidate.updateProfile(
-            command.idealMbti,
-            command.idealAgeRange.joinToString(),
-            command.idealHeightRange.joinToString(),
-            command.gender,
-            command.height,
-            command.station,
-            command.job,
-            command.name,
-            command.yearOfBirth,
-            command.email,
-            command.phoneNumber
+            idealMbti = command.idealMbti,
+            idealAgeRange = command.idealAgeRange.joinToString(),
+            idealHeightRange = command.idealHeightRange.joinToString(),
+            mbti = command.mbti,
+            height = command.height,
+            station = command.station,
+            job = command.job,
+            name = command.name,
+            yearOfBirth = command.yearOfBirth,
+            email = command.email,
+            gender = command.gender,
+            phoneNumber = command.phoneNumber
         )
     }
 }
