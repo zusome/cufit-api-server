@@ -107,4 +107,7 @@ class MatchCandidateEntity(
         this.email = email
         this.phoneNumber = phoneNumber
     }
+
+    fun isSameGender(other: MatchCandidateEntity): Boolean =
+        this.gender == other.gender
 }
