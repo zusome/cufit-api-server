@@ -68,6 +68,7 @@
         "EC2",
         "FARGATE"
     ],
+    "cpu": "0.5 vCPU",
     "requiresCompatibilities": [
         "FARGATE"
     ],
