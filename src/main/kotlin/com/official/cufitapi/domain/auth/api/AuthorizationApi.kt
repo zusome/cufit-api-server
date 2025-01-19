@@ -32,13 +32,7 @@ class AuthorizationApi(
         @RequestHeader(HttpHeaders.AUTHORIZATION) authorization: String,
         @RequestBody request: OidcLoginHttpRequest
     ): HttpResponse<OidcLoginHttpResponse> {
-        log.debug("Authorization: $authorization")
-        log.debug("request: $request")
-        log.debug("request filed: email = ${request.email}, provider = ${request.provider}, username = ${request.username}, userIdentifier = ${request.userIdentifier}")
-        val idToken = authorization.replace(
-            BEARER,
-            BLANK
-        )
+        val idToken = authorization.replace(BEARER, BLANK)
         val providerId = oidcProviderIdFindUseCase.find(OidcProviderIdFindCommand(idToken, request.provider))
         val member = memberRegistrationUseCase.register(
             MemberRegistrationCommand(
