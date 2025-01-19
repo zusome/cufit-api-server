@@ -19,6 +19,8 @@ spring:
         format_sql: true
         show_sql: true
         dialect: ${HIBERNATE_DIALECT:org.hibernate.dialect.PostgreSQLDialect}
+  sqs:
+    url:
 springdoc:
   swagger-ui:
     path: ${SWAGGER_UI_PATH:/swagger-ui.html}
