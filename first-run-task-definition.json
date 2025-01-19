@@ -69,7 +69,7 @@
         "FARGATE"
     ],
     "cpu": "0.5 vCPU",
-    "memory": "512",
+    "memory": "1024",
     "requiresCompatibilities": [
         "FARGATE"
     ],
