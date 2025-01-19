@@ -1,12 +1,14 @@
 package com.official.cufitapi.domain.member.infrastructure.persistence
 
-import com.official.cufitapi.domain.member.enums.MBTILetter
+import com.official.cufitapi.domain.member.domain.vo.MBTILetter
 import com.official.cufitapi.domain.member.infrastructure.persistence.dto.CandidateInfo
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 
 interface MatchCandidateJpaRepository : JpaRepository<MatchCandidateEntity, Long> {
+
+    fun findByMemberId(memberId: Long): MatchCandidateEntity?
 
     @Query(
         """
@@ -81,4 +83,13 @@ interface MatchCandidateJpaRepository : JpaRepository<MatchCandidateEntity, Long
         @Param("matchMakerId") matchMakerId: Long?,
         @Param("senderId") senderId: Long?
     ): Long
+
+    @Query("SELECT COUNT(1) FROM match_candidate e WHERE e.member_id IN :memberIds", nativeQuery = true)
+    fun countByMemberIdIn(memberIds: List<Long>): Long
+
+    @Query("SELECT e FROM MatchCandidateEntity e WHERE e.member.id IN :memberIds")
+    fun findAllByMemberIdIn(memberIds: List<Long>): List<MatchCandidateEntity>
+
+    @Query("SELECT e FROM MatchCandidateEntity e WHERE e.member.id NOT IN :memberIds")
+    fun findAllByMemberIdNotIn(memberIds: List<Long>): List<MatchCandidateEntity>
 }

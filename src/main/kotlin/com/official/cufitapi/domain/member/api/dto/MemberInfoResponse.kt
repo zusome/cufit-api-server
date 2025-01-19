@@ -1,6 +1,6 @@
 package com.official.cufitapi.domain.member.api.dto
 
-import com.official.cufitapi.domain.member.enums.MatchMakerCandidateRelationType
+import com.official.cufitapi.domain.member.domain.vo.MatchMakerCandidateRelationType
 import io.swagger.v3.oas.annotations.media.Schema
 
 @Schema(name = "사용자 정보 응답")

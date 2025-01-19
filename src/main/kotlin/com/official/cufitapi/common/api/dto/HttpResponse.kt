@@ -9,7 +9,7 @@ data class HttpResponse<T>(
 ) {
     companion object {
         fun <T> of(httpStatus: HttpStatus, payload: T, message: String? = null): HttpResponse<T> = HttpResponse(
-            httpStatus.toString(),
+            httpStatus.value().toString(),
             message ?: httpStatus.reasonPhrase,
             payload
         )

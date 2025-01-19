@@ -1,6 +1,6 @@
 package com.official.cufitapi.domain.member.infrastructure.persistence.dto
 
-import com.official.cufitapi.domain.member.enums.MBTILetter
+import com.official.cufitapi.domain.member.domain.vo.MBTILetter
 
 data class CandidateInfo(
     val candidateId: Long,

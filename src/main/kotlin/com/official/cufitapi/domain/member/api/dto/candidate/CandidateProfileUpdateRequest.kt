@@ -1,7 +1,9 @@
 package com.official.cufitapi.domain.member.api.dto.candidate
 
 import com.official.cufitapi.common.exception.InvalidRequestException
-import com.official.cufitapi.domain.member.enums.IdealHeightUnit
+import com.official.cufitapi.domain.member.domain.vo.Gender
+import com.official.cufitapi.domain.member.domain.vo.IdealAge
+import com.official.cufitapi.domain.member.domain.vo.IdealHeightUnit
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.LocalDateTime
 
@@ -9,8 +11,10 @@ import java.time.LocalDateTime
 data class CandidateProfileUpdateRequest(
     @Schema(description = "이름", example = "홍길동")
     val name: String,
+    @Schema(description = "이메일", example = "test@test-test.test")
+    val email: String,
     @Schema(description = "성별", example = "MALE,FEMALE")
-    val gender: com.official.cufitapi.domain.member.enums.Gender,
+    val gender: Gender,
     @Schema(description = "생년", example = "1990")
     val yearOfBirth: Int,
     @Schema(description = "키", example = "170")
@@ -24,9 +28,11 @@ data class CandidateProfileUpdateRequest(
     @Schema(description = "이상형 키 범위", example = "RANGE150, RANGE160")
     val idealHeightRange: List<IdealHeightUnit>,
     @Schema(description = "이상형 나이", example = "EQUAL,OLDER")
-    val idealAgeRange: List<com.official.cufitapi.domain.member.enums.IdealAge>,
+    val idealAgeRange: List<IdealAge>,
     @Schema(description = "이상형 MBTI", example = "ESFP")
-    val idealMbti: String
+    val idealMbti: String,
+    @Schema(description = "핸드폰 번호", example = "010-1234-5678")
+    val phoneNumber: String
 ) {
     init {
         if (yearOfBirth >= LocalDateTime.now().year) {

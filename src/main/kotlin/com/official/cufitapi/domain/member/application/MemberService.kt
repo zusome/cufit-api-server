@@ -3,8 +3,8 @@ package com.official.cufitapi.domain.member.application
 import com.official.cufitapi.common.exception.InvalidRequestException
 import com.official.cufitapi.domain.member.api.dto.MemberInfoResponse
 import com.official.cufitapi.domain.member.api.dto.MemberProfileRequest
-import com.official.cufitapi.domain.member.enums.MemberType
-import com.official.cufitapi.domain.member.infrastructure.persistence.InvitationJpaRepository
+import com.official.cufitapi.domain.member.domain.vo.MemberType
+import com.official.cufitapi.domain.invitation.infrastructure.persistence.InvitationCardJpaRepository
 import com.official.cufitapi.domain.member.infrastructure.persistence.MemberAuthorizationEntity
 import com.official.cufitapi.domain.member.infrastructure.persistence.MemberEntity
 import com.official.cufitapi.domain.member.infrastructure.persistence.MemberJpaRepository
@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class MemberService(
     private val memberJpaRepository: MemberJpaRepository,
-    private val invitationJpaRepository: InvitationJpaRepository
+    private val invitationCardJpaRepository: InvitationCardJpaRepository
 ) {
 
     @Transactional
@@ -33,7 +33,7 @@ class MemberService(
             provider = memberRegisterCommand.provider,
             providerId = memberRegisterCommand.providerId,
         ),
-        memberType = MemberType.of(memberRegisterCommand.authority)
+        memberType = MemberType.ofName(memberRegisterCommand.authority)
     )
 
     @Transactional(readOnly = true)
@@ -44,9 +44,9 @@ class MemberService(
     fun getMemberInfo(memberId: Long): MemberInfoResponse {
         val member = memberJpaRepository.findById(memberId)
             .orElseThrow { InvalidRequestException("존재하지 않는 사용자 id: $memberId") }
-        val invitation = invitationJpaRepository.findBySenderId(memberId)
+        val invitation = invitationCardJpaRepository.findByInviterId(memberId)
             ?: throw InvalidRequestException("존재하지 않는 사용자 id: $memberId")
-        val invitee = memberJpaRepository.findById(invitation.senderId)
+        val invitee = memberJpaRepository.findById(invitation.inviterId)
             .orElseThrow { InvalidRequestException("존재하지 않는 사용자 id: $memberId") }
 
         return MemberInfoResponse(

@@ -1,0 +1,59 @@
+### 어드민 -> 주선자 초대 코드 생성
+POST http://{{host}}/api/v1/invitations
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+
+{
+  "memberType": "MATCHMAKER",
+  "relationType": "FRIEND"
+}
+
+> {%
+    client.test("Generate InvitationCode", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+        client.assert(response.contentType.mimeType === "application/json", "Expected 'application/json'");
+        client.assert(response.body.payload.invitationCode.length > 0); // 토큰 길이가 0보다 크면 통과
+    });
+
+    client.log(response.body.payload.invitationCode);
+    client.global.set("matchmaker_invitation_code", response.body.payload.invitationCode)
+%}
+
+### 후보자 초대 수락
+POST http://{{host}}/api/v1/invitations/code
+Content-Type: application/json
+Authorization: Bearer {{matchmaker_access_token}}
+
+{
+  "invitationCode": "{{matchmaker_invitation_code}}"
+}
+
+### 주선자 -> 후보자 초대 코드 생성
+POST http://{{host}}/api/v1/invitations
+Content-Type: application/json
+Authorization: Bearer {{matchmaker_access_token}}
+
+{
+  "memberType": "CANDIDATE",
+  "relationType": "FRIEND"
+}
+
+> {%
+    client.test("Generate InvitationCode", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+        client.assert(response.contentType.mimeType === "application/json", "Expected 'application/json'");
+        client.assert(response.body.payload.invitationCode.length > 0); // 토큰 길이가 0보다 크면 통과
+    });
+
+    client.log(response.body.payload.invitationCode);
+    client.global.set("candidate_invitation_code", response.body.payload.invitationCode)
+%}
+
+### 주선자 -> 후보자 초대 코드 수락
+POST http://{{host}}/api/v1/invitations/code
+Content-Type: application/json
+Authorization: Bearer {{candidate_access_token}}
+
+{
+  "invitationCode": "{{candidate_invitation_code}}"
+}

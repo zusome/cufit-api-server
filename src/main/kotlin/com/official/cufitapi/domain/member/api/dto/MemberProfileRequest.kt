@@ -1,10 +1,10 @@
 package com.official.cufitapi.domain.member.api.dto
 
-import com.official.cufitapi.domain.member.enums.Gender
-import com.official.cufitapi.domain.member.enums.IdealAge
-import com.official.cufitapi.domain.member.enums.IdealHeightUnit
-import com.official.cufitapi.domain.member.enums.MBTILetter
-import com.official.cufitapi.domain.member.enums.MemberType
+import com.official.cufitapi.domain.member.domain.vo.Gender
+import com.official.cufitapi.domain.member.domain.vo.IdealAge
+import com.official.cufitapi.domain.member.domain.vo.IdealHeightUnit
+import com.official.cufitapi.domain.member.domain.vo.MBTILetter
+import com.official.cufitapi.domain.member.domain.vo.MemberType
 
 data class MemberProfileRequest(
     val memberType: MemberType,

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 interface CandidateProfileUpdateUseCase {
-    fun update(candidateProfileUpdateCommand: CandidateProfileUpdateCommand)
+    fun updateProfile(candidateProfileUpdateCommand: CandidateProfileUpdateCommand)
 }
 
 @Service
@@ -15,13 +15,22 @@ class CandidateService(
     private val matchCandidateJpaRepository: MatchCandidateJpaRepository
 ) : CandidateProfileUpdateUseCase {
 
-    // 후보자 조회
-    fun getCandidates() {
-    }
-
-    // 후보자 프로필 업데이트
-    override fun update(command: CandidateProfileUpdateCommand) {
-        // TODO : DB 저장
-        // TODO : recommendation 호출
+    @Transactional
+    override fun updateProfile(command: CandidateProfileUpdateCommand) {
+        val matchCandidate = (matchCandidateJpaRepository.findByMemberId(command.memberId)
+            ?: throw IllegalArgumentException("후보자가 아닙니다."))
+        matchCandidate.updateProfile(
+            command.idealMbti,
+            command.idealAgeRange.joinToString(),
+            command.idealHeightRange.joinToString(),
+            command.gender,
+            command.height,
+            command.station,
+            command.job,
+            command.name,
+            command.yearOfBirth,
+            command.email,
+            command.phoneNumber
+        )
     }
 }
