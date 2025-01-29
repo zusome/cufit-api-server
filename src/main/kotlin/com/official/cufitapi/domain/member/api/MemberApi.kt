@@ -32,18 +32,17 @@ class MemberApi(
         )
     }
 
-    // 유저 정보 조회
     @GetMapping("/members")
-    fun getMemberInfo(
+    override fun getMemberInfo(
         @Authorization(AuthorizationType.ALL) authorizationUser: AuthorizationUser
     ): HttpResponse<MemberInfoResponse> {
         val memberInfo = memberService.getMemberInfo(authorizationUser.userId)
         return HttpResponse.of(HttpStatus.NO_CONTENT, memberInfo)
     }
 
-    // 프로필 작성
+
     @PostMapping("/members/profile")
-    fun updateProfile(
+    override fun updateProfile(
         @Authorization(AuthorizationType.ALL) authorizationUser: AuthorizationUser,
         @RequestBody request: MemberProfileRequest
     ): HttpResponse<Unit> {
