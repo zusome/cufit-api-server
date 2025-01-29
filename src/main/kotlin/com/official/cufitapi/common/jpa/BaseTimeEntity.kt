@@ -10,7 +10,7 @@ import java.time.LocalDateTime
 
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener::class)
-class BaseTimeEntity(
+open class BaseTimeEntity(
     @CreatedDate
     @Column(updatable = false)
     var createdDate: LocalDateTime? = null,

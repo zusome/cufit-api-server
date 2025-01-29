@@ -7,21 +7,31 @@ import com.official.cufitapi.common.api.ApiV1Controller
 import com.official.cufitapi.common.api.dto.HttpResponse
 import com.official.cufitapi.domain.notification.api.docs.NotificationApiDocs
 import com.official.cufitapi.domain.notification.api.dto.NotificationResponse
-import com.official.cufitapi.domain.notification.appliaction.NotificationQueryService
-import com.official.cufitapi.domain.notification.appliaction.NotificationService
+import com.official.cufitapi.domain.notification.appliaction.NotificationFindUseCase
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
 
 @ApiV1Controller
 class NotificationApi(
-    private val notificationQueryService: NotificationQueryService,
-    private val notificationService: NotificationService
+    private val notificationFindUseCase: NotificationFindUseCase,
 ) : NotificationApiDocs {
 
     @GetMapping("/notifications")
-    fun getNotificationList(
+    override fun getNotificationList(
         @Authorization(AuthorizationType.ALL) authorizationUser: AuthorizationUser
     ): HttpResponse<List<NotificationResponse>> {
-        return HttpResponse.of(HttpStatus.OK, notificationQueryService.findAll(authorizationUser.userId))
+        val notifications = notificationFindUseCase.findAll(authorizationUser.userId)
+        return HttpResponse.of(
+            HttpStatus.OK,
+            notifications.map {
+                NotificationResponse(
+                    id = it.id,
+                    title = it.title,
+                    content = it.content,
+                    notificationType = it.notificationType,
+                    createdDate = it.createdDate
+                )
+            }
+        )
     }
 }
