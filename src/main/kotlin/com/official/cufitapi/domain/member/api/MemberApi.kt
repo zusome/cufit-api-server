@@ -20,7 +20,6 @@ class MemberApi(
     private val memberService: MemberService
 ) : MemberApiDocs {
 
-    // 유저 타입 조회
     @GetMapping("/members/type")
     override fun getMemberTypeInfo(
         @Authorization(AuthorizationType.ALL) authorizationUser: AuthorizationUser

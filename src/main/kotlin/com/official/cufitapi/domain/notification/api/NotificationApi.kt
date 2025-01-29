@@ -17,7 +17,7 @@ class NotificationApi(
 ) : NotificationApiDocs {
 
     @GetMapping("/notifications")
-    fun getNotificationList(
+    override fun getNotificationList(
         @Authorization(AuthorizationType.ALL) authorizationUser: AuthorizationUser
     ): HttpResponse<List<NotificationResponse>> {
         val notifications = notificationFindUseCase.findAll(authorizationUser.userId)
