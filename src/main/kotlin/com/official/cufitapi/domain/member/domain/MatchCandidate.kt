@@ -13,9 +13,7 @@ class MatchCandidate(
     var height: Int?,
     var station: String?,
     var job: String?,
-    var name: String?,
     var yearOfBirth: Int?,
-    var email: String?,
     var gender: Gender?,
     var phoneNumber: String?
 ) {
@@ -27,9 +25,7 @@ class MatchCandidate(
         height: Int?,
         station: String?,
         job: String?,
-        name: String?,
         yearOfBirth: Int?,
-        email: String?,
         gender: Gender?,
         phoneNumber: String?
     )
@@ -41,9 +37,7 @@ class MatchCandidate(
         this.height = height
         this.station = station
         this.job = job
-        this.name = name
         this.yearOfBirth = yearOfBirth
-        this.email = email
         this.gender = gender
         this.phoneNumber = phoneNumber
     }

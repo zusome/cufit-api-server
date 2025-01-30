@@ -25,10 +25,8 @@ class CandidateDao(
                 height,
                 station,
                 job,
-                name,
                 year_of_birth,
                 gender,
-                email,
                 phone_number
             FROM
                 match_candidate
@@ -51,10 +49,8 @@ class CandidateProfileInfoMapper : RowMapper<CandidateProfileInfo> {
             height = rs.getInt("height"),
             station = rs.getString("station"),
             job = rs.getString("job"),
-            name = rs.getString("name"),
             yearOfBirth = rs.getInt("year_of_birth"),
             gender = Gender.of(rs.getString("gender")),
-            email = rs.getString("email"),
             phoneNumber = rs.getString("phone_number")
         )
     }

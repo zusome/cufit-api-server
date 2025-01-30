@@ -10,9 +10,7 @@ data class CandidateProfileInfo(
     var height: Int? = null,
     var station: String? = null,
     var job: String? = null,
-    var name: String? = null,
     var yearOfBirth: Int? = null,
-    var email: String? = null,
     var gender: Gender? = null,
     var phoneNumber: String? = null,
 ) {
@@ -25,9 +23,7 @@ data class CandidateProfileInfo(
             height != null &&
             station != null &&
             job != null &&
-            name != null &&
             yearOfBirth != null &&
-            gender != null &&
-            email != null
+            gender != null
     }
 }

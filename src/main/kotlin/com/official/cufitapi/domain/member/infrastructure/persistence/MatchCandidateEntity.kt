@@ -53,17 +53,9 @@ class MatchCandidateEntity(
     @Comment("직업")
     var job: String? = null,
 
-    @Column(name = "name", unique = false, nullable = true)
-    @Comment("실명")
-    var name: String? = null,
-
     @Column(name = "year_of_birth", unique = false, nullable = true)
     @Comment("출생연도")
     var yearOfBirth: Int? = null,
-
-    @Column(name = "email", unique = false, nullable = true)
-    @Comment("이메일")
-    var email: String? = null,
 
     @Comment("성별")
     @Column(name = "gender", unique = false, nullable = true)
@@ -83,7 +75,7 @@ class MatchCandidateEntity(
     }
 
     fun hasProfile(): Boolean {
-        return idealMbti != null || idealAgeRange != null || idealHeightRange != null || height != null || station != null || job != null || name != null || yearOfBirth != null || email != null
+        return idealMbti != null || idealAgeRange != null || idealHeightRange != null || height != null || station != null || job != null || yearOfBirth != null
     }
 
     fun updateProfile(
@@ -94,9 +86,7 @@ class MatchCandidateEntity(
         height: Int,
         station: String,
         job: String,
-        name: String,
         yearOfBirth: Int,
-        email: String,
         gender: Gender,
         phoneNumber: String
     ) {
@@ -107,9 +97,7 @@ class MatchCandidateEntity(
         this.height = height
         this.station = station
         this.job = job
-        this.name = name
         this.yearOfBirth = yearOfBirth
-        this.email = email
         this.gender = gender
         this.phoneNumber = phoneNumber
     }

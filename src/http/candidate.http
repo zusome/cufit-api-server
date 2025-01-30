@@ -4,8 +4,6 @@ Content-Type: application/json
 Authorization: Bearer {{candidate_access_token}}
 
 {
-  "name": "후보자 실명",
-  "email": "후보자 이메일",
   "gender": "MALE",
   "height": 180,
   "idealAgeRange": [
@@ -26,6 +24,6 @@ Authorization: Bearer {{candidate_access_token}}
 }
 
 ###
-GET http://localhost:8080/api/v1/candidates/profile
+GET http://{{host}}/api/v1/candidates/profile
 Content-Type: application/json
 Authorization: Bearer {{candidate_access_token}}

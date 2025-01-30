@@ -16,9 +16,7 @@ data class CandidateProfileResponse(
     var height: Int? = null,
     var station: String? = null,
     var job: String? = null,
-    var name: String? = null,
     var yearOfBirth: Int? = null,
-    var email: String? = null,
     var gender: Gender? = null,
     var phoneNumber: String? = null,
 ) {
@@ -30,9 +28,7 @@ data class CandidateProfileResponse(
         candidateProfileInfo.height,
         candidateProfileInfo.station,
         candidateProfileInfo.job,
-        candidateProfileInfo.name,
         candidateProfileInfo.yearOfBirth,
-        candidateProfileInfo.email,
         candidateProfileInfo.gender,
         candidateProfileInfo.phoneNumber
     )

@@ -24,9 +24,7 @@ class MatchCandidateRepositoryAdapter(
             height = entity.height,
             station = entity.station,
             job = entity.job,
-            name = entity.name,
             yearOfBirth = entity.yearOfBirth,
-            email = entity.email,
             gender = entity.gender,
             phoneNumber = entity.phoneNumber
         )
@@ -49,9 +47,7 @@ class MatchCandidateRepositoryAdapter(
                 height = matchCandidate.height ?: throw RuntimeException(),
                 station = matchCandidate.station ?: throw RuntimeException(),
                 job = matchCandidate.job ?: throw RuntimeException(),
-                name = matchCandidate.name ?: throw RuntimeException(),
                 yearOfBirth = matchCandidate.yearOfBirth ?: throw RuntimeException(),
-                email = matchCandidate.email ?: throw RuntimeException(),
                 gender = matchCandidate.gender ?: throw RuntimeException(),
                 phoneNumber = matchCandidate.phoneNumber ?: throw RuntimeException())
         }

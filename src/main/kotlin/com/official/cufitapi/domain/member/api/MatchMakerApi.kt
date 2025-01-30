@@ -165,9 +165,7 @@ class MatchMakerApi(
             height = matchCandidateEntity.height,
             station = matchCandidateEntity.station,
             job = matchCandidateEntity.job,
-            name = matchCandidateEntity.name,
             yearOfBirth = matchCandidateEntity.yearOfBirth,
-            email = matchCandidateEntity.email,
             gender = matchCandidateEntity.gender?.name,
             phoneNumber = matchCandidateEntity.phoneNumber
         )
@@ -183,9 +181,7 @@ class MatchMakerApi(
             height = matchCandidateEntity.height,
             station = matchCandidateEntity.station,
             job = matchCandidateEntity.job,
-            name = matchCandidateEntity.name,
             yearOfBirth = matchCandidateEntity.yearOfBirth,
-            email = matchCandidateEntity.email,
             gender = matchCandidateEntity.gender?.name,
             phoneNumber = matchCandidateEntity.phoneNumber
         )
