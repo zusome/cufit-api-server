@@ -21,13 +21,13 @@ import org.hibernate.annotations.Comment
 @Table(name = "member")
 class MemberEntity(
 
-    @Column(name = "name", unique = false, nullable = false)
+    @Column(name = "name", unique = false, nullable = true)
     @Comment("사용자 이름")
-    var name: String,
+    var name: String? = null,
 
     @Column(name = "email", unique = true, nullable = true)
     @Comment("사용자 이메일")
-    var email: String,
+    var email: String? = null,
 
     @OneToOne(mappedBy = "member", cascade = [CascadeType.ALL], orphanRemoval = true)
     var memberAuthorization: MemberAuthorizationEntity,
@@ -42,6 +42,10 @@ class MemberEntity(
 ) : BaseTimeEntity() {
     init {
         memberAuthorization.member = this
+    }
+
+    fun updateName(name: String) {
+        this.name = name
     }
 
     override fun equals(other: Any?): Boolean {

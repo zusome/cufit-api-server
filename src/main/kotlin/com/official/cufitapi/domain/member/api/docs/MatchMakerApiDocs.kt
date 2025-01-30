@@ -4,7 +4,7 @@ import com.official.cufitapi.common.annotation.AuthorizationUser
 import com.official.cufitapi.common.api.dto.HttpResponse
 import com.official.cufitapi.domain.member.api.dto.candidate.CandidateCountResponse
 import com.official.cufitapi.domain.member.api.dto.candidate.OtherCandidatesCountResponse
-import com.official.cufitapi.domain.member.infrastructure.persistence.MatchMakerDao
+import com.official.cufitapi.domain.member.infrastructure.persistence.dao.MatchMakerDao
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses

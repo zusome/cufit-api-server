@@ -11,7 +11,7 @@ import com.official.cufitapi.domain.member.api.dto.candidate.CandidatesInfoRespo
 import com.official.cufitapi.domain.member.api.dto.candidate.OtherCandidatesCountResponse
 import com.official.cufitapi.domain.member.api.dto.candidate.OtherCandidatesInfoResponseDto
 import com.official.cufitapi.domain.member.application.MatchMakerService
-import com.official.cufitapi.domain.member.infrastructure.persistence.MatchMakerDao
+import com.official.cufitapi.domain.member.infrastructure.persistence.dao.MatchMakerDao
 import com.official.cufitapi.domain.member.infrastructure.persistence.MatchCandidateEntity
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
