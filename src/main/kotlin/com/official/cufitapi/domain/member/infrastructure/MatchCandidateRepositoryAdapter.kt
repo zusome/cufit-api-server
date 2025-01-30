@@ -15,7 +15,7 @@ class MatchCandidateRepositoryAdapter(
             ?: throw RuntimeException("후보자가 아닙니다.")
         return MatchCandidate(
             id = entity.id ?: throw RuntimeException(),
-            isMatchingAgreed = entity.isMatchingAgreed,
+            isMatchAgreed = entity.isMatchAgreed,
             memberId = entity.member.id ?: throw RuntimeException(),
             idealMbti = entity.idealMbti,
             idealAgeRange = entity.idealAgeRange,
@@ -30,10 +30,10 @@ class MatchCandidateRepositoryAdapter(
         )
     }
 
-    override fun matchBreak(matchCandidate: MatchCandidate, isMatchingAgreed: Boolean) {
+    override fun matchBreak(matchCandidate: MatchCandidate, isMatchAgreed: Boolean) {
         val entity = matchCandidateJpaRepository.findById(matchCandidate.id)
             .orElseThrow { RuntimeException() }
-        entity.updateMatchingAgreement(isMatchingAgreed)
+        entity.updateMatchingAgreement(isMatchAgreed)
     }
 
     override fun updateProfile(matchCandidate: MatchCandidate) {

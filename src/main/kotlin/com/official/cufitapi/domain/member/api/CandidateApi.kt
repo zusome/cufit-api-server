@@ -106,7 +106,7 @@ class CandidateApi(
         candidateMatchBreakUseCase.breakMatch(
             CandidateMatchBreakCommand(
                 memberId = authorizationUser.userId,
-                isMatchingAgreed = request.isMatchingAgreed
+                isMatchAgreed = request.isMatchAgreed
             )
         )
         return HttpResponse.of(HttpStatus.NO_CONTENT, Unit)

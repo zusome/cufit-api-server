@@ -158,7 +158,7 @@ class MatchMakerApi(
         CandidatesInfoResponseDto(
             id = matchCandidateEntity.id!!,
             memberId = matchCandidateEntity.member.id!!,
-            isMatchingAgreed = matchCandidateEntity.isMatchingAgreed,
+            isMatchAgreed = matchCandidateEntity.isMatchAgreed,
             idealMbti = matchCandidateEntity.idealMbti,
             idealAgeRange = matchCandidateEntity.idealAgeRange,
             idealHeightRange = matchCandidateEntity.idealHeightRange,
@@ -174,7 +174,7 @@ class MatchMakerApi(
         OtherCandidatesInfoResponseDto(
             id = matchCandidateEntity.id!!,
             memberId = matchCandidateEntity.member.id!!,
-            isMatchingAgreed = matchCandidateEntity.isMatchingAgreed,
+            isMatchAgreed = matchCandidateEntity.isMatchAgreed,
             idealMbti = matchCandidateEntity.idealMbti,
             idealAgeRange = matchCandidateEntity.idealAgeRange,
             idealHeightRange = matchCandidateEntity.idealHeightRange,

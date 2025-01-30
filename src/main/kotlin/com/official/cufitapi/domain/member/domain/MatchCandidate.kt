@@ -5,7 +5,7 @@ import com.official.cufitapi.domain.member.domain.vo.Gender
 class MatchCandidate(
     val id: Long,
     val memberId: Long,
-    val isMatchingAgreed: Boolean,
+    val isMatchAgreed: Boolean,
     var idealMbti: String?,
     var idealAgeRange: String?,
     var idealHeightRange: String?,

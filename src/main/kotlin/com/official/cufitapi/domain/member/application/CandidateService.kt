@@ -41,6 +41,6 @@ class CandidateService(
     @Transactional
     override fun breakMatch(command: CandidateMatchBreakCommand) {
         val matchCandidate = matchCandidateRepository.findByMemberId(command.memberId)
-        matchCandidateRepository.matchBreak(matchCandidate, command.isMatchingAgreed)
+        matchCandidateRepository.matchBreak(matchCandidate, command.isMatchAgreed)
     }
 }
