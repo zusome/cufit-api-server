@@ -29,6 +29,7 @@ class CandidateApi(
     override fun getSuggestedCandidate(
         @Authorization(AuthorizationType.CANDIDATE) authorizationUser: AuthorizationUser
     ) : HttpResponse<List<CandidateResponse>> {
+        // TODO : CandidateDAO를 활용하여 구현
         return HttpResponse.of(
             HttpStatus.OK,
             mutableListOf(
