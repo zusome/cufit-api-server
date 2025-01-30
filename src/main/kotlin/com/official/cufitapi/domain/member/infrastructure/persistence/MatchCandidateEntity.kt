@@ -116,4 +116,8 @@ class MatchCandidateEntity(
 
     fun isSameGender(other: MatchCandidateEntity): Boolean =
         this.gender == other.gender
+
+    fun updateMatchingAgreement(isMatchingAgreed: Boolean) {
+        this.isMatchingAgreed = isMatchingAgreed
+    }
 }

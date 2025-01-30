@@ -9,7 +9,10 @@ import com.official.cufitapi.domain.member.api.docs.CandidateApiDocs
 import com.official.cufitapi.domain.member.api.dto.candidate.CandidateImage
 import com.official.cufitapi.domain.member.api.dto.candidate.CandidateProfileUpdateRequest
 import com.official.cufitapi.domain.member.api.dto.candidate.CandidateResponse
+import com.official.cufitapi.domain.member.api.dto.candidate.MatchBreakRequest
+import com.official.cufitapi.domain.member.application.CandidateMatchBreakUseCase
 import com.official.cufitapi.domain.member.application.CandidateProfileUpdateUseCase
+import com.official.cufitapi.domain.member.application.command.candidate.CandidateMatchBreakCommand
 import com.official.cufitapi.domain.member.application.command.candidate.CandidateProfileUpdateCommand
 import com.official.cufitapi.domain.member.domain.vo.MBTILetter
 import com.official.cufitapi.domain.member.infrastructure.persistence.MatchMakerDao
@@ -22,13 +25,14 @@ import org.springframework.web.bind.annotation.RequestBody
 class CandidateApi(
     private val matchMakerDao: MatchMakerDao,
     private val candidateProfileUpdateUseCase: CandidateProfileUpdateUseCase,
+    private val candidateMatchBreakUseCase: CandidateMatchBreakUseCase
 ) : CandidateApiDocs {
 
     // 나한테 제안된 후보자 목록 조회
     @GetMapping("/candidates/suggestion")
     override fun getSuggestedCandidate(
         @Authorization(AuthorizationType.CANDIDATE) authorizationUser: AuthorizationUser
-    ) : HttpResponse<List<CandidateResponse>> {
+    ): HttpResponse<List<CandidateResponse>> {
         // TODO : CandidateDAO를 활용하여 구현
         return HttpResponse.of(
             HttpStatus.OK,
@@ -73,6 +77,20 @@ class CandidateApi(
                 idealMbti = request.idealMbti,
                 email = request.email,
                 phoneNumber = request.phoneNumber
+            )
+        )
+        return HttpResponse.of(HttpStatus.NO_CONTENT, Unit)
+    }
+
+    @PostMapping("/candidates/match/break")
+    override fun breakMatching(
+        @Authorization(AuthorizationType.CANDIDATE) authorizationUser: AuthorizationUser,
+        @RequestBody request: MatchBreakRequest,
+    ): HttpResponse<Unit> {
+        candidateMatchBreakUseCase.breakMatch(
+            CandidateMatchBreakCommand(
+                memberId = authorizationUser.userId,
+                isMatchingAgreed = request.isMatchingAgreed
             )
         )
         return HttpResponse.of(HttpStatus.NO_CONTENT, Unit)

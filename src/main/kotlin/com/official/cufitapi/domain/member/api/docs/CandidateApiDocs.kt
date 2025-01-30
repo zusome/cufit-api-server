@@ -4,15 +4,13 @@ import com.official.cufitapi.common.annotation.Authorization
 import com.official.cufitapi.common.annotation.AuthorizationType
 import com.official.cufitapi.common.annotation.AuthorizationUser
 import com.official.cufitapi.common.api.dto.HttpResponse
-import com.official.cufitapi.domain.member.api.dto.candidate.CandidateCountResponse
-import com.official.cufitapi.domain.member.api.dto.candidate.CandidateProfileUpdateRequest
-import com.official.cufitapi.domain.member.api.dto.candidate.CandidateResponse
-import com.official.cufitapi.domain.member.api.dto.candidate.OtherCandidatesCountResponse
+import com.official.cufitapi.domain.member.api.dto.candidate.*
 import com.official.cufitapi.domain.member.infrastructure.persistence.MatchMakerDao
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
+import org.springframework.web.bind.annotation.RequestBody
 
 @Tag(name = "후보자 관련 API")
 interface CandidateApiDocs {
@@ -40,5 +38,18 @@ interface CandidateApiDocs {
     fun updateCandidateProfile(
         authorizationUser: AuthorizationUser,
         request: CandidateProfileUpdateRequest
+    ): HttpResponse<Unit>
+
+    @Operation(
+        summary = "매칭 쉬어가기 API"
+    )
+    @ApiResponses(
+        ApiResponse(responseCode = "200", description = "성공"),
+        ApiResponse(responseCode = "401", description = "인증 실패"),
+        ApiResponse(responseCode = "500", description = "서버 에러")
+    )
+    fun breakMatching(
+        @Authorization(AuthorizationType.CANDIDATE) authorizationUser: AuthorizationUser,
+        @RequestBody request: MatchBreakRequest,
     ): HttpResponse<Unit>
 }
