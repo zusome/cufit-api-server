@@ -21,9 +21,9 @@ class MatchCandidateEntity(
     @OneToOne
     var member: MemberEntity,
 
-    @Column(name = "is_matching_agreed", unique = false, nullable = false)
+    @Column(name = "is_match_agreed", unique = false, nullable = false)
     @Comment("매칭동의여부")
-    var isMatchingAgreed: Boolean = true,
+    var isMatchAgreed: Boolean = true,
 
     @Column(name = "ideal_mbti", unique = false, nullable = true)
     @Comment("이상형 MBTI")
@@ -71,7 +71,7 @@ class MatchCandidateEntity(
 ) {
 
     fun deactivateMatching() {
-        isMatchingAgreed = false
+        isMatchAgreed = false
     }
 
     fun hasProfile(): Boolean {
@@ -105,7 +105,7 @@ class MatchCandidateEntity(
     fun isSameGender(other: MatchCandidateEntity): Boolean =
         this.gender == other.gender
 
-    fun updateMatchingAgreement(isMatchingAgreed: Boolean) {
-        this.isMatchingAgreed = isMatchingAgreed
+    fun updateMatchingAgreement(isMatchAgreed: Boolean) {
+        this.isMatchAgreed = isMatchAgreed
     }
 }
