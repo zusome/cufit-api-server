@@ -37,6 +37,7 @@ class CandidateService(
             gender = command.gender,
             phoneNumber = command.phoneNumber
         )
+        matchCandidateRepository.updateProfile(matchCandidate)
     }
 
     @Transactional

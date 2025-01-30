@@ -27,5 +27,10 @@ enum class MatchMakerCandidateRelationType {
                 throw InvalidRequestException("잘못된 suffix")
             }
         }
+
+        fun of(type: String): MatchMakerCandidateRelationType {
+            return entries.firstOrNull { it.name == type }
+                ?: throw InvalidRequestException("Invalid relation type: $type")
+        }
     }
 }

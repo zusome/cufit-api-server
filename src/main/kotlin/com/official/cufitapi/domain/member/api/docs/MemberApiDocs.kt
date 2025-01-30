@@ -4,9 +4,9 @@ import com.official.cufitapi.common.annotation.Authorization
 import com.official.cufitapi.common.annotation.AuthorizationType
 import com.official.cufitapi.common.annotation.AuthorizationUser
 import com.official.cufitapi.common.api.dto.HttpResponse
-import com.official.cufitapi.domain.member.api.dto.MemberInfoResponse
-import com.official.cufitapi.domain.member.api.dto.MemberProfileRequest
-import com.official.cufitapi.domain.member.api.dto.MemberTypeInfoResponse
+import com.official.cufitapi.domain.member.api.dto.MemberTypeInfo
+import com.official.cufitapi.domain.member.api.dto.UpdateMemberProfileRequest
+import com.official.cufitapi.domain.member.infrastructure.persistence.dto.MemberInfoResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
@@ -18,16 +18,17 @@ import org.springframework.web.bind.annotation.RequestBody
 interface MemberApiDocs {
 
     @Operation(
-        summary = "사용자 타입 조회 API"
+        summary = "사용자 타입 조회 API (일반/주선자/후보자)"
     )
     @ApiResponses(
         ApiResponse(responseCode = "200", description = "성공"),
         ApiResponse(responseCode = "500", description = "서버 에러")
     )
-    fun getMemberTypeInfo(
-        @Authorization(AuthorizationType.ALL) authorizationUser: AuthorizationUser
-    ): HttpResponse<MemberTypeInfoResponse>
-
+    fun memberType(
+        @Authorization(
+            AuthorizationType.BASIC, AuthorizationType.CANDIDATE, AuthorizationType.MATCHMAKER
+        ) authorizationUser: AuthorizationUser,
+    ): HttpResponse<MemberTypeInfo>
 
     @Operation(
         summary = "사용자 정보 조회 API"
@@ -36,20 +37,20 @@ interface MemberApiDocs {
         ApiResponse(responseCode = "200", description = "성공"),
         ApiResponse(responseCode = "500", description = "서버 에러")
     )
-    fun getMemberInfo(
-        @Authorization(AuthorizationType.ALL) authorizationUser: AuthorizationUser
+    fun relationInfo(
+        @Authorization(AuthorizationType.ALL) authorizationUser: AuthorizationUser,
     ): HttpResponse<MemberInfoResponse>
 
     @Operation(
-        summary = "사용자 프로필 수정 API"
+        summary = "사용자 실명 정보 반영 API"
     )
     @ApiResponses(
         ApiResponse(responseCode = "200", description = "성공"),
         ApiResponse(responseCode = "500", description = "서버 에러")
     )
     @PostMapping("/members/profile")
-    fun updateProfile(
-        @Authorization(AuthorizationType.ALL) authorizationUser: AuthorizationUser,
-        @RequestBody request: MemberProfileRequest
+    fun realName(
+        @Authorization(AuthorizationType.BASIC) authorizationUser: AuthorizationUser,
+        @RequestBody request: UpdateMemberProfileRequest,
     ): HttpResponse<Unit>
 }
