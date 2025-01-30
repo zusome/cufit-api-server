@@ -31,9 +31,7 @@ class CandidateService(
             height = command.height,
             station = command.station,
             job = command.job,
-            name = command.name,
             yearOfBirth = command.yearOfBirth,
-            email = command.email,
             gender = command.gender,
             phoneNumber = command.phoneNumber
         )

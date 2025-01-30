@@ -6,7 +6,6 @@ import com.official.cufitapi.domain.member.domain.vo.IdealHeightUnit
 
 data class CandidateProfileUpdateCommand(
     val memberId: Long,
-    val name: String,
     val gender: Gender,
     val yearOfBirth: Int,
     val height: Int,
@@ -16,7 +15,6 @@ data class CandidateProfileUpdateCommand(
     val idealHeightRange: List<IdealHeightUnit>,
     val idealAgeRange: List<IdealAge>,
     val idealMbti: String,
-    val email: String,
     val phoneNumber: String
 ) {
 }

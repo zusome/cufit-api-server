@@ -9,10 +9,6 @@ import java.time.LocalDateTime
 
 @Schema(name = "후보자 프로필 업데이트 요청")
 data class CandidateProfileUpdateRequest(
-    @Schema(description = "이름", example = "홍길동")
-    val name: String,
-    @Schema(description = "이메일", example = "test@test-test.test")
-    val email: String,
     @Schema(description = "성별", example = "MALE,FEMALE")
     val gender: Gender,
     @Schema(description = "생년", example = "1990")

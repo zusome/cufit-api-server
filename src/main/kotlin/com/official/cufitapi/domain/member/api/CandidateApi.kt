@@ -83,7 +83,6 @@ class CandidateApi(
         candidateProfileUpdateUseCase.updateProfile(
             CandidateProfileUpdateCommand(
                 memberId = authorizationUser.userId,
-                name = request.name,
                 gender = request.gender,
                 yearOfBirth = request.yearOfBirth,
                 height = request.height,
@@ -93,7 +92,6 @@ class CandidateApi(
                 idealHeightRange = request.idealHeightRange,
                 idealAgeRange = request.idealAgeRange,
                 idealMbti = request.idealMbti,
-                email = request.email,
                 phoneNumber = request.phoneNumber
             )
         )
