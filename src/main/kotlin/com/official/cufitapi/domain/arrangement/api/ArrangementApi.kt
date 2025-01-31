@@ -47,6 +47,7 @@ class ArrangementApi(
         return HttpResponse.of(HttpStatus.OK, null)
     }
 
+
     @GetMapping("/arrangements/candidates")
     fun findAvailableCandidates(
         @RequestParam("targetId") targetId: Long,

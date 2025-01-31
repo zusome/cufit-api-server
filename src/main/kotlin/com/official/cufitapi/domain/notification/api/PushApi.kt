@@ -5,6 +5,7 @@ import com.official.cufitapi.common.annotation.AuthorizationType
 import com.official.cufitapi.common.annotation.AuthorizationUser
 import com.official.cufitapi.common.api.ApiV1Controller
 import com.official.cufitapi.common.api.dto.HttpResponse
+import com.official.cufitapi.domain.notification.api.docs.PushApiDocs
 import com.official.cufitapi.domain.notification.api.dto.DeviceTokenRegisterRequest
 import com.official.cufitapi.domain.notification.api.dto.MemberAlarmAgreementRequest
 import com.official.cufitapi.domain.notification.api.dto.MemberAlarmAgreementResponse
@@ -20,10 +21,10 @@ import org.springframework.web.bind.annotation.RequestBody
 class PushApi(
     private val memberAlarmAgreementRegisterUseCase: MemberAlarmAgreementRegisterUseCase,
     private val deviceTokenRegisterUseCase: DeviceTokenRegisterUseCase
-) {
+) : PushApiDocs {
 
     @PostMapping("/push/agree")
-    fun agree(
+    override fun agree(
         @Authorization(AuthorizationType.ALL) authorizationUser: AuthorizationUser,
         @RequestBody request: MemberAlarmAgreementRequest
     ): HttpResponse<MemberAlarmAgreementResponse> {
@@ -41,7 +42,7 @@ class PushApi(
     }
 
     @PostMapping("/push/device")
-    fun registerDeviceToken(
+    override fun registerDeviceToken(
         @Authorization(AuthorizationType.ALL) authorizationUser: AuthorizationUser,
         @RequestBody request: DeviceTokenRegisterRequest
     ): HttpResponse<Unit> {

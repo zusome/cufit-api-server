@@ -14,7 +14,7 @@ data class NotificationResponse(
     val title: String,
     @Schema(description = "알림 내용", example = "박유나님이 프로필을 완성했어요.")
     val content: String,
-    @Schema(description = "알림 타입", example = "")
+    @Schema(description = "알림 타입", example = "CANDIDATE,MATCHING")
     val notificationType: NotificationType,
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     val createdDate: LocalDateTime

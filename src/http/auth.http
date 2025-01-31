@@ -10,7 +10,7 @@ Content-Type: application/json
 }
 
 > {%
-    client.test("SignIn Or Login", function() {
+    client.test("SignIn Or Login", function () {
         client.assert(response.status === 200, "Response status is not 200");
         client.assert(response.contentType.mimeType === "application/json", "Expected 'application/json'");
         client.assert(response.body.payload.access_token.length > 0); // 토큰 길이가 0보다 크면 통과
@@ -26,13 +26,11 @@ POST http://{{host}}/api/v1/auth/login/test
 Content-Type: application/json
 
 {
-  "email": "matchmaker",
-  "provider": "apple",
-  "username": "matchmaker"
+  "provider": "apple"
 }
 
 > {%
-    client.test("SignIn Or Login", function() {
+    client.test("SignIn Or Login", function () {
         client.assert(response.status === 200, "Response status is not 200");
         client.assert(response.contentType.mimeType === "application/json", "Expected 'application/json'");
         client.assert(response.body.payload.access_token.length > 0); // 토큰 길이가 0보다 크면 통과
@@ -42,19 +40,31 @@ Content-Type: application/json
     client.global.set("matchmaker_access_token", response.body.payload.access_token)
 %}
 
+### 주선자용 실명 인증
+POST http://{{host}}/api/v1/members/profile
+Content-Type: application/json
+Authorization: Bearer {{matchmaker_access_token}}
+
+{
+  "name": "주선자"
+}
+
+### 주선자용 타입 확인
+GET http://{{host}}/api/v1/members/type
+Content-Type: application/json
+Authorization: Bearer {{matchmaker_access_token}}
+
 
 ### 후보자 초대용 회원 가입
 POST http://{{host}}/api/v1/auth/login/test
 Content-Type: application/json
 
 {
-  "email": "candidate",
-  "provider": "apple",
-  "username": "candidate"
+  "provider": "apple"
 }
 
 > {%
-    client.test("SignIn Or Login", function() {
+    client.test("SignIn Or Login", function () {
         client.assert(response.status === 200, "Response status is not 200");
         client.assert(response.contentType.mimeType === "application/json", "Expected 'application/json'");
         client.assert(response.body.payload.access_token.length > 0); // 토큰 길이가 0보다 크면 통과

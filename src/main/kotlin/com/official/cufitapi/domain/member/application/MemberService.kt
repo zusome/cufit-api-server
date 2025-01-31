@@ -1,10 +1,9 @@
 package com.official.cufitapi.domain.member.application
 
 import com.official.cufitapi.common.exception.InvalidRequestException
-import com.official.cufitapi.domain.member.api.dto.MemberInfoResponse
-import com.official.cufitapi.domain.member.api.dto.MemberProfileRequest
 import com.official.cufitapi.domain.member.domain.vo.MemberType
 import com.official.cufitapi.domain.invitation.infrastructure.persistence.InvitationCardJpaRepository
+import com.official.cufitapi.domain.member.application.command.UpdateMemberProfileCommand
 import com.official.cufitapi.domain.member.infrastructure.persistence.MemberAuthorizationEntity
 import com.official.cufitapi.domain.member.infrastructure.persistence.MemberEntity
 import com.official.cufitapi.domain.member.infrastructure.persistence.MemberJpaRepository
@@ -40,28 +39,11 @@ class MemberService(
     fun findById(memberId: Long): MemberEntity = memberJpaRepository.findById(memberId)
         .orElseThrow { InvalidRequestException("존재하지 않는 사용자 id: $memberId") }
 
-    @Transactional(readOnly = true)
-    fun getMemberInfo(memberId: Long): MemberInfoResponse {
-        val member = memberJpaRepository.findById(memberId)
-            .orElseThrow { InvalidRequestException("존재하지 않는 사용자 id: $memberId") }
-        val invitation = invitationCardJpaRepository.findByInviterId(memberId)
-            ?: throw InvalidRequestException("존재하지 않는 사용자 id: $memberId")
-        val invitee = memberJpaRepository.findById(invitation.inviterId)
-            .orElseThrow { InvalidRequestException("존재하지 않는 사용자 id: $memberId") }
-
-        return MemberInfoResponse(
-            name = member.name,
-            email = member.email,
-            inviteeName = invitee.name,
-            relationWithInvitee = invitation.relationType
-        )
-    }
-
-    // 사용자 정보 업데이트는 후보자만 진행함.
-    fun updateMemberProfile(memberId: Long, request: MemberProfileRequest) {
-        // Implementation for updating member profile
-        val member =
-            memberJpaRepository.findByIdOrNull(memberId) ?: throw InvalidRequestException("존재하지 않는 사용자 id: $memberId")
+    @Transactional
+    fun updateRealName(command: UpdateMemberProfileCommand): MemberEntity {
+        val member = memberJpaRepository.findByIdOrNull(command.memberId) ?: throw InvalidRequestException("존재하지 않는 사용자 id: $command")
+        member.updateName(name = command.name)
+        return member
     }
 
     // 사용자 전화번호 인증
@@ -72,8 +54,8 @@ class MemberService(
 }
 
 data class MemberRegisterCommand(
-    val name: String,
-    val email: String,
+    val name: String?,
+    val email: String?,
     val provider: String,
     val providerId: String,
     val authority: String

@@ -1,4 +1,4 @@
-package com.official.cufitapi.domain.member.infrastructure.persistence
+package com.official.cufitapi.domain.member.infrastructure.persistence.dao
 
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.stereotype.Component

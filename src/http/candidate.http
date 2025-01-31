@@ -4,12 +4,17 @@ Content-Type: application/json
 Authorization: Bearer {{candidate_access_token}}
 
 {
-  "name": "후보자 실명",
-  "email": "후보자 이메일",
   "gender": "MALE",
   "height": 180,
-  "idealAgeRange": ["EQUAL", "LOWER", "OLDER"],
-  "idealHeightRange": ["HEIGHT_150", "HEIGHT_190"],
+  "idealAgeRange": [
+    "EQUAL",
+    "LOWER",
+    "OLDER"
+  ],
+  "idealHeightRange": [
+    "HEIGHT_150",
+    "HEIGHT_190"
+  ],
   "idealMbti": "INTJ",
   "job": "개발자",
   "mbti": "INTJ",
@@ -18,6 +23,7 @@ Authorization: Bearer {{candidate_access_token}}
   "phoneNumber": "010-1234-5678"
 }
 
-
-
-
+###
+GET http://{{host}}/api/v1/candidates/profile
+Content-Type: application/json
+Authorization: Bearer {{candidate_access_token}}

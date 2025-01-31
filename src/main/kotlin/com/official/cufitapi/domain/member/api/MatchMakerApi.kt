@@ -11,7 +11,7 @@ import com.official.cufitapi.domain.member.api.dto.candidate.CandidatesInfoRespo
 import com.official.cufitapi.domain.member.api.dto.candidate.OtherCandidatesCountResponse
 import com.official.cufitapi.domain.member.api.dto.candidate.OtherCandidatesInfoResponseDto
 import com.official.cufitapi.domain.member.application.MatchMakerService
-import com.official.cufitapi.domain.member.infrastructure.persistence.MatchMakerDao
+import com.official.cufitapi.domain.member.infrastructure.persistence.dao.MatchMakerDao
 import com.official.cufitapi.domain.member.infrastructure.persistence.MatchCandidateEntity
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
@@ -158,16 +158,14 @@ class MatchMakerApi(
         CandidatesInfoResponseDto(
             id = matchCandidateEntity.id!!,
             memberId = matchCandidateEntity.member.id!!,
-            isMatchingAgreed = matchCandidateEntity.isMatchingAgreed,
+            isMatchAgreed = matchCandidateEntity.isMatchAgreed,
             idealMbti = matchCandidateEntity.idealMbti,
             idealAgeRange = matchCandidateEntity.idealAgeRange,
             idealHeightRange = matchCandidateEntity.idealHeightRange,
             height = matchCandidateEntity.height,
             station = matchCandidateEntity.station,
             job = matchCandidateEntity.job,
-            name = matchCandidateEntity.name,
             yearOfBirth = matchCandidateEntity.yearOfBirth,
-            email = matchCandidateEntity.email,
             gender = matchCandidateEntity.gender?.name,
             phoneNumber = matchCandidateEntity.phoneNumber
         )
@@ -176,16 +174,14 @@ class MatchMakerApi(
         OtherCandidatesInfoResponseDto(
             id = matchCandidateEntity.id!!,
             memberId = matchCandidateEntity.member.id!!,
-            isMatchingAgreed = matchCandidateEntity.isMatchingAgreed,
+            isMatchAgreed = matchCandidateEntity.isMatchAgreed,
             idealMbti = matchCandidateEntity.idealMbti,
             idealAgeRange = matchCandidateEntity.idealAgeRange,
             idealHeightRange = matchCandidateEntity.idealHeightRange,
             height = matchCandidateEntity.height,
             station = matchCandidateEntity.station,
             job = matchCandidateEntity.job,
-            name = matchCandidateEntity.name,
             yearOfBirth = matchCandidateEntity.yearOfBirth,
-            email = matchCandidateEntity.email,
             gender = matchCandidateEntity.gender?.name,
             phoneNumber = matchCandidateEntity.phoneNumber
         )
