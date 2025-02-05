@@ -10,7 +10,6 @@ class GlobalExceptionHandler {
     fun handleException(e: Exception): ErrorResponse {
         return ErrorResponse("500", e.message ?: "Internal Server Error")
     }
-
 }
 
 

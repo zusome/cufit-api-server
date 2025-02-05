@@ -18,17 +18,18 @@ class NotificationRepositoryAdapter(
                     title = it.title,
                     content = it.content,
                     notificationType = it.notificationType,
-                    createdDate = it.createdDate!!
+                    createdDate = it.createdDate!!,
+                    memberId = it.memberId
                 )
             }
     }
 
-    override fun save(memberId: Long, notification: Notification): Notification {
+    override fun save(notification: Notification): Notification {
         val savedEntity = notificationJpaRepository.save(
             NotificationEntity(
                 title = notification.title,
                 content = notification.content,
-                memberId = memberId,
+                memberId = notification.memberId,
                 notificationType = notification.notificationType
             )
         )
@@ -37,7 +38,8 @@ class NotificationRepositoryAdapter(
             savedEntity.title,
             savedEntity.content,
             savedEntity.notificationType,
-            savedEntity.createdDate!!
+            savedEntity.createdDate!!,
+            savedEntity.memberId
         )
     }
 }
