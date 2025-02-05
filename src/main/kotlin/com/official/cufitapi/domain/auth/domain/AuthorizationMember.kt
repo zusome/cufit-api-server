@@ -9,6 +9,7 @@ class AuthorizationMember(
     val providerId: String,
     val provider: Provider,
     val authority: Authority,
+    val smsAuthCode: String? = null,
     val memberId: Long? = null
 ) {
 

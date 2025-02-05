@@ -20,7 +20,8 @@ class NotificationQueryService(
                     title = it.title,
                     content = it.content,
                     notificationType = it.notificationType,
-                    createdDate = it.createdDate!!
+                    createdDate = it.createdDate!!,
+                    memberId = it.memberId
                 )
             }.toList()
     }

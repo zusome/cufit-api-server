@@ -8,6 +8,7 @@ class Notification(
     val title: String,
     val content: String,
     val notificationType: NotificationType,
-    val createdDate: LocalDateTime
+    val createdDate: LocalDateTime,
+    val memberId: Long
 ) {
 }
