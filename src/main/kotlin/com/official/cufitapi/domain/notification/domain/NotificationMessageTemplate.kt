@@ -1,4 +1,4 @@
-package com.official.cufitapi.domain.notification.appliaction
+package com.official.cufitapi.domain.notification.domain
 
 /*
     <프로필 멘트>
@@ -14,7 +14,7 @@ package com.official.cufitapi.domain.notification.appliaction
     <case.3 실패 멘트 (둘다 거절함)>
     - OOO님 연결되지 않았어요.\n 후보자 모두 하트를 거절했어요.
  */
-class NotificationMessageGenerator {
+class NotificationMessageTemplate {
     companion object {
         @JvmStatic
         fun entryCompleteMessage(name: String): String {

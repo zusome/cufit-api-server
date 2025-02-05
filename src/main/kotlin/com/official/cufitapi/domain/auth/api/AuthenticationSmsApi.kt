@@ -6,6 +6,7 @@ import com.official.cufitapi.common.annotation.AuthorizationUser
 import com.official.cufitapi.common.api.ApiV1Controller
 import com.official.cufitapi.common.api.dto.HttpResponse
 import com.official.cufitapi.domain.auth.api.docs.AuthApiDocs
+import com.official.cufitapi.domain.auth.api.dto.SmsAuthCodeIssueRequest
 import com.official.cufitapi.domain.auth.api.dto.SmsAuthValidationRequest
 import com.official.cufitapi.domain.auth.application.AuthenticationSmsService
 import com.official.cufitapi.domain.auth.application.command.SmsAuthenticationIssueCommand
@@ -21,9 +22,10 @@ class AuthenticationSmsApi(
 
     @PostMapping("/auth/sms/issue")
     fun issueSmsAuthCode(
-        @Authorization(AuthorizationType.ALL) authorizationUser: AuthorizationUser
+        @Authorization(AuthorizationType.ALL) authorizationUser: AuthorizationUser,
+        @RequestBody request: SmsAuthCodeIssueRequest
     ): HttpResponse<Unit> {
-        authorizationSmsService.issueSmsAuthCode(SmsAuthenticationIssueCommand(authorizationUser.userId, ""))
+        authorizationSmsService.issueSmsAuthCode(SmsAuthenticationIssueCommand(authorizationUser.userId, request.phoneNumber))
         return HttpResponse.of(HttpStatus.NO_CONTENT, Unit)
     }
 
