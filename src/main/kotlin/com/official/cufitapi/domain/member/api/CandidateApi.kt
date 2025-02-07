@@ -8,15 +8,13 @@ import com.official.cufitapi.common.api.dto.HttpResponse
 import com.official.cufitapi.domain.member.api.docs.CandidateApiDocs
 import com.official.cufitapi.domain.member.api.dto.CandidateProfileInfoResponse
 import com.official.cufitapi.domain.member.api.dto.CandidateProfileResponse
-import com.official.cufitapi.domain.member.api.dto.candidate.CandidateImage
-import com.official.cufitapi.domain.member.api.dto.candidate.CandidateProfileUpdateRequest
-import com.official.cufitapi.domain.member.api.dto.candidate.CandidateResponse
-import com.official.cufitapi.domain.member.api.dto.candidate.MatchBreakRequest
+import com.official.cufitapi.domain.member.api.dto.candidate.*
 import com.official.cufitapi.domain.member.application.CandidateMatchBreakUseCase
 import com.official.cufitapi.domain.member.application.CandidateProfileUpdateUseCase
 import com.official.cufitapi.domain.member.application.command.candidate.CandidateMatchBreakCommand
 import com.official.cufitapi.domain.member.application.command.candidate.CandidateProfileUpdateCommand
 import com.official.cufitapi.domain.member.domain.vo.MBTILetter
+import com.official.cufitapi.domain.member.infrastructure.ProfileImageUploadClientAdapter
 import com.official.cufitapi.domain.member.infrastructure.persistence.dao.CandidateDao
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
@@ -28,12 +26,16 @@ class CandidateApi(
     private val candidateDao: CandidateDao,
     private val candidateProfileUpdateUseCase: CandidateProfileUpdateUseCase,
     private val candidateMatchBreakUseCase: CandidateMatchBreakUseCase,
+    private val profileImageUploadClientAdapter: ProfileImageUploadClientAdapter
 ) : CandidateApiDocs {
 
     // 나한테 제안된 후보자 목록 조회
     @GetMapping("/candidates/suggestion")
     override fun getSuggestedCandidate(
-        @Authorization(AuthorizationType.CANDIDATE) authorizationUser: AuthorizationUser,
+        @Authorization(
+            AuthorizationType.BASIC,
+            AuthorizationType.CANDIDATE
+        ) authorizationUser: AuthorizationUser,
     ): HttpResponse<List<CandidateResponse>> {
         // TODO : CandidateDAO를 활용하여 구현
         return HttpResponse.of(
@@ -60,7 +62,10 @@ class CandidateApi(
 
     @GetMapping("/candidates/profile")
     override fun profile(
-        @Authorization(AuthorizationType.CANDIDATE) authorizationUser: AuthorizationUser,
+        @Authorization(
+            AuthorizationType.BASIC,
+            AuthorizationType.CANDIDATE
+        ) authorizationUser: AuthorizationUser,
     ): HttpResponse<CandidateProfileInfoResponse> {
         val profile = candidateDao.profile(authorizationUser.userId)
         return HttpResponse.of(
@@ -76,8 +81,9 @@ class CandidateApi(
 
     // 후보자 프로필 업데이트 API
     @PostMapping("/candidates")
-    override fun updateCandidateProfile(
-        @Authorization(AuthorizationType.CANDIDATE) authorizationUser: AuthorizationUser,
+    override fun updateCandidateBasicProfile(
+        @Authorization(AuthorizationType.BASIC, AuthorizationType.CANDIDATE)
+        authorizationUser: AuthorizationUser,
         @RequestBody request: CandidateProfileUpdateRequest,
     ): HttpResponse<Unit> {
         candidateProfileUpdateUseCase.updateProfile(
@@ -100,7 +106,10 @@ class CandidateApi(
 
     @PostMapping("/candidates/match/break")
     override fun breakMatching(
-        @Authorization(AuthorizationType.CANDIDATE) authorizationUser: AuthorizationUser,
+        @Authorization(
+            AuthorizationType.BASIC,
+            AuthorizationType.CANDIDATE
+        ) authorizationUser: AuthorizationUser,
         @RequestBody request: MatchBreakRequest,
     ): HttpResponse<Unit> {
         candidateMatchBreakUseCase.breakMatch(
@@ -110,5 +119,13 @@ class CandidateApi(
             )
         )
         return HttpResponse.of(HttpStatus.NO_CONTENT, Unit)
+    }
+
+    @GetMapping("/candidates/profile-images/presigned-url")
+    fun getProfileImageUploadPresignedUrl(): HttpResponse<CandidatePresignedUrlUploadResponse> {
+        return HttpResponse.of(HttpStatus.OK,
+            CandidatePresignedUrlUploadResponse(
+                presignedUrl = profileImageUploadClientAdapter.getImageUploadPresignedUrl()
+            ))
     }
 }

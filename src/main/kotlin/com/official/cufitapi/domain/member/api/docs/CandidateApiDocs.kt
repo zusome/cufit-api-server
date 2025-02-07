@@ -38,10 +38,17 @@ interface CandidateApiDocs {
         ApiResponse(responseCode = "401", description = "인증 실패"),
         ApiResponse(responseCode = "500", description = "서버 에러")
     )
-    fun updateCandidateProfile(
+    fun updateCandidateBasicProfile(
         authorizationUser: AuthorizationUser,
         request: CandidateProfileUpdateRequest,
     ): HttpResponse<Unit>
+
+    fun updateCandidateIdealType(
+        authorizationUser: AuthorizationUser,
+        request: CandidateProfileUpdateRequest,
+    ) {
+
+    }
 
     @Operation(
         summary = "매칭 쉬어가기 API"

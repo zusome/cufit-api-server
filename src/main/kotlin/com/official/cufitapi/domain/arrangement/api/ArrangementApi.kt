@@ -23,27 +23,33 @@ import org.springframework.web.bind.annotation.RestController
 @ApiV1Controller
 @RestController
 class ArrangementApi(
-    private val suggestArrangementUsecase: SuggestArrangementUsecase,
-    private val updateArrangementUsecase: UpdateArrangementUsecase,
+    private val suggestArrangementUseCase: SuggestArrangementUsecase,
+    private val updateArrangementUseCase: UpdateArrangementUsecase,
     private val arrangementDao: ArrangementDao,
 ) : ArrangementApiDocs {
 
     @PostMapping("/arrangements")
     fun suggestArrangement(
-        @Authorization(AuthorizationType.MATCHMAKER) authorizationUser: AuthorizationUser,
+        @Authorization(
+            AuthorizationType.BASIC,
+            AuthorizationType.MATCHMAKER
+        ) authorizationUser: AuthorizationUser,
         @RequestBody request: SuggestArrangementRequest,
     ): HttpResponse<SuggestArrangementResponse> {
-        val arrangementId = suggestArrangementUsecase.suggestArrangement(request.toCommand())
+        val arrangementId = suggestArrangementUseCase.suggestArrangement(request.toCommand())
         return HttpResponse.of(HttpStatus.CREATED, SuggestArrangementResponse(arrangementId))
     }
 
     @PostMapping("/arrangements/{arrangementId}")
     fun updateArrangement(
         @PathVariable("arrangementId") arrangementId: Long,
-        @Authorization(AuthorizationType.CANDIDATE) authorizationUser: AuthorizationUser,
+        @Authorization(
+            AuthorizationType.BASIC,
+            AuthorizationType.CANDIDATE
+        ) authorizationUser: AuthorizationUser,
         @RequestBody request: UpdateArrangementRequest,
     ): HttpResponse<Void> {
-        updateArrangementUsecase.updateArrangement(request.toCommand(arrangementId))
+        updateArrangementUseCase.updateArrangement(request.toCommand(arrangementId))
         return HttpResponse.of(HttpStatus.OK, null)
     }
 
@@ -51,7 +57,10 @@ class ArrangementApi(
     @GetMapping("/arrangements/candidates")
     fun findAvailableCandidates(
         @RequestParam("targetId") targetId: Long,
-        @Authorization(AuthorizationType.MATCHMAKER) authorizationUser: AuthorizationUser,
+        @Authorization(
+            AuthorizationType.BASIC,
+            AuthorizationType.MATCHMAKER
+        ) authorizationUser: AuthorizationUser,
     ): HttpResponse<ArrangementDao.ArrangementCandidates> {
         return HttpResponse.of(
             HttpStatus.OK,

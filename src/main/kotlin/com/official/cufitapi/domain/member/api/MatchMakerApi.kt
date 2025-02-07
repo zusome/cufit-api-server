@@ -24,7 +24,10 @@ class MatchMakerApi(
 
     @GetMapping("/matchmakers/candidates")
     override fun findCandidates(
-        @Authorization(AuthorizationType.MATCHMAKER) authorizationUser: AuthorizationUser,
+        @Authorization(
+            AuthorizationType.BASIC,
+            AuthorizationType.MATCHMAKER
+        ) authorizationUser: AuthorizationUser,
     ): HttpResponse<MatchMakerDao.MatchCandidates> {
         return HttpResponse.of(
             HttpStatus.OK,
@@ -78,7 +81,10 @@ class MatchMakerApi(
 
     @GetMapping("/matchmakers/candidates/count")
     override fun findCandidatesCount(
-        @Authorization(AuthorizationType.MATCHMAKER) authorizationUser: AuthorizationUser,
+        @Authorization(
+            AuthorizationType.BASIC,
+            AuthorizationType.MATCHMAKER
+        ) authorizationUser: AuthorizationUser,
     ): HttpResponse<CandidateCountResponse> {
         return HttpResponse.of(
             HttpStatus.OK,
@@ -88,7 +94,10 @@ class MatchMakerApi(
 
     @GetMapping("/matchmakers/candidates/others/count")
     override fun findOtherCandidatesCount(
-        @Authorization(AuthorizationType.MATCHMAKER) authorizationUser: AuthorizationUser,
+        @Authorization(
+            AuthorizationType.BASIC,
+            AuthorizationType.MATCHMAKER
+        ) authorizationUser: AuthorizationUser,
     ): HttpResponse<OtherCandidatesCountResponse> {
         return HttpResponse.of(
             HttpStatus.OK,
@@ -99,7 +108,10 @@ class MatchMakerApi(
     // 상대 후보자 목록 조회 API
     @GetMapping("/matchmakers/candidates/others")
     override fun findOtherCandidates(
-        @Authorization(AuthorizationType.MATCHMAKER) authorizationUser: AuthorizationUser,
+        @Authorization(
+            AuthorizationType.BASIC,
+            AuthorizationType.MATCHMAKER
+        ) authorizationUser: AuthorizationUser,
     ): HttpResponse<MatchMakerDao.OtherMatchCandidates> {
         return HttpResponse.of(
             HttpStatus.OK,
@@ -108,7 +120,7 @@ class MatchMakerApi(
                     MatchMakerDao.OtherMatchCandidate(
                         id = 1L,
                         name = "홍길동",
-                        bornIn = 97,
+                        yearOfBirth = 1997,
                         mbti = "ESFP",
                         height = 165,
                         station = "정자역",
