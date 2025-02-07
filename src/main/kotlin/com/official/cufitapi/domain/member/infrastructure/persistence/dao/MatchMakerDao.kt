@@ -10,16 +10,16 @@ class MatchMakerDao(
 ) {
     private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate = NamedParameterJdbcTemplate(dataSource)
 
-    fun findAllCandidates(matchMakerId: Long): List<MatchCandidate> {
+    fun findAllCandidates(memberId: Long): MatchCandidates {
         val sql = """
         SELECT c.name, r.relation, a.dateName, a.arrangementStatus, c.hasProfile, c.isMatchingPaused
         FROM MatchCandidateEntity c
         LEFT JOIN MatchRelationEntity r ON c.id = r.candidateId
         LEFT JOIN MatchArrangementEntity a ON c.id = a.candidateId
-        WHERE r.matchMakerId = :matchMakerId
+        WHERE r.memberId = :memberId
     """
-        val params = mapOf("matchMakerId" to matchMakerId)
-        return namedParameterJdbcTemplate.query(sql, params) { rs, _ ->
+        val params = mapOf("memberId" to memberId)
+        val candidates = namedParameterJdbcTemplate.query(sql, params) { rs, _ ->
             MatchCandidate(
                 name = rs.getString("name"),
                 relation = rs.getString("relation"),
@@ -33,8 +33,8 @@ class MatchMakerDao(
                 isMatchingPaused = rs.getBoolean("isMatchingPaused")
             )
         }
+        return MatchCandidates(candidates)
     }
-
 
     fun findAllOtherCandidates(matchMakerId: Long): List<OtherMatchCandidate> {
         val sql = """
@@ -60,6 +60,28 @@ class MatchMakerDao(
                 idealMbti = rs.getString("idealMbti").split(",")
             )
         }
+    }
+
+    fun countCandidatesByMemberId(memberId: Long): Long {
+        val sql = """
+        SELECT COUNT(*)
+        FROM MatchCandidateEntity c
+        LEFT JOIN MatchRelationEntity r ON c.id = r.candidateId
+        WHERE r.memberId = :memberId
+    """
+        val params = mapOf("memberId" to memberId)
+        return namedParameterJdbcTemplate.queryForObject(sql, params, Long::class.java) ?: 0L
+    }
+
+    fun countOtherCandidatesByMemberId(memberId: Long): Long {
+        val sql = """
+        SELECT COUNT(*)
+        FROM MatchCandidateEntity c
+        LEFT JOIN MatchRelationEntity r ON c.id = r.candidateId
+        WHERE r.memberId IS NULL OR r.memberId != :memberId
+    """
+        val params = mapOf("memberId" to memberId)
+        return namedParameterJdbcTemplate.queryForObject(sql, params, Long::class.java) ?: 0L
     }
 
     data class MatchCandidates(

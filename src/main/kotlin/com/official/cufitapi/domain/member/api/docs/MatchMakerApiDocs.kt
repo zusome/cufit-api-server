@@ -13,7 +13,7 @@ import io.swagger.v3.oas.annotations.tags.Tag
 @Tag(name = "주선자 관련 API")
 interface MatchMakerApiDocs {
     @Operation(
-        summary = "내 후보자 수 조회 API",
+        summary = "내 후보자 목록 조회 API",
     )
     @ApiResponses(
         ApiResponse(responseCode = "200", description = "성공"),
@@ -23,7 +23,7 @@ interface MatchMakerApiDocs {
     fun findCandidates(authorizationUser: AuthorizationUser): HttpResponse<MatchMakerDao.MatchCandidates>
 
     @Operation(
-        summary = "내 후보자 목록 조회 API",
+        summary = "내 후보자 수 조회 API",
     )
     @ApiResponses(
         ApiResponse(responseCode = "200", description = "성공"),

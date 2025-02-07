@@ -31,51 +31,7 @@ class MatchMakerApi(
     ): HttpResponse<MatchMakerDao.MatchCandidates> {
         return HttpResponse.of(
             HttpStatus.OK,
-            MatchMakerDao.MatchCandidates(
-                listOf(
-                    MatchMakerDao.MatchCandidate(
-                        name = "김철수",
-                        relation = "친구",
-                        arrangements = listOf(),
-                        hasProfile = true,
-                        isMatchingPaused = false
-                    ),
-                    MatchMakerDao.MatchCandidate(
-                        name = "홍길동",
-                        relation = "직장동료",
-                        arrangements = listOf(
-                            MatchMakerDao.ArrangementInfo(
-                                dateName = "장충동",
-                                arrangementStatus = "성공"
-                            ),
-                            MatchMakerDao.ArrangementInfo(
-                                dateName = "박혁거세",
-                                arrangementStatus = "실패"
-                            ),
-                            MatchMakerDao.ArrangementInfo(
-                                dateName = "박동충",
-                                arrangementStatus = "대기"
-                            )
-                        ),
-                        hasProfile = true,
-                        isMatchingPaused = false
-                    ),
-                    MatchMakerDao.MatchCandidate(
-                        name = "박혁거세",
-                        relation = "직장동료",
-                        arrangements = listOf(),
-                        hasProfile = false,
-                        isMatchingPaused = false
-                    ),
-                    MatchMakerDao.MatchCandidate(
-                        name = "김민지",
-                        relation = "친구",
-                        arrangements = listOf(),
-                        hasProfile = true,
-                        isMatchingPaused = true
-                    )
-                )
-            )
+            matchMakerDao.findAllCandidates(authorizationUser.userId)
         )
     }
 
@@ -88,7 +44,9 @@ class MatchMakerApi(
     ): HttpResponse<CandidateCountResponse> {
         return HttpResponse.of(
             HttpStatus.OK,
-            CandidateCountResponse(8)
+            CandidateCountResponse(
+                matchMakerDao.countCandidatesByMemberId(authorizationUser.userId)
+            )
         )
     }
 
@@ -101,7 +59,9 @@ class MatchMakerApi(
     ): HttpResponse<OtherCandidatesCountResponse> {
         return HttpResponse.of(
             HttpStatus.OK,
-            OtherCandidatesCountResponse(100)
+            OtherCandidatesCountResponse(
+                matchMakerDao.countOtherCandidatesByMemberId(authorizationUser.userId)
+            )
         )
     }
 
