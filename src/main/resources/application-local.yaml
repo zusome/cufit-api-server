@@ -35,4 +35,4 @@ discord:
     error-alert-url: ${DISCORD_ERROR_ALERT_URL}
 aws:
   s3:
-    presigned-url: ${AWS_S3_PRESIGNED_URL:5kiejtfjvk2vpy5xwacgt2bpxm0oqghk.lambda-url.ap-northeast-2.on.aws}
+    presigned-url: ${AWS_S3_PRESIGNED_URL:https://5kiejtfjvk2vpy5xwacgt2bpxm0oqghk.lambda-url.ap-northeast-2.on.aws}
