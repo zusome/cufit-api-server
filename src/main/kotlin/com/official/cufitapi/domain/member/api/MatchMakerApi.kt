@@ -24,82 +24,54 @@ class MatchMakerApi(
 
     @GetMapping("/matchmakers/candidates")
     override fun findCandidates(
-        @Authorization(AuthorizationType.MATCHMAKER) authorizationUser: AuthorizationUser,
+        @Authorization(
+            AuthorizationType.BASIC,
+            AuthorizationType.MATCHMAKER
+        ) authorizationUser: AuthorizationUser,
     ): HttpResponse<MatchMakerDao.MatchCandidates> {
         return HttpResponse.of(
             HttpStatus.OK,
-            MatchMakerDao.MatchCandidates(
-                listOf(
-                    MatchMakerDao.MatchCandidate(
-                        name = "김철수",
-                        relation = "친구",
-                        arrangements = listOf(),
-                        hasProfile = true,
-                        isMatchingPaused = false
-                    ),
-                    MatchMakerDao.MatchCandidate(
-                        name = "홍길동",
-                        relation = "직장동료",
-                        arrangements = listOf(
-                            MatchMakerDao.ArrangementInfo(
-                                dateName = "장충동",
-                                arrangementStatus = "성공"
-                            ),
-                            MatchMakerDao.ArrangementInfo(
-                                dateName = "박혁거세",
-                                arrangementStatus = "실패"
-                            ),
-                            MatchMakerDao.ArrangementInfo(
-                                dateName = "박동충",
-                                arrangementStatus = "대기"
-                            )
-                        ),
-                        hasProfile = true,
-                        isMatchingPaused = false
-                    ),
-                    MatchMakerDao.MatchCandidate(
-                        name = "박혁거세",
-                        relation = "직장동료",
-                        arrangements = listOf(),
-                        hasProfile = false,
-                        isMatchingPaused = false
-                    ),
-                    MatchMakerDao.MatchCandidate(
-                        name = "김민지",
-                        relation = "친구",
-                        arrangements = listOf(),
-                        hasProfile = true,
-                        isMatchingPaused = true
-                    )
-                )
-            )
+            matchMakerDao.findAllCandidates(authorizationUser.userId)
         )
     }
 
     @GetMapping("/matchmakers/candidates/count")
     override fun findCandidatesCount(
-        @Authorization(AuthorizationType.MATCHMAKER) authorizationUser: AuthorizationUser,
+        @Authorization(
+            AuthorizationType.BASIC,
+            AuthorizationType.MATCHMAKER
+        ) authorizationUser: AuthorizationUser,
     ): HttpResponse<CandidateCountResponse> {
         return HttpResponse.of(
             HttpStatus.OK,
-            CandidateCountResponse(8)
+            CandidateCountResponse(
+                matchMakerDao.countCandidatesByMemberId(authorizationUser.userId)
+            )
         )
     }
 
     @GetMapping("/matchmakers/candidates/others/count")
     override fun findOtherCandidatesCount(
-        @Authorization(AuthorizationType.MATCHMAKER) authorizationUser: AuthorizationUser,
+        @Authorization(
+            AuthorizationType.BASIC,
+            AuthorizationType.MATCHMAKER
+        ) authorizationUser: AuthorizationUser,
     ): HttpResponse<OtherCandidatesCountResponse> {
         return HttpResponse.of(
             HttpStatus.OK,
-            OtherCandidatesCountResponse(100)
+            OtherCandidatesCountResponse(
+                matchMakerDao.countOtherCandidatesByMemberId(authorizationUser.userId)
+            )
         )
     }
 
     // 상대 후보자 목록 조회 API
     @GetMapping("/matchmakers/candidates/others")
     override fun findOtherCandidates(
-        @Authorization(AuthorizationType.MATCHMAKER) authorizationUser: AuthorizationUser,
+        @Authorization(
+            AuthorizationType.BASIC,
+            AuthorizationType.MATCHMAKER
+        ) authorizationUser: AuthorizationUser,
     ): HttpResponse<MatchMakerDao.OtherMatchCandidates> {
         return HttpResponse.of(
             HttpStatus.OK,
@@ -108,7 +80,7 @@ class MatchMakerApi(
                     MatchMakerDao.OtherMatchCandidate(
                         id = 1L,
                         name = "홍길동",
-                        bornIn = 97,
+                        yearOfBirth = 1997,
                         mbti = "ESFP",
                         height = 165,
                         station = "정자역",

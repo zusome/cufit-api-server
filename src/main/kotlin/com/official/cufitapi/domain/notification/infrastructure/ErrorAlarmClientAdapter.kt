@@ -7,10 +7,10 @@ import org.springframework.web.servlet.resource.NoResourceFoundException
 
 @Component
 class DiscordWebhookClientAdapter(
-    private val restClient: RestClient,
     @Value("\${discord.error-alert-url}")
     private val ERROR_ALERT_URL: String
 ) {
+    private val restClient: RestClient = RestClient.create()
 
     fun sendErrorAlert(exception: Exception) {
         if (exception is NoResourceFoundException) {
