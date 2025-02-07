@@ -5,6 +5,7 @@ import com.official.cufitapi.common.annotation.AuthorizationType
 import com.official.cufitapi.common.annotation.AuthorizationUser
 import com.official.cufitapi.common.api.dto.HttpResponse
 import com.official.cufitapi.domain.member.api.dto.CandidateProfileInfoResponse
+import com.official.cufitapi.domain.member.api.dto.candidate.CandidatePresignedUrlUploadResponse
 import com.official.cufitapi.domain.member.api.dto.candidate.CandidateProfileUpdateRequest
 import com.official.cufitapi.domain.member.api.dto.candidate.CandidateResponse
 import com.official.cufitapi.domain.member.api.dto.candidate.MatchBreakRequest
@@ -59,12 +60,42 @@ interface CandidateApiDocs {
         ApiResponse(responseCode = "500", description = "서버 에러")
     )
     fun breakMatching(
-        @Authorization(AuthorizationType.CANDIDATE) authorizationUser: AuthorizationUser,
+        @Authorization(
+            AuthorizationType.BASIC,
+            AuthorizationType.CANDIDATE
+        ) authorizationUser: AuthorizationUser,
         @RequestBody request: MatchBreakRequest,
     ): HttpResponse<Unit>
 
-    @GetMapping("/members/profiles")
+
+    @Operation(
+        summary = "후보자 프로필 조회 API"
+    )
+    @ApiResponses(
+        ApiResponse(responseCode = "200", description = "성공"),
+        ApiResponse(responseCode = "401", description = "인증 실패"),
+        ApiResponse(responseCode = "500", description = "서버 에러")
+    )
     fun profile(
-        @Authorization(AuthorizationType.CANDIDATE) authorizationUser: AuthorizationUser,
+        @Authorization(
+            AuthorizationType.BASIC,
+            AuthorizationType.CANDIDATE
+        ) authorizationUser: AuthorizationUser,
     ): HttpResponse<CandidateProfileInfoResponse>
+
+
+    @Operation(
+        summary = "후보자 프로필 업로드 presigned url 발급 조회 API"
+    )
+    @ApiResponses(
+        ApiResponse(responseCode = "200", description = "성공"),
+        ApiResponse(responseCode = "401", description = "인증 실패"),
+        ApiResponse(responseCode = "500", description = "서버 에러")
+    )
+    fun getProfileImageUploadPresignedUrl(
+        @Authorization(
+            AuthorizationType.BASIC,
+            AuthorizationType.CANDIDATE
+        ) authorizationUser: AuthorizationUser,
+    ): HttpResponse<CandidatePresignedUrlUploadResponse>
 }

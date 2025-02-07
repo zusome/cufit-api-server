@@ -122,7 +122,13 @@ class CandidateApi(
     }
 
     @GetMapping("/candidates/profile-images/presigned-url")
-    fun getProfileImageUploadPresignedUrl(): HttpResponse<CandidatePresignedUrlUploadResponse> {
+    override fun getProfileImageUploadPresignedUrl(
+        @Authorization(
+            AuthorizationType.BASIC,
+            AuthorizationType.CANDIDATE
+        )
+        authorizationUser: AuthorizationUser
+    ): HttpResponse<CandidatePresignedUrlUploadResponse> {
         return HttpResponse.of(HttpStatus.OK,
             CandidatePresignedUrlUploadResponse(
                 presignedUrl = profileImageUploadClientAdapter.getImageUploadPresignedUrl()
