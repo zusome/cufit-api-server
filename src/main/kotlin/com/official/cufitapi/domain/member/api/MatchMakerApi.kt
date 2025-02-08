@@ -7,6 +7,7 @@ import com.official.cufitapi.common.api.ApiV1Controller
 import com.official.cufitapi.common.api.dto.HttpResponse
 import com.official.cufitapi.domain.member.api.docs.MatchMakerApiDocs
 import com.official.cufitapi.domain.member.api.dto.candidate.CandidateCountResponse
+import com.official.cufitapi.domain.member.api.dto.candidate.CandidateImage
 import com.official.cufitapi.domain.member.api.dto.candidate.CandidatesInfoResponseDto
 import com.official.cufitapi.domain.member.api.dto.candidate.OtherCandidatesCountResponse
 import com.official.cufitapi.domain.member.api.dto.candidate.OtherCandidatesInfoResponseDto
@@ -31,7 +32,58 @@ class MatchMakerApi(
     ): HttpResponse<MatchMakerDao.MatchCandidates> {
         return HttpResponse.of(
             HttpStatus.OK,
-            matchMakerDao.findAllCandidates(authorizationUser.userId)
+            MatchMakerDao.MatchCandidates(
+                listOf(
+                    MatchMakerDao.MatchCandidate(
+                        image = "https://cataas.com/cat",
+                        name = "김철수",
+                        relation = "친구",
+                        arrangements = listOf(),
+                        hasProfile = true,
+                        isMatchingPaused = false
+                    ),
+                    MatchMakerDao.MatchCandidate(
+                        image = "https://cataas.com/cat",
+                        name = "홍길동",
+                        relation = "직장동료",
+                        arrangements = listOf(
+                            MatchMakerDao.ArrangementInfo(
+                                profileImage = "https://cataas.com/cat",
+                                dateName = "장충동",
+                                arrangementStatus = "성공"
+                            ),
+                            MatchMakerDao.ArrangementInfo(
+                                profileImage = "https://cataas.com/cat",
+                                dateName = "박혁거세",
+                                arrangementStatus = "실패"
+                            ),
+                            MatchMakerDao.ArrangementInfo(
+                                profileImage = "https://cataas.com/cat",
+                                dateName = "박동충",
+                                arrangementStatus = "대기"
+                            )
+                        ),
+                        hasProfile = true,
+                        isMatchingPaused = false
+                    ),
+                    MatchMakerDao.MatchCandidate(
+                        image = "https://cataas.com/cat",
+                        name = "박혁거세",
+                        relation = "직장동료",
+                        arrangements = listOf(),
+                        hasProfile = false,
+                        isMatchingPaused = false
+                    ),
+                    MatchMakerDao.MatchCandidate(
+                        image = "https://cataas.com/cat",
+                        name = "김민지",
+                        relation = "친구",
+                        arrangements = listOf(),
+                        hasProfile = true,
+                        isMatchingPaused = true
+                    )
+                )
+            )
         )
     }
 
@@ -44,9 +96,7 @@ class MatchMakerApi(
     ): HttpResponse<CandidateCountResponse> {
         return HttpResponse.of(
             HttpStatus.OK,
-            CandidateCountResponse(
-                matchMakerDao.countCandidatesByMemberId(authorizationUser.userId)
-            )
+            CandidateCountResponse(8)
         )
     }
 
@@ -59,9 +109,7 @@ class MatchMakerApi(
     ): HttpResponse<OtherCandidatesCountResponse> {
         return HttpResponse.of(
             HttpStatus.OK,
-            OtherCandidatesCountResponse(
-                matchMakerDao.countOtherCandidatesByMemberId(authorizationUser.userId)
-            )
+            OtherCandidatesCountResponse(100)
         )
     }
 
@@ -79,6 +127,10 @@ class MatchMakerApi(
                 listOf(
                     MatchMakerDao.OtherMatchCandidate(
                         id = 1L,
+                        images = listOf(
+                            CandidateImage(imageUrl = "https://cataas.com/cat", profileOrder = 1),
+                            CandidateImage(imageUrl = "https://cataas.com/cat", profileOrder = 2)
+                        ),
                         name = "홍길동",
                         yearOfBirth = 1997,
                         mbti = "ESFP",
