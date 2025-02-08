@@ -2,10 +2,10 @@ package com.official.cufitapi.common.config
 
 import io.swagger.v3.oas.models.OpenAPI
 import io.swagger.v3.oas.models.info.Info
+import org.springdoc.core.models.GroupedOpenApi
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Profile
-
 
 @Configuration
 @Profile("!prod")
@@ -23,12 +23,16 @@ class SwaggerConfig {
     }
 
     @Bean
-    fun openAPI(): OpenAPI =
-        OpenAPI()
-            .info(
-                Info()
-                    .title("Cufit API Docs")
-                    .description(DESCRIPTION)
-                    .version("1.0.0"),
-            )
+    fun generalGroupedOpenApi(): GroupedOpenApi {
+        return GroupedOpenApi
+            .builder()
+            .group("Cufit") // group 설정 (API들을 그룹화시켜 그룹에 속한 API들만 확인할 수 있도록 도와줌)
+            .addOpenApiCustomizer { openApi: OpenAPI ->
+                openApi.info = Info()
+                    .title("Cufit API Docs") // API 제목
+                    .description(DESCRIPTION) // API 설명
+                    .version("1.0.0")
+            }
+            .build()
+    }
 }

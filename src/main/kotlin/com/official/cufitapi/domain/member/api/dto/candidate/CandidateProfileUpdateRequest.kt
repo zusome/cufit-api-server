@@ -9,7 +9,7 @@ import java.time.LocalDateTime
 
 @Schema(name = "후보자 프로필 업데이트 요청")
 data class CandidateProfileUpdateRequest(
-    @Schema(description = "이미지", example = "https://cataas.com/cat")
+    @Schema(description = "이미지", example = "{ \"imageUrl\": \"https://cataas.com/cat\", \"profileOrder\": 1 }")
     val images: CandidateImagesRequest,
     @Schema(description = "성별", example = "MALE,FEMALE")
     val gender: Gender,
