@@ -1,11 +1,13 @@
 package com.official.cufitapi.domain.member.domain
 
+import com.official.cufitapi.domain.member.domain.vo.CandidateImage
 import com.official.cufitapi.domain.member.domain.vo.Gender
 
 class MatchCandidate(
     val id: Long,
     val memberId: Long,
     val isMatchAgreed: Boolean,
+    var images: List<CandidateImage>,
     var idealMbti: String?,
     var idealAgeRange: String?,
     var idealHeightRange: String?,
@@ -15,9 +17,10 @@ class MatchCandidate(
     var job: String?,
     var yearOfBirth: Int?,
     var gender: Gender?,
-    var phoneNumber: String?
+    var phoneNumber: String?,
 ) {
     fun updateProfile(
+        images: List<CandidateImage>,
         idealMbti: String?,
         idealAgeRange: String?,
         idealHeightRange: String?,
@@ -27,9 +30,9 @@ class MatchCandidate(
         job: String?,
         yearOfBirth: Int?,
         gender: Gender?,
-        phoneNumber: String?
-    )
-    {
+        phoneNumber: String?,
+    ) {
+        this.images = images
         this.idealMbti = idealMbti
         this.idealAgeRange = idealAgeRange
         this.idealHeightRange = idealHeightRange

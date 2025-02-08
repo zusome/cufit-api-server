@@ -7,11 +7,11 @@ import com.official.cufitapi.common.api.ApiV1Controller
 import com.official.cufitapi.common.api.dto.HttpResponse
 import com.official.cufitapi.domain.member.api.docs.MatchMakerApiDocs
 import com.official.cufitapi.domain.member.api.dto.candidate.CandidateCountResponse
-import com.official.cufitapi.domain.member.api.dto.candidate.CandidateImage
 import com.official.cufitapi.domain.member.api.dto.candidate.CandidatesInfoResponseDto
 import com.official.cufitapi.domain.member.api.dto.candidate.OtherCandidatesCountResponse
 import com.official.cufitapi.domain.member.api.dto.candidate.OtherCandidatesInfoResponseDto
 import com.official.cufitapi.domain.member.application.MatchMakerService
+import com.official.cufitapi.domain.member.domain.vo.CandidateImage
 import com.official.cufitapi.domain.member.infrastructure.persistence.dao.MatchMakerDao
 import com.official.cufitapi.domain.member.infrastructure.persistence.MatchCandidateEntity
 import org.springframework.http.HttpStatus
@@ -96,7 +96,7 @@ class MatchMakerApi(
     ): HttpResponse<CandidateCountResponse> {
         return HttpResponse.of(
             HttpStatus.OK,
-            CandidateCountResponse(8)
+            CandidateCountResponse(matchMakerDao.candidateCount(authorizationUser.userId))
         )
     }
 
@@ -109,7 +109,7 @@ class MatchMakerApi(
     ): HttpResponse<OtherCandidatesCountResponse> {
         return HttpResponse.of(
             HttpStatus.OK,
-            OtherCandidatesCountResponse(100)
+            OtherCandidatesCountResponse(matchMakerDao.otherCandidateCount(authorizationUser.userId))
         )
     }
 
