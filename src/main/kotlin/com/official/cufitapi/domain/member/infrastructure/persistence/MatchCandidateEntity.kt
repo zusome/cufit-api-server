@@ -1,6 +1,7 @@
 package com.official.cufitapi.domain.member.infrastructure.persistence
 
 import com.official.cufitapi.domain.member.domain.vo.Gender
+import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
@@ -9,6 +10,7 @@ import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
+import jakarta.persistence.OneToMany
 import jakarta.persistence.OneToOne
 import jakarta.persistence.Table
 import org.hibernate.annotations.Comment
@@ -66,6 +68,10 @@ class MatchCandidateEntity(
     @Comment("사용자 전화 번호")
     var phoneNumber: String? = null,
 
+    @OneToMany(mappedBy = "matchCandidateEntity", orphanRemoval = true, cascade = [CascadeType.ALL])
+    @Comment("매칭 후보자 이미지")
+    var images: MutableList<MatchCandidateImageEntity> = mutableListOf(),
+
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
 ) {
@@ -79,6 +85,7 @@ class MatchCandidateEntity(
     }
 
     fun updateProfile(
+        images: List<MatchCandidateImageEntity>,
         idealMbti: String,
         idealAgeRange: String,
         idealHeightRange: String,
@@ -90,6 +97,8 @@ class MatchCandidateEntity(
         gender: Gender,
         phoneNumber: String
     ) {
+        this.images.addAll(images)
+        this.images.forEach { it.matchCandidateEntity = this}
         this.idealMbti = idealMbti
         this.idealAgeRange = idealAgeRange
         this.idealHeightRange = idealHeightRange
