@@ -44,8 +44,8 @@ class CandidateApi(
                 CandidateResponse(
                     candidateId = 1L,
                     images = listOf(
-                        CandidateImage(imageUrl = "http://example.com/image1.jpg", profileOrder = 1),
-                        CandidateImage(imageUrl = "http://example.com/image2.jpg", profileOrder = 2)
+                        CandidateImage(imageUrl = "https://cataas.com/cat", profileOrder = 1),
+                        CandidateImage(imageUrl = "https://cataas.com/cat", profileOrder = 2)
                     ),
                     name = "John Doe",
                     yearOfBirth = "1990",
