@@ -48,18 +48,18 @@ class MatchMakerApi(
                         relation = "직장동료",
                         arrangements = listOf(
                             MatchMakerDao.ArrangementInfo(
-                                profileImage = "https://cataas.com/cat",
-                                dateName = "장충동",
+                                image = "https://cataas.com/cat",
+                                name = "장충동",
                                 arrangementStatus = "성공"
                             ),
                             MatchMakerDao.ArrangementInfo(
-                                profileImage = "https://cataas.com/cat",
-                                dateName = "박혁거세",
+                                image = "https://cataas.com/cat",
+                                name = "박혁거세",
                                 arrangementStatus = "실패"
                             ),
                             MatchMakerDao.ArrangementInfo(
-                                profileImage = "https://cataas.com/cat",
-                                dateName = "박동충",
+                                image = "https://cataas.com/cat",
+                                name = "박동충",
                                 arrangementStatus = "대기"
                             )
                         ),
