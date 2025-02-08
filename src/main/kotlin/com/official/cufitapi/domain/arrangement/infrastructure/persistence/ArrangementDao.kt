@@ -48,7 +48,7 @@ class ArrangementDao(
             ArrangementCandidate(
                 matchCandidate.name,
                 realAvailableMatchMakerCandidateRelations[memberId]!!.relationType,
-                LocalDate.now().year - matchCandidate.yearOfBirth,
+                matchCandidate.yearOfBirth,
                 3 - (candidateArrangementCountMap[memberId] ?: 0)
             )
         }.let { ArrangementCandidates(it) }
@@ -100,13 +100,14 @@ class ArrangementDao(
         val secondSql = """
                 SELECT 
                     mc.member_id,
-                    mc.name,
+                    m.name,
                     mc.year_of_birth
                 FROM
                     match_candidate mc
-                
-                WHERE
-                    mc.name IS NOT NULL
+                JOIN 
+                    member m ON mc.member_id = m.id
+                AND
+                    mc.is_match_agreed = true
                 AND
                     mc.year_of_birth IS NOT NULL
                 AND
