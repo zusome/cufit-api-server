@@ -26,8 +26,8 @@ class MatchMakerDao(
     )
 
     data class ArrangementInfo(
-        val profileImage: String,
-        val dateName: String,
+        val image: String,
+        val name: String,
         val arrangementStatus: String,
     )
 
