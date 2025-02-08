@@ -1,6 +1,6 @@
 package com.official.cufitapi.domain.member.infrastructure.persistence.dao
 
-import com.official.cufitapi.domain.member.api.dto.candidate.CandidateImage
+import com.official.cufitapi.domain.member.domain.vo.CandidateImage
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.stereotype.Component
 import javax.sql.DataSource
@@ -9,8 +9,44 @@ import javax.sql.DataSource
 class MatchMakerDao(
     dataSource: DataSource,
 ) {
+
     private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate = NamedParameterJdbcTemplate(dataSource)
 
+    fun otherCandidateCount(memberId: Long): Long {
+        val query = """
+            SELECT
+                COUNT(*)
+            FROM
+                match_candidate
+            JOIN 
+                member_relations ON match_candidate.member_id = member_relations.invitee_id
+            WHERE
+                member_relations.inviter_id != :memberId
+        """.trimIndent()
+        return namedParameterJdbcTemplate.queryForObject(
+            query,
+            mapOf("memberId" to memberId),
+            Long::class.java
+        ) ?: throw RuntimeException("Candidate not found")
+    }
+
+    fun candidateCount(memberId: Long): Long {
+        val query = """
+            SELECT
+                COUNT(*)
+            FROM
+                match_candidate
+            JOIN 
+                member_relations ON match_candidate.member_id = member_relations.invitee_id
+            WHERE
+                member_relations.inviter_id = :memberId
+        """.trimIndent()
+        return namedParameterJdbcTemplate.queryForObject(
+            query,
+            mapOf("memberId" to memberId),
+            Long::class.java
+        ) ?: throw RuntimeException("Candidate not found")
+    }
 
     data class MatchCandidates(
         val candidates: List<MatchCandidate>,

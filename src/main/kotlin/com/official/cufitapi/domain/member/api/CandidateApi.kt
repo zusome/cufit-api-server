@@ -13,6 +13,7 @@ import com.official.cufitapi.domain.member.application.CandidateMatchBreakUseCas
 import com.official.cufitapi.domain.member.application.CandidateProfileUpdateUseCase
 import com.official.cufitapi.domain.member.application.command.candidate.CandidateMatchBreakCommand
 import com.official.cufitapi.domain.member.application.command.candidate.CandidateProfileUpdateCommand
+import com.official.cufitapi.domain.member.domain.vo.CandidateImage
 import com.official.cufitapi.domain.member.domain.vo.MBTILetter
 import com.official.cufitapi.domain.member.infrastructure.ProfileImageUploadClientAdapter
 import com.official.cufitapi.domain.member.infrastructure.persistence.dao.CandidateDao
@@ -88,6 +89,7 @@ class CandidateApi(
     ): HttpResponse<Unit> {
         candidateProfileUpdateUseCase.updateProfile(
             CandidateProfileUpdateCommand(
+                images = request.images.images.map { CandidateImage(it.imageUrl, it.profileOrder)},
                 memberId = authorizationUser.userId,
                 gender = request.gender,
                 yearOfBirth = request.yearOfBirth,
