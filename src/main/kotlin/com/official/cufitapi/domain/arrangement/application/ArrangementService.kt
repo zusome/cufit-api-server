@@ -6,7 +6,7 @@ import com.official.cufitapi.common.tomorrow
 import com.official.cufitapi.domain.arrangement.application.command.SuggestArrangementCommand
 import com.official.cufitapi.domain.arrangement.application.command.UpdateArrangementCommand
 import com.official.cufitapi.domain.arrangement.infrastructure.persistence.ArrangementEntity
-import com.official.cufitapi.domain.arrangement.infrastructure.persistence.ArrangementRepository
+import com.official.cufitapi.domain.arrangement.infrastructure.persistence.ArrangementJpaRepository
 import com.official.cufitapi.domain.arrangement.infrastructure.persistence.ArrangementStatus
 import com.official.cufitapi.domain.member.infrastructure.persistence.MatchCandidateJpaRepository
 import com.official.cufitapi.domain.member.infrastructure.persistence.MemberRelationJpaRepository
@@ -26,7 +26,7 @@ fun interface UpdateArrangementUsecase {
 class ArrangementService(
     private val matchCandidateJpaRepository: MatchCandidateJpaRepository,
     private val memberRelationJpaRepository: MemberRelationJpaRepository,
-    private val arrangementRepository: ArrangementRepository
+    private val arrangementJpaRepository: ArrangementJpaRepository
 ): SuggestArrangementUsecase, UpdateArrangementUsecase {
 
     /**
@@ -47,11 +47,11 @@ class ArrangementService(
             rightCandidateId = command.rightCandidateId,
             arrangementStatus = ArrangementStatus.SUGGESTED
         )
-        return arrangementRepository.save(arrangementEntity).let { it.id!! }
+        return arrangementJpaRepository.save(arrangementEntity).let { it.id!! }
     }
 
     private fun verifyExists(matchMakerId: Long, leftCandidateId: Long, rightCandidateId: Long) {
-        if(arrangementRepository.existsCandidates(matchMakerId, leftCandidateId, rightCandidateId)) {
+        if(arrangementJpaRepository.existsCandidates(matchMakerId, leftCandidateId, rightCandidateId)) {
             throw InvalidRequestException("이미 주선된 후보자입니다.")
         }
     }
@@ -74,7 +74,7 @@ class ArrangementService(
     ) {
         val isMyCandidate = memberRelationJpaRepository.existsByInviterIdAndInviteeId(matchMakerId, candidateId)
         if (isMyCandidate) {
-            val count = arrangementRepository.todayCount(matchMakerId, candidateId, today, tomorrow)
+            val count = arrangementJpaRepository.todayCount(matchMakerId, candidateId, today, tomorrow)
             if (count >= 3) {
                 throw RuntimeException("하루에 3회 이상 매칭을 할 수 없습니다.")
             }
@@ -82,9 +82,9 @@ class ArrangementService(
     }
 
     override fun updateArrangement(command: UpdateArrangementCommand) {
-        val arrangementEntity = arrangementRepository.findByIdOrNull(command.arrangementId)
+        val arrangementEntity = arrangementJpaRepository.findByIdOrNull(command.arrangementId)
             ?: throw InvalidRequestException("존재하지 않는 주선")
         arrangementEntity.nextStatus(command.isAccepted)
-        arrangementRepository.save(arrangementEntity)
+        arrangementJpaRepository.save(arrangementEntity)
     }
 }
