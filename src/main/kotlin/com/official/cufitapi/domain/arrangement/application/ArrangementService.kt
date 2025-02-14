@@ -5,6 +5,7 @@ import com.official.cufitapi.common.exception.InvalidRequestException
 import com.official.cufitapi.common.tomorrow
 import com.official.cufitapi.domain.arrangement.application.command.SuggestArrangementCommand
 import com.official.cufitapi.domain.arrangement.application.command.UpdateArrangementCommand
+import com.official.cufitapi.domain.arrangement.domain.ArrangementRepository
 import com.official.cufitapi.domain.arrangement.infrastructure.persistence.ArrangementEntity
 import com.official.cufitapi.domain.arrangement.infrastructure.persistence.ArrangementJpaRepository
 import com.official.cufitapi.domain.arrangement.infrastructure.persistence.ArrangementStatus
@@ -26,7 +27,8 @@ fun interface UpdateArrangementUsecase {
 class ArrangementService(
     private val matchCandidateJpaRepository: MatchCandidateJpaRepository,
     private val memberRelationJpaRepository: MemberRelationJpaRepository,
-    private val arrangementJpaRepository: ArrangementJpaRepository
+    private val arrangementJpaRepository: ArrangementJpaRepository,
+    private val arrangementRepository: ArrangementRepository
 ): SuggestArrangementUsecase, UpdateArrangementUsecase {
 
     /**
@@ -82,6 +84,8 @@ class ArrangementService(
     }
 
     override fun updateArrangement(command: UpdateArrangementCommand) {
+        val arrangement = arrangementRepository.findById(command.arrangementId)
+        arrangement.nextStatus(command.isAccepted)
         val arrangementEntity = arrangementJpaRepository.findByIdOrNull(command.arrangementId)
             ?: throw InvalidRequestException("존재하지 않는 주선")
         arrangementEntity.nextStatus(command.isAccepted)

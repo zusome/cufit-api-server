@@ -22,6 +22,12 @@ class DeviceTokenRepositoryAdapter(
         return mapToDomain(entity)
     }
 
+    override fun findByMemberIdAndPlatform(memberId: Long, platform: String): DeviceToken {
+        val entity = deviceTokenJpaRepository.findByMemberIdAndPlatform(memberId, platform)
+            ?: throw IllegalArgumentException("DeviceToken not found")
+        return mapToDomain(entity)
+    }
+
     private fun mapToEntity(deviceToken: DeviceToken): DeviceTokenEntity =
         DeviceTokenEntity(
             id = deviceToken.id,
