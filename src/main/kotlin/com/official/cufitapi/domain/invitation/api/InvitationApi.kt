@@ -10,10 +10,10 @@ import com.official.cufitapi.domain.invitation.api.dto.InvitationCodeGenerateReq
 import com.official.cufitapi.domain.invitation.api.dto.InvitationCodeRequest
 import com.official.cufitapi.domain.invitation.api.dto.InvitationCodeResponse
 import com.official.cufitapi.domain.invitation.api.dto.InvitationValidationResponse
-import com.official.cufitapi.domain.invitation.application.InvitationCardGenerationUseCase
 import com.official.cufitapi.domain.invitation.application.InvitationCardAcceptUseCase
-import com.official.cufitapi.domain.invitation.application.command.InvitationCardGenerationCommand
+import com.official.cufitapi.domain.invitation.application.InvitationCardGenerationUseCase
 import com.official.cufitapi.domain.invitation.application.command.InvitationCardAcceptCommand
+import com.official.cufitapi.domain.invitation.application.command.InvitationCardGenerationCommand
 import com.official.cufitapi.domain.invitation.domain.vo.InvitationCard
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.PostMapping
@@ -22,14 +22,14 @@ import org.springframework.web.bind.annotation.RequestBody
 @ApiV1Controller
 class InvitationApi(
     private val invitationCardGenerationUseCase: InvitationCardGenerationUseCase,
-    private val invitationCardAcceptUseCase: InvitationCardAcceptUseCase
+    private val invitationCardAcceptUseCase: InvitationCardAcceptUseCase,
 ) : InvitationApiDocs {
 
     // 초대 코드 생성
     @PostMapping("/invitations")
     override fun generate(
         @Authorization(AuthorizationType.ALL) authorizationUser: AuthorizationUser,
-        @RequestBody request: InvitationCodeGenerateRequest
+        @RequestBody request: InvitationCodeGenerateRequest,
     ): HttpResponse<InvitationCodeResponse> {
         val invitationCode = invitationCardGenerationUseCase.generate(
             InvitationCardGenerationCommand(
@@ -45,14 +45,14 @@ class InvitationApi(
     @PostMapping("/invitations/code")
     override fun validateInvitation(
         @Authorization(AuthorizationType.ALL) authorizationUser: AuthorizationUser,
-        @RequestBody request: InvitationCodeRequest
+        @RequestBody request: InvitationCodeRequest,
     ): HttpResponse<InvitationValidationResponse> {
-        val memberType = invitationCardAcceptUseCase.accept(
+        val response = invitationCardAcceptUseCase.accept(
             InvitationCardAcceptCommand(
                 inviteeId = authorizationUser.userId,
                 invitationCode = InvitationCard(code = request.invitationCode)
             )
         )
-        return HttpResponse.of(HttpStatus.OK, InvitationValidationResponse(memberType))
+        return HttpResponse.of(HttpStatus.OK, InvitationValidationResponse(response.first, response.second))
     }
 }

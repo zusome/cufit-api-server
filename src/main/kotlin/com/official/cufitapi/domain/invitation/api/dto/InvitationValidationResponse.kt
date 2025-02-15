@@ -6,6 +6,8 @@ import io.swagger.v3.oas.annotations.media.Schema
 @Schema(name = "초대 검증 응답")
 data class InvitationValidationResponse(
     @Schema(description = "사용자 타입", example = "CANDIDATE")
-    val memberType: MemberType
-) {
-}
+    val memberType: MemberType,
+
+    @Schema(description = "초대자 이름", example = "관리자")
+    val inviterName: String
+)
