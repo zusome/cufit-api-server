@@ -63,7 +63,6 @@ class AuthorizationApi(
     }
 
     companion object {
-        private val log = LoggerFactory.getLogger(AuthorizationApi::class.java)
         private const val BEARER = "Bearer "
         private const val BLANK = ""
     }
