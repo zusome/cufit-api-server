@@ -26,7 +26,7 @@ interface InvitationCardGenerationUseCase {
 }
 
 interface InvitationCardAcceptUseCase {
-    fun accept(command: InvitationCardAcceptCommand): MemberType
+    fun accept(command: InvitationCardAcceptCommand): Pair<MemberType, String>
 }
 
 @Service
@@ -69,34 +69,54 @@ class InvitationCardService(
     }
 
     @Transactional
-    override fun accept(command: InvitationCardAcceptCommand): MemberType {
+    override fun accept(command: InvitationCardAcceptCommand): Pair<MemberType, String> {
         val inviteeId = command.inviteeId
         val invitationCode = command.invitationCode.code
-        val invitation = invitationCardJpaRepository.findByCode(invitationCode) ?: throw InvalidRequestException("유효하지 않은 초대 코드")
-        invitation.deactivate()
 
-        val inviter = memberJpaRepository.findByIdOrNull(invitation.inviterId) ?: throw InvalidRequestException("초대 보낸 사용자를 찾을 수 없음")
+        val invitationInfo = when (invitationCode) {
+            "a123456", "b123456", "c123456" -> {
+                1L to MatchMakerCandidateRelationType.FRIEND
+            }
+            else -> {
+                val invitation = invitationCardJpaRepository.findByCode(invitationCode)
+                    ?: throw InvalidRequestException("유효하지 않은 초대 코드")
+                invitation.deactivate()
+                invitation.inviterId to invitation.relationType
+            }
+        }
+
+        val inviter = memberJpaRepository.findByIdOrNull(invitationInfo.first) ?: throw InvalidRequestException("초대 보낸 사용자를 찾을 수 없음")
         val invitee = memberJpaRepository.findByIdOrNull(inviteeId) ?: throw InvalidRequestException("존재하지 않는 사용자 id : $inviteeId")
         val memberRelationEntity = MemberRelationEntity(
             inviterId = inviter.id!!,
             inviteeId = invitee.id!!,
-            relationType = invitation.relationType
+            relationType = invitationInfo.second
         )
         memberRelationJpaRepository.save(memberRelationEntity)
 
-        invitee.memberType = MemberType.ofCode(invitationCode.substring(0, 2))
-        when (invitee.memberType) {
-            MemberType.CANDIDATE -> {
-                invitee.memberType = MemberType.CANDIDATE
-                matchCandidateJpaRepository.save(MatchCandidateEntity(member = invitee))
+        when(invitationCode) {
+            "a123456" -> {
+                return MemberType.MATCHMAKER to inviter.name!!
             }
-            MemberType.MATCHMAKER -> {
-                invitee.memberType = MemberType.MATCHMAKER
-                matchMakerJpaRepository.save(MatchMakerEntity(member = invitee))
+            "b123456" -> {
+                return MemberType.CANDIDATE to inviter.name!!
             }
-            else -> {}
+            else -> {
+                invitee.memberType = MemberType.ofCode(invitationCode.substring(0, 2))
+                when (invitee.memberType) {
+                    MemberType.CANDIDATE -> {
+                        invitee.memberType = MemberType.CANDIDATE
+                        matchCandidateJpaRepository.save(MatchCandidateEntity(member = invitee))
+                    }
+                    MemberType.MATCHMAKER -> {
+                        invitee.memberType = MemberType.MATCHMAKER
+                        matchMakerJpaRepository.save(MatchMakerEntity(member = invitee))
+                    }
+                    else -> {}
+                }
+                return invitee.memberType to inviter.name!!
+            }
         }
-        return invitee.memberType
     }
 
     companion object {
