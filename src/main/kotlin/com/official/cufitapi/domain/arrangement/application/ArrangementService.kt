@@ -37,13 +37,13 @@ class ArrangementService(
     override fun suggestArrangement(command: SuggestArrangementCommand): Long {
         val today = DateTimeUtils.beginToday()
         val tomorrow = today.tomorrow()
-        verifyCandidate(command.matchMakerId, command.leftCandidateId, today, tomorrow)
-        verifyCandidate(command.matchMakerId, command.rightCandidateId, today, tomorrow)
+        verifyCandidate(command.matchMakerMemberId, command.leftCandidateId, today, tomorrow)
+        verifyCandidate(command.matchMakerMemberId, command.rightCandidateId, today, tomorrow)
         verifySameGender(command.leftCandidateId, command.rightCandidateId)
-        verifyExists(command.matchMakerId, command.leftCandidateId, command.rightCandidateId)
+        verifyExists(command.matchMakerMemberId, command.leftCandidateId, command.rightCandidateId)
         val arrangementEntity = ArrangementEntity(
-            matchMakerId = command.matchMakerId,
-            leftCandidateId = command.leftCandidateId,
+            matchMakerMemberId = command.matchMakerMemberId,
+            leftCandidateMemberId = command.leftCandidateId,
             rightCandidateId = command.rightCandidateId,
             arrangementStatus = ArrangementStatus.SUGGESTED
         )
