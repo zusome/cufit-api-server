@@ -36,7 +36,7 @@ class ArrangementApi(
         ) authorizationUser: AuthorizationUser,
         @RequestBody request: SuggestArrangementRequest,
     ): HttpResponse<SuggestArrangementResponse> {
-        val arrangementId = suggestArrangementUseCase.suggestArrangement(request.toCommand())
+        val arrangementId = suggestArrangementUseCase.suggestArrangement(request.toCommand(authorizationUser.userId))
         return HttpResponse.of(HttpStatus.CREATED, SuggestArrangementResponse(arrangementId))
     }
 

@@ -2,12 +2,14 @@ package com.official.cufitapi.domain.member.infrastructure
 
 import com.official.cufitapi.domain.member.domain.MatchCandidate
 import com.official.cufitapi.domain.member.domain.repository.MatchCandidateRepository
+import com.official.cufitapi.domain.member.domain.vo.CandidateImage
+import com.official.cufitapi.domain.member.infrastructure.persistence.MatchCandidateImageEntity
 import com.official.cufitapi.domain.member.infrastructure.persistence.MatchCandidateJpaRepository
 import org.springframework.stereotype.Component
 
 @Component
 class MatchCandidateRepositoryAdapter(
-    private val matchCandidateJpaRepository: MatchCandidateJpaRepository
+    private val matchCandidateJpaRepository: MatchCandidateJpaRepository,
 ) : MatchCandidateRepository {
 
     override fun findByMemberId(memberId: Long): MatchCandidate {
@@ -15,6 +17,7 @@ class MatchCandidateRepositoryAdapter(
             ?: throw RuntimeException("후보자가 아닙니다.")
         return MatchCandidate(
             id = entity.id ?: throw RuntimeException(),
+            images = entity.images?.map { image -> CandidateImage(image.imageUrl, image.profileOrder) } ?: emptyList(),
             isMatchAgreed = entity.isMatchAgreed,
             memberId = entity.member.id ?: throw RuntimeException(),
             idealMbti = entity.idealMbti,
@@ -39,16 +42,22 @@ class MatchCandidateRepositoryAdapter(
     override fun updateProfile(matchCandidate: MatchCandidate) {
         val entity = matchCandidateJpaRepository.findById(matchCandidate.id)
             .orElseThrow { RuntimeException() }
-            entity.updateProfile(
-                idealMbti = matchCandidate.idealMbti ?: throw RuntimeException(),
-                idealAgeRange = matchCandidate.idealAgeRange ?: throw RuntimeException(),
-                idealHeightRange = matchCandidate.idealHeightRange ?: throw RuntimeException(),
-                mbti = matchCandidate.mbti ?: throw RuntimeException(),
-                height = matchCandidate.height ?: throw RuntimeException(),
-                station = matchCandidate.station ?: throw RuntimeException(),
-                job = matchCandidate.job ?: throw RuntimeException(),
-                yearOfBirth = matchCandidate.yearOfBirth ?: throw RuntimeException(),
-                gender = matchCandidate.gender ?: throw RuntimeException(),
-                phoneNumber = matchCandidate.phoneNumber ?: throw RuntimeException())
-        }
+        val matchCandidateImageEntities = matchCandidate.images.map { image -> matchCandidateImageEntity(image) }
+        entity.updateProfile(
+            images = matchCandidateImageEntities,
+            idealMbti = matchCandidate.idealMbti ?: throw RuntimeException(),
+            idealAgeRange = matchCandidate.idealAgeRange ?: throw RuntimeException(),
+            idealHeightRange = matchCandidate.idealHeightRange ?: throw RuntimeException(),
+            mbti = matchCandidate.mbti ?: throw RuntimeException(),
+            height = matchCandidate.height ?: throw RuntimeException(),
+            station = matchCandidate.station ?: throw RuntimeException(),
+            job = matchCandidate.job ?: throw RuntimeException(),
+            yearOfBirth = matchCandidate.yearOfBirth ?: throw RuntimeException(),
+            gender = matchCandidate.gender ?: throw RuntimeException(),
+            phoneNumber = matchCandidate.phoneNumber ?: throw RuntimeException()
+        )
     }
+
+    private fun matchCandidateImageEntity(image: CandidateImage): MatchCandidateImageEntity =
+        MatchCandidateImageEntity(imageUrl = image.imageUrl, profileOrder = image.profileOrder)
+}

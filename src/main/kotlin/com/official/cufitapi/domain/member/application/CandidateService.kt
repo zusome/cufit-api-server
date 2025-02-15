@@ -3,6 +3,7 @@ package com.official.cufitapi.domain.member.application
 import com.official.cufitapi.domain.member.application.command.candidate.CandidateMatchBreakCommand
 import com.official.cufitapi.domain.member.application.command.candidate.CandidateProfileUpdateCommand
 import com.official.cufitapi.domain.member.domain.repository.MatchCandidateRepository
+import com.official.cufitapi.domain.member.infrastructure.persistence.MatchCandidateImageEntity
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -24,6 +25,7 @@ class CandidateService(
     override fun updateProfile(command: CandidateProfileUpdateCommand) {
         val matchCandidate = (matchCandidateRepository.findByMemberId(command.memberId))
         matchCandidate.updateProfile(
+            images = command.images,
             idealMbti = command.idealMbti,
             idealAgeRange = command.idealAgeRange.joinToString(),
             idealHeightRange = command.idealHeightRange.joinToString(),
