@@ -23,8 +23,8 @@ class Arrangement(
         fun fromEntity(entity: ArrangementEntity): Arrangement {
             return Arrangement(
                 id = entity.id,
-                matchMakerId = entity.matchMakerId,
-                leftCandidateId = entity.leftCandidateId,
+                matchMakerId = entity.matchMakerMemberId,
+                leftCandidateId = entity.leftCandidateMemberId,
                 rightCandidateId = entity.rightCandidateId,
                 arrangementStatus = entity.arrangementStatus
             )
