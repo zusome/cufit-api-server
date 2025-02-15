@@ -4,7 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import java.time.LocalDateTime
 
-interface ArrangementRepository : JpaRepository<ArrangementEntity, Long> {
+interface ArrangementJpaRepository : JpaRepository<ArrangementEntity, Long> {
     @Query(
         """
             SELECT count(1)

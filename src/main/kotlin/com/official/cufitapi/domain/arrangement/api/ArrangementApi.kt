@@ -29,7 +29,7 @@ class ArrangementApi(
 ) : ArrangementApiDocs {
 
     @PostMapping("/arrangements")
-    fun suggestArrangement(
+    override fun suggestArrangement(
         @Authorization(
             AuthorizationType.BASIC,
             AuthorizationType.MATCHMAKER
@@ -41,7 +41,7 @@ class ArrangementApi(
     }
 
     @PostMapping("/arrangements/{arrangementId}")
-    fun updateArrangement(
+    override fun updateArrangement(
         @PathVariable("arrangementId") arrangementId: Long,
         @Authorization(
             AuthorizationType.BASIC,
@@ -55,7 +55,7 @@ class ArrangementApi(
 
 
     @GetMapping("/arrangements/candidates")
-    fun findAvailableCandidates(
+    override fun findAvailableCandidates(
         @RequestParam("targetId") targetId: Long,
         @Authorization(
             AuthorizationType.BASIC,
