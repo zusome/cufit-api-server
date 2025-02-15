@@ -51,6 +51,12 @@ dependencies {
 	// WebFlux for WebClient
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
 
+	// AWS
+	//s3
+	implementation("software.amazon.awssdk:bom:2.21.0")
+	implementation("software.amazon.awssdk:s3:2.21.0")
+	implementation("software.amazon.awssdk:sqs:2.21.0")
+
 	// JPA
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 

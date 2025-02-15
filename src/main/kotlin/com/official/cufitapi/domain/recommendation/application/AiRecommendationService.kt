@@ -8,7 +8,9 @@ interface CandidateRecommendationInfoUseCase {
 }
 
 @Service
-class AiRecommendationService : CandidateRecommendationInfoUseCase {
+class AiRecommendationService(
+    
+) : CandidateRecommendationInfoUseCase {
 
     // TODO: AI 서버로부터 추천 결과 받아오기
     override fun getRecommendationResult() {
