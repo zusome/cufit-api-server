@@ -16,15 +16,15 @@ import org.hibernate.annotations.Comment
 class ArrangementEntity(
 
     @Comment("주선 신청자")
-    @Column(name = "match_maker_id", unique = false, nullable = false, updatable = false)
-    var matchMakerId: Long,
+    @Column(name = "match_maker_member_id", unique = false, nullable = false, updatable = false)
+    var matchMakerMemberId: Long,
 
     @Comment("첫번째 주선 대상자")
-    @Column(name = "left_candidate_id", unique = false, nullable = false, updatable = false)
-    var leftCandidateId: Long,
+    @Column(name = "left_candidate_member_id", unique = false, nullable = false, updatable = false)
+    var leftCandidateMemberId: Long,
 
     @Comment("두번째 주선 대상자")
-    @Column(name = "right_candidate_id", unique = false, nullable = false, updatable = false)
+    @Column(name = "right_candidate_member_id", unique = false, nullable = false, updatable = false)
     var rightCandidateId: Long,
 
     @Comment("주선 상태")

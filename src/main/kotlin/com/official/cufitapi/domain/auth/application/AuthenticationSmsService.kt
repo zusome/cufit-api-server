@@ -4,6 +4,7 @@ import com.official.cufitapi.domain.auth.application.command.SmsAuthenticationIs
 import com.official.cufitapi.domain.auth.application.command.SmsAuthenticationValidationCommand
 import com.official.cufitapi.domain.auth.domain.SmsAuthentication
 import com.official.cufitapi.domain.auth.domain.repository.AuthorizationMemberRepository
+import com.official.cufitapi.domain.member.domain.repository.MemberRepository
 import org.springframework.stereotype.Service
 
 interface AuthenticationSmsIssueUseCase {

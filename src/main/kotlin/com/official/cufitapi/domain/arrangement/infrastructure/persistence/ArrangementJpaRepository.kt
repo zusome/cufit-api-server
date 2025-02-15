@@ -4,13 +4,13 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import java.time.LocalDateTime
 
-interface ArrangementRepository : JpaRepository<ArrangementEntity, Long> {
+interface ArrangementJpaRepository : JpaRepository<ArrangementEntity, Long> {
     @Query(
         """
             SELECT count(1)
             FROM ArrangementEntity a
-            WHERE a.matchMakerId = :matchMakerId
-            AND (a.leftCandidateId = :candidateId or a.rightCandidateId = :candidateId)
+            WHERE a.matchMakerMemberId = :matchMakerId
+            AND (a.leftCandidateMemberId = :candidateId or a.rightCandidateId = :candidateId)
             AND a.createdDate BETWEEN :today AND :tomorrow
         """
     )
@@ -20,11 +20,11 @@ interface ArrangementRepository : JpaRepository<ArrangementEntity, Long> {
         """
             SELECT count(1)
             FROM ArrangementEntity a
-            WHERE a.matchMakerId = :matchMakerId
+            WHERE a.matchMakerMemberId = :matchMakerId
             AND (
-                    (a.leftCandidateId = :leftCandidateId and a.rightCandidateId = :rightCandidateId)
+                    (a.leftCandidateMemberId = :leftCandidateId and a.rightCandidateId = :rightCandidateId)
                     or 
-                    (a.leftCandidateId = :rightCandidateId and a.rightCandidateId = :leftCandidateId)
+                    (a.leftCandidateMemberId = :rightCandidateId and a.rightCandidateId = :leftCandidateId)
             )
         """
     )

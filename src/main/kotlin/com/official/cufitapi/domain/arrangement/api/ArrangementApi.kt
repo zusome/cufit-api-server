@@ -29,19 +29,19 @@ class ArrangementApi(
 ) : ArrangementApiDocs {
 
     @PostMapping("/arrangements")
-    fun suggestArrangement(
+    override fun suggestArrangement(
         @Authorization(
             AuthorizationType.BASIC,
             AuthorizationType.MATCHMAKER
         ) authorizationUser: AuthorizationUser,
         @RequestBody request: SuggestArrangementRequest,
     ): HttpResponse<SuggestArrangementResponse> {
-        val arrangementId = suggestArrangementUseCase.suggestArrangement(request.toCommand())
+        val arrangementId = suggestArrangementUseCase.suggestArrangement(request.toCommand(authorizationUser.userId))
         return HttpResponse.of(HttpStatus.CREATED, SuggestArrangementResponse(arrangementId))
     }
 
     @PostMapping("/arrangements/{arrangementId}")
-    fun updateArrangement(
+    override fun updateArrangement(
         @PathVariable("arrangementId") arrangementId: Long,
         @Authorization(
             AuthorizationType.BASIC,
@@ -55,7 +55,7 @@ class ArrangementApi(
 
 
     @GetMapping("/arrangements/candidates")
-    fun findAvailableCandidates(
+    override fun findAvailableCandidates(
         @RequestParam("targetId") targetId: Long,
         @Authorization(
             AuthorizationType.BASIC,
