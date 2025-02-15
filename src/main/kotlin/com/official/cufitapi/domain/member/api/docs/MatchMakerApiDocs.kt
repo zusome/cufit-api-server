@@ -4,7 +4,8 @@ import com.official.cufitapi.common.annotation.AuthorizationUser
 import com.official.cufitapi.common.api.dto.HttpResponse
 import com.official.cufitapi.domain.member.api.dto.candidate.CandidateCountResponse
 import com.official.cufitapi.domain.member.api.dto.candidate.OtherCandidatesCountResponse
-import com.official.cufitapi.domain.member.infrastructure.persistence.dao.MatchMakerDao
+import com.official.cufitapi.domain.member.infrastructure.persistence.dto.MatchCandidates
+import com.official.cufitapi.domain.member.infrastructure.persistence.dto.OtherMatchCandidates
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
@@ -20,7 +21,7 @@ interface MatchMakerApiDocs {
         ApiResponse(responseCode = "401", description = "인증 실패"),
         ApiResponse(responseCode = "500", description = "서버 에러")
     )
-    fun findCandidates(authorizationUser: AuthorizationUser): HttpResponse<MatchMakerDao.MatchCandidates>
+    fun findCandidates(authorizationUser: AuthorizationUser): HttpResponse<MatchCandidates>
 
     @Operation(
         summary = "내 후보자 수 조회 API",
@@ -50,5 +51,5 @@ interface MatchMakerApiDocs {
         ApiResponse(responseCode = "401", description = "인증 실패"),
         ApiResponse(responseCode = "500", description = "서버 에러")
     )
-    fun findOtherCandidates(authorizationUser: AuthorizationUser): HttpResponse<MatchMakerDao.OtherMatchCandidates>
+    fun findOtherCandidates(authorizationUser: AuthorizationUser): HttpResponse<OtherMatchCandidates>
 }

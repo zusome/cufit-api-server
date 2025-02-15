@@ -12,15 +12,20 @@ import com.official.cufitapi.domain.member.api.dto.candidate.OtherCandidatesCoun
 import com.official.cufitapi.domain.member.api.dto.candidate.OtherCandidatesInfoResponseDto
 import com.official.cufitapi.domain.member.application.MatchMakerService
 import com.official.cufitapi.domain.member.domain.vo.CandidateImage
-import com.official.cufitapi.domain.member.infrastructure.persistence.dao.MatchMakerDao
 import com.official.cufitapi.domain.member.infrastructure.persistence.MatchCandidateEntity
+import com.official.cufitapi.domain.member.infrastructure.persistence.dao.MatchMakerJdbcClientDao
+import com.official.cufitapi.domain.member.infrastructure.persistence.dto.ArrangementInfo
+import com.official.cufitapi.domain.member.infrastructure.persistence.dto.MatchCandidate
+import com.official.cufitapi.domain.member.infrastructure.persistence.dto.MatchCandidates
+import com.official.cufitapi.domain.member.infrastructure.persistence.dto.OtherMatchCandidate
+import com.official.cufitapi.domain.member.infrastructure.persistence.dto.OtherMatchCandidates
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
 
 @ApiV1Controller
 class MatchMakerApi(
-    private val matchMakerDao: MatchMakerDao,
-    private val matchMakerService: MatchMakerService
+    private val matchMakerJdbcClientDao: MatchMakerJdbcClientDao,
+    private val matchMakerService: MatchMakerService,
 ) : MatchMakerApiDocs {
 
     @GetMapping("/matchmakers/candidates")
@@ -29,12 +34,12 @@ class MatchMakerApi(
             AuthorizationType.BASIC,
             AuthorizationType.MATCHMAKER
         ) authorizationUser: AuthorizationUser,
-    ): HttpResponse<MatchMakerDao.MatchCandidates> {
+    ): HttpResponse<MatchCandidates> {
         return HttpResponse.of(
             HttpStatus.OK,
-            MatchMakerDao.MatchCandidates(
+            MatchCandidates(
                 listOf(
-                    MatchMakerDao.MatchCandidate(
+                    MatchCandidate(
                         image = "https://cataas.com/cat",
                         name = "김철수",
                         relation = "친구",
@@ -42,22 +47,22 @@ class MatchMakerApi(
                         hasProfile = true,
                         isMatchingPaused = false
                     ),
-                    MatchMakerDao.MatchCandidate(
+                    MatchCandidate(
                         image = "https://cataas.com/cat",
                         name = "홍길동",
                         relation = "직장동료",
                         arrangements = listOf(
-                            MatchMakerDao.ArrangementInfo(
+                            ArrangementInfo(
                                 image = "https://cataas.com/cat",
                                 name = "장충동",
                                 arrangementStatus = "성공"
                             ),
-                            MatchMakerDao.ArrangementInfo(
+                            ArrangementInfo(
                                 image = "https://cataas.com/cat",
                                 name = "박혁거세",
                                 arrangementStatus = "실패"
                             ),
-                            MatchMakerDao.ArrangementInfo(
+                            ArrangementInfo(
                                 image = "https://cataas.com/cat",
                                 name = "박동충",
                                 arrangementStatus = "대기"
@@ -66,7 +71,7 @@ class MatchMakerApi(
                         hasProfile = true,
                         isMatchingPaused = false
                     ),
-                    MatchMakerDao.MatchCandidate(
+                    MatchCandidate(
                         image = "https://cataas.com/cat",
                         name = "박혁거세",
                         relation = "직장동료",
@@ -74,7 +79,7 @@ class MatchMakerApi(
                         hasProfile = false,
                         isMatchingPaused = false
                     ),
-                    MatchMakerDao.MatchCandidate(
+                    MatchCandidate(
                         image = "https://cataas.com/cat",
                         name = "김민지",
                         relation = "친구",
@@ -96,7 +101,7 @@ class MatchMakerApi(
     ): HttpResponse<CandidateCountResponse> {
         return HttpResponse.of(
             HttpStatus.OK,
-            CandidateCountResponse(matchMakerDao.candidateCount(authorizationUser.userId))
+            CandidateCountResponse(matchMakerJdbcClientDao.candidateCount(authorizationUser.userId))
         )
     }
 
@@ -109,7 +114,7 @@ class MatchMakerApi(
     ): HttpResponse<OtherCandidatesCountResponse> {
         return HttpResponse.of(
             HttpStatus.OK,
-            OtherCandidatesCountResponse(matchMakerDao.otherCandidateCount(authorizationUser.userId))
+            OtherCandidatesCountResponse(matchMakerJdbcClientDao.otherCandidateCount(authorizationUser.userId))
         )
     }
 
@@ -120,12 +125,12 @@ class MatchMakerApi(
             AuthorizationType.BASIC,
             AuthorizationType.MATCHMAKER
         ) authorizationUser: AuthorizationUser,
-    ): HttpResponse<MatchMakerDao.OtherMatchCandidates> {
+    ): HttpResponse<OtherMatchCandidates> {
         return HttpResponse.of(
             HttpStatus.OK,
-            MatchMakerDao.OtherMatchCandidates(
+            OtherMatchCandidates(
                 listOf(
-                    MatchMakerDao.OtherMatchCandidate(
+                    OtherMatchCandidate(
                         id = 1L,
                         images = listOf(
                             CandidateImage(imageUrl = "https://cataas.com/cat", profileOrder = 1),
