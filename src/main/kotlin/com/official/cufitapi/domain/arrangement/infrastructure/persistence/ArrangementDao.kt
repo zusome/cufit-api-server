@@ -22,6 +22,7 @@ class ArrangementDao(
     )
 
     data class ArrangementCandidate(
+        val image: String,
         val candidateName: String,
         val relationType: String,
         val age: Int,
@@ -46,6 +47,7 @@ class ArrangementDao(
         return matchCandidates.map { (memberId, matchCandidate) ->
 
             ArrangementCandidate(
+                "image",
                 matchCandidate.name,
                 realAvailableMatchMakerCandidateRelations[memberId]!!.relationType,
                 matchCandidate.yearOfBirth,

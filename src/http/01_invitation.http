@@ -55,5 +55,5 @@ Content-Type: application/json
 Authorization: Bearer {{candidate_access_token}}
 
 {
-  "invitationCode": "{{candidate_invitation_code}}"
+  "invitationCode": "a123456"
 }
