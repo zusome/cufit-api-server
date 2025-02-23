@@ -12,4 +12,10 @@ enum class IdealHeightUnit(
     HEIGHT_180(180),
     HEIGHT_185(185),
     HEIGHT_190(190)
+    ;
+
+    companion object {
+        fun from(name: String): IdealHeightUnit =
+            entries.first { it.name == name }
+    }
 }

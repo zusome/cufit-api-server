@@ -104,7 +104,6 @@ class MatchMakerDaoJdbcTemplateDao(
                     height = 165,
                     station = "정자역",
                     job = "디자이너",
-                    degrees = 2,
                     matchMakerRelation = "직장동료",
                     matchMakerName = "김철수",
                     idealHeightRange = listOf(170, 190),
