@@ -3,7 +3,7 @@ GET http://{{host}}/api/v1/matchmakers/candidates/count
 Content-Type: application/json
 Authorization: Bearer {{matchmaker_access_token}}
 
-### 내가 등록한 후보자 개수 반환
+### 내가 등록하지 않은 후보자 개수 반환
 GET http://{{host}}/api/v1/matchmakers/candidates/others/count
 Content-Type: application/json
 Authorization: Bearer {{matchmaker_access_token}}

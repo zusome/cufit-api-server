@@ -1,4 +1,4 @@
-### 어드민 -> 주선자 초대 코드 생성
+### 어드민 -> 주선자2 초대 코드 생성
 POST http://{{host}}/api/v1/invitations
 Content-Type: application/json
 Authorization: Bearer {{access_token}}
@@ -16,22 +16,22 @@ Authorization: Bearer {{access_token}}
     });
 
     client.log(response.body.payload.invitationCode);
-    client.global.set("matchmaker_invitation_code", response.body.payload.invitationCode)
+    client.global.set("matchmaker_invitation_code2", response.body.payload.invitationCode)
 %}
 
 ### 주선자 초대 수락
 POST http://{{host}}/api/v1/invitations/code
 Content-Type: application/json
-Authorization: Bearer {{matchmaker_access_token}}
+Authorization: Bearer {{matchmaker_access_token2}}
 
 {
-  "invitationCode": "{{matchmaker_invitation_code}}"
+  "invitationCode": "{{matchmaker_invitation_code2}}"
 }
 
 ### 주선자 -> 후보자 초대 코드 생성
 POST http://{{host}}/api/v1/invitations
 Content-Type: application/json
-Authorization: Bearer {{matchmaker_access_token}}
+Authorization: Bearer {{matchmaker_access_token2}}
 
 {
   "memberType": "CANDIDATE",
@@ -46,14 +46,14 @@ Authorization: Bearer {{matchmaker_access_token}}
     });
 
     client.log(response.body.payload.invitationCode);
-    client.global.set("candidate_invitation_code", response.body.payload.invitationCode)
+    client.global.set("candidate_invitation_code2", response.body.payload.invitationCode)
 %}
 
 ### 후보자 초대 수락
 POST http://{{host}}/api/v1/invitations/code
 Content-Type: application/json
-Authorization: Bearer {{candidate_access_token}}
+Authorization: Bearer {{candidate_access_token2}}
 
 {
-  "invitationCode": "{{candidate_invitation_code}}"
+  "invitationCode": "{{candidate_invitation_code2}}"
 }

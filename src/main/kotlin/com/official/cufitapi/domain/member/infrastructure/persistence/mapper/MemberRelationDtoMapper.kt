@@ -3,6 +3,7 @@ package com.official.cufitapi.domain.member.infrastructure.persistence.mapper
 import com.official.cufitapi.domain.member.infrastructure.persistence.dto.ArrangementDto
 import com.official.cufitapi.domain.member.infrastructure.persistence.dto.MatchCandidateDto
 import com.official.cufitapi.domain.member.infrastructure.persistence.dto.MatchCandidateImageDto
+import com.official.cufitapi.domain.member.infrastructure.persistence.dto.MemberDto
 import com.official.cufitapi.domain.member.infrastructure.persistence.dto.MemberRelationDto
 import org.springframework.jdbc.core.RowMapper
 import java.sql.ResultSet
@@ -32,8 +33,17 @@ class MatchCandidateDtoMapper : RowMapper<MatchCandidateDto> {
             yearOfBirth = rs.getInt("year_of_birth"),
             gender = rs.getString("gender"),
             phoneNumber = rs.getString("phone_number"),
-            images = mutableListOf(),
             id = rs.getLong("id")
+        )
+    }
+}
+
+class MemberDtoMapper : RowMapper<MemberDto> {
+    override fun mapRow(rs: ResultSet, rowNum: Int): MemberDto {
+        return MemberDto(
+            id = rs.getLong("id"),
+            name = rs.getString("name"),
+            email = rs.getString("email")
         )
     }
 }
@@ -44,7 +54,7 @@ class MatchCandidateImageDtoMapper : RowMapper<MatchCandidateImageDto> {
             imageUrl = rs.getString("image_url"),
             profileOrder = rs.getInt("profile_order"),
             matchCandidateId = rs.getLong("match_candidate_id"),
-            id = rs.getLong("id")
+            seq = rs.getLong("id")
         )
     }
 }

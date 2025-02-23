@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping
 
 @ApiV1Controller
 class MatchMakerApi(
-    @Qualifier("matchMakerDaoJdbcTemplateDao")private val matchMakerDao: MatchMakerDao,
+    @Qualifier("matchMakerDaoJdbcClientDao")private val matchMakerDao: MatchMakerDao,
     private val matchMakerApiResponseMapper: MatchMakerApiDtoMapper,
 ) : MatchMakerApiDocs {
 
