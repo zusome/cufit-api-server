@@ -1,26 +1,4 @@
-### 어드민 회원 가입
-## provider 는 test 고정이다.
-POST http://{{host}}/api/v1/auth/login/test
-Content-Type: application/json
-
-{
-  "email": "admin",
-  "provider": "admin",
-  "username": "admin"
-}
-
-> {%
-    client.test("SignIn Or Login", function () {
-        client.assert(response.status === 200, "Response status is not 200");
-        client.assert(response.contentType.mimeType === "application/json", "Expected 'application/json'");
-        client.assert(response.body.payload.access_token.length > 0); // 토큰 길이가 0보다 크면 통과
-    });
-
-    client.log(response.body.payload.access_token);
-    client.global.set("access_token", response.body.payload.access_token)
-%}
-
-### 주선자용 회원 가입
+### 주선자2용 회원 가입
 ## provider 는 test 고정이다.
 POST http://{{host}}/api/v1/auth/login/test
 Content-Type: application/json
@@ -37,25 +15,25 @@ Content-Type: application/json
     });
 
     client.log(response.body.payload.access_token);
-    client.global.set("matchmaker_access_token", response.body.payload.access_token)
+    client.global.set("matchmaker_access_token2", response.body.payload.access_token)
 %}
 
-### 주선자용 실명 인증
+### 주선자2용 실명 인증
 POST http://{{host}}/api/v1/members/name
 Content-Type: application/json
-Authorization: Bearer {{matchmaker_access_token}}
+Authorization: Bearer {{matchmaker_access_token2}}
 
 {
-  "name": "주선자"
+  "name": "주선자2"
 }
 
-### 주선자용 타입 확인
+### 주선자2용 타입 확인
 GET http://{{host}}/api/v1/members/type
 Content-Type: application/json
-Authorization: Bearer {{matchmaker_access_token}}
+Authorization: Bearer {{matchmaker_access_token2}}
 
 
-### 후보자 초대용 회원 가입
+### 후보자2 초대용 회원 가입
 POST http://{{host}}/api/v1/auth/login/test
 Content-Type: application/json
 
@@ -71,20 +49,20 @@ Content-Type: application/json
     });
 
     client.log(response.body.payload.access_token);
-    client.global.set("candidate_access_token", response.body.payload.access_token)
+    client.global.set("candidate_access_token2", response.body.payload.access_token)
 %}
 
-### 후보자용 실명 인증
+### 후보자2 실명 인증
 POST http://{{host}}/api/v1/members/name
 Content-Type: application/json
-Authorization: Bearer {{candidate_access_token}}
+Authorization: Bearer {{candidate_access_token2}}
 
 {
-  "name": "후보자"
+  "name": "후보자2"
 }
 
-### 후보자용 타입 확인
+### 후보자2 타입 확인
 GET http://{{host}}/api/v1/members/type
 Content-Type: application/json
-Authorization: Bearer {{matchmaker_access_token}}
+Authorization: Bearer {{candidate_access_token2}}
 

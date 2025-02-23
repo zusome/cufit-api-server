@@ -1,0 +1,41 @@
+### 후보자 프로필 업데이트
+POST http://{{host}}/api/v1/candidates
+Content-Type: application/json
+Authorization: Bearer {{candidate_access_token2}}
+
+{
+  "images": {
+    "images": [
+      {
+        "imageUrl": "https://cataas.com/cat",
+        "profileOrder": 1
+      },
+      {
+        "imageUrl": "https://cataas.com/cat",
+        "profileOrder": 1
+      }
+    ]
+  },
+  "gender": "FEMALE",
+  "height": 180,
+  "idealAgeRange": [
+    "EQUAL",
+    "LOWER",
+    "OLDER"
+  ],
+  "idealHeightRange": [
+    "HEIGHT_150",
+    "HEIGHT_190"
+  ],
+  "idealMbti": "INTJ",
+  "job": "개발자",
+  "mbti": "INTJ",
+  "station": "역삼역",
+  "yearOfBirth": 1990,
+  "phoneNumber": "010-1234-5678"
+}
+
+### 후보자 프로필 조회
+GET http://{{host}}/api/v1/candidates/profile
+Content-Type: application/json
+Authorization: Bearer {{candidate_access_token2}}
