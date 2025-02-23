@@ -97,7 +97,6 @@ class MatchMakerApiDtoMapper {
             height = otherMatchCandidate.height,
             station = otherMatchCandidate.station,
             job = otherMatchCandidate.job,
-            degrees = otherMatchCandidate.degrees,
             matchMakerRelation = otherMatchCandidate.matchMakerRelation,
             matchMakerName = otherMatchCandidate.matchMakerName,
             idealHeightRange = otherMatchCandidate.idealHeightRange,

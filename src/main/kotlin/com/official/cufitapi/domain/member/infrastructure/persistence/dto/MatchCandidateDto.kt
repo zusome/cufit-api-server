@@ -13,11 +13,10 @@ data class MatchCandidateDto(
     var yearOfBirth: Int? = null,
     var gender: String? = null,
     var phoneNumber: String? = null,
-    var images: MutableList<MatchCandidateImageDto> = mutableListOf(),
     var id: Long,
 ) {
 
     fun hasProfile(): Boolean {
-        return idealMbti != null || idealAgeRange != null || idealHeightRange != null || height != null || station != null || job != null || yearOfBirth != null
+        return idealMbti != null && idealAgeRange != null && idealHeightRange != null && height != null && station != null && job != null && yearOfBirth != null
     }
 }

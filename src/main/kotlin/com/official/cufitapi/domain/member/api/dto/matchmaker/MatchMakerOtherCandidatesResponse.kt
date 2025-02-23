@@ -13,7 +13,6 @@ data class MatchMakerOtherCandidateResponse(
     val height: Int,
     val station: String,
     val job: String,
-    val degrees: Int,
     val matchMakerRelation: String,
     val matchMakerName: String,
     val idealHeightRange: List<Int>,
