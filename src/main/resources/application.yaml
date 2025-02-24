@@ -41,3 +41,5 @@ discord:
 aws:
   s3:
     presigned-url: ${AWS_S3_PRESIGNED_URL:https://5kiejtfjvk2vpy5xwacgt2bpxm0oqghk.lambda-url.ap-northeast-2.on.aws}
+  sqs:
+    url: ${AWS_SQS_URL:https://sqs.ap-northeast-2.amazonaws.com/534420079206/cufit}
