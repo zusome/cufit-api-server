@@ -37,23 +37,48 @@ class ArrangementDao(
      */
     fun findAllByArrangementId(matchMakerId: Long, targetId: Long): ArrangementCandidates {
         // 내 후보자 조회
-        val matchMakerCandidateRelations = matchMakerCandidateRelations(matchMakerId, targetId)
-        // 주선 가능한 후보자 조회
-        val availableMatchMakerCandidateRelations = matchMakerCandidateRelations.filter { matchMakerCandidateRelations.containsKey(it.key) }
-        val existedArrangementCandidates = existedArrangementCandidates(matchMakerId, targetId, availableMatchMakerCandidateRelations.keys)
-        val realAvailableMatchMakerCandidateRelations = availableMatchMakerCandidateRelations.filterKeys { !existedArrangementCandidates.contains(it) }
-        val candidateArrangementCountMap = availableCandidateIds(matchMakerId, realAvailableMatchMakerCandidateRelations.keys)
-        val matchCandidates = matchCandidates(realAvailableMatchMakerCandidateRelations.keys)
-        return matchCandidates.map { (memberId, matchCandidate) ->
-
-            ArrangementCandidate(
-                "image",
-                matchCandidate.name,
-                realAvailableMatchMakerCandidateRelations[memberId]!!.relationType,
-                matchCandidate.yearOfBirth,
-                3 - (candidateArrangementCountMap[memberId] ?: 0)
+        return ArrangementCandidates(
+            listOf(
+                ArrangementCandidate(
+                    "https://cataas.com/cat",
+                    "내후보자",
+                    "COMPANION",
+                    1996,
+                    2
+                ),
+                ArrangementCandidate(
+                    "https://cataas.com/cat",
+                    "내후보자2",
+                    "FRIEND",
+                    2000,
+                    3
+                ),
+                ArrangementCandidate(
+                    "https://cataas.com/cat",
+                    "내후보자3",
+                    "ACQUAINTANCE",
+                    1998,
+                    1
+                )
             )
-        }.let { ArrangementCandidates(it) }
+        )
+        // val matchMakerCandidateRelations = matchMakerCandidateRelations(matchMakerId, targetId)
+        // // 주선 가능한 후보자 조회
+        // val availableMatchMakerCandidateRelations = matchMakerCandidateRelations.filter { matchMakerCandidateRelations.containsKey(it.key) }
+        // val existedArrangementCandidates = existedArrangementCandidates(matchMakerId, targetId, availableMatchMakerCandidateRelations.keys)
+        // val realAvailableMatchMakerCandidateRelations = availableMatchMakerCandidateRelations.filterKeys { !existedArrangementCandidates.contains(it) }
+        // val candidateArrangementCountMap = availableCandidateIds(matchMakerId, realAvailableMatchMakerCandidateRelations.keys)
+        // val matchCandidates = matchCandidates(realAvailableMatchMakerCandidateRelations.keys)
+        // return matchCandidates.map { (memberId, matchCandidate) ->
+        //
+        //     ArrangementCandidate(
+        //         "image",
+        //         matchCandidate.name,
+        //         realAvailableMatchMakerCandidateRelations[memberId]!!.relationType,
+        //         matchCandidate.yearOfBirth,
+        //         3 - (candidateArrangementCountMap[memberId] ?: 0)
+        //     )
+        // }.let { ArrangementCandidates(it) }
     }
 
     private fun matchMakerCandidateRelations(
