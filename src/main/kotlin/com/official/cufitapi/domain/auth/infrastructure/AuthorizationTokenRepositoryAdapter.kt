@@ -17,8 +17,8 @@ class AuthorizationTokenRepositoryAdapter(
         return toDomain(repository.save(toEntity(authorizationToken)))
     }
 
-    override fun findByMemberIdAndAccessToken(memberId: Long, accessToken: AccessToken): AuthorizationToken? {
-        return repository.findByMemberIdAndAccessToken(memberId, accessToken.accessToken)
+    override fun findByMemberId(memberId: Long): AuthorizationToken? {
+        return repository.findByMemberId(memberId)
             ?.let { toDomain(it) }
     }
 
