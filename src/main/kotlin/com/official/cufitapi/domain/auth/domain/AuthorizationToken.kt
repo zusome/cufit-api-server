@@ -4,8 +4,9 @@ import com.official.cufitapi.domain.auth.domain.vo.AccessToken
 import com.official.cufitapi.domain.auth.domain.vo.RefreshToken
 
 class AuthorizationToken(
-    val accessToken: AccessToken,
-    val refreshToken: RefreshToken,
+    val memberId: Long,
+    var accessToken: AccessToken,
+    var refreshToken: RefreshToken,
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -23,5 +24,10 @@ class AuthorizationToken(
         var result = accessToken.hashCode()
         result = 31 * result + refreshToken.hashCode()
         return result
+    }
+
+    fun refresh(accessToken: AccessToken, refreshToken: RefreshToken) {
+        this.accessToken = accessToken
+        this.refreshToken = refreshToken
     }
 }
