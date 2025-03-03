@@ -12,6 +12,7 @@ import org.springframework.web.bind.support.WebDataBinderFactory
 import org.springframework.web.context.request.NativeWebRequest
 import org.springframework.web.method.support.HandlerMethodArgumentResolver
 import org.springframework.web.method.support.ModelAndViewContainer
+import java.util.Date
 
 @Component
 class AuthorizationArgumentResolver(
@@ -36,11 +37,16 @@ class AuthorizationArgumentResolver(
         val request = webRequest.nativeRequest as HttpServletRequest
         val authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION)
         val accessToken = parsingBearerToken(authorizationHeader)
-        val memberId = authorizationTokenParsingUseCase.parsing(accessToken).let(String::toLong)
+        val claims = authorizationTokenParsingUseCase.claims(accessToken)
+        val expiration = claims.expiration
+        val memberId = claims.subject.toLong()
         val authorizationMember = memberFindUseCase.findById(memberId)
+        if(authorization.expiredCheck && expiration!!.before(Date())) {
+            throw RuntimeException()
+        }
         return authorization.value
             .firstOrNull { it.isAll() || authorizationMember.isSameAuthority(it.name) }
-            ?.let { AuthorizationUser(memberId) }
+            ?.let { AuthorizationUser(memberId, authorizationMember.authority.name, accessToken) }
     }
 
     private fun parsingBearerToken(bearerToken: String): String {
