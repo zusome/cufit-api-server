@@ -1,11 +1,18 @@
 package com.official.cufitapi.common.config
 
+import com.google.api.ErrorReason
+import com.official.cufitapi.common.annotation.Authorization
 import io.swagger.v3.oas.models.OpenAPI
+import io.swagger.v3.oas.models.Operation
 import io.swagger.v3.oas.models.info.Info
+import io.swagger.v3.oas.models.media.StringSchema
+import io.swagger.v3.oas.models.parameters.Parameter
+import org.springdoc.core.customizers.OperationCustomizer
 import org.springdoc.core.models.GroupedOpenApi
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Profile
+import org.springframework.web.method.HandlerMethod
 
 @Configuration
 @Profile("!prod")
@@ -26,13 +33,46 @@ class SwaggerConfig {
     fun generalGroupedOpenApi(): GroupedOpenApi {
         return GroupedOpenApi
             .builder()
-            .group("Cufit") // group 설정 (API들을 그룹화시켜 그룹에 속한 API들만 확인할 수 있도록 도와줌)
+            .group("Cufit")
             .addOpenApiCustomizer { openApi: OpenAPI ->
                 openApi.info = Info()
-                    .title("Cufit API Docs") // API 제목
-                    .description(DESCRIPTION) // API 설명
+                    .title("Cufit API Docs")
+                    .description(DESCRIPTION)
                     .version("1.0.0")
             }
+            .addOperationCustomizer(customize())
             .build()
+    }
+
+
+    @Bean
+    fun customize(): OperationCustomizer {
+        return OperationCustomizer { operation: Operation, handlerMethod: HandlerMethod ->
+            val methodParameters = handlerMethod.methodParameters
+            val hasAuthorizationAnnotation = methodParameters
+                .any { it.hasParameterAnnotation(Authorization::class.java) }
+
+            if (hasAuthorizationAnnotation) {
+                // operation.parameters가 null인지 확인
+                val existingParameters = operation.parameters ?: mutableListOf()
+
+                // 기존 파라미터에서 특정 파라미터 제거
+                val filteredParameters = existingParameters
+                    .filterNot { parameter -> parameter.name == "authorizationUser" }
+
+                operation.parameters = filteredParameters.toMutableList()
+
+                // Authorization 헤더 추가
+                val authHeader = Parameter()
+                    .apply { `in`("header") }
+                    .apply { name("Authorization") }
+                    .apply { description("Access token") }
+                    .apply { required(true) }
+                    .apply { schema(StringSchema().example("Bearer {{accessToken}}")) }
+
+                operation.addParametersItem(authHeader)
+            }
+            operation
+        }
     }
 }

@@ -5,7 +5,7 @@ import com.official.cufitapi.common.annotation.AuthorizationType
 import com.official.cufitapi.common.annotation.AuthorizationUser
 import com.official.cufitapi.common.api.ApiV1Controller
 import com.official.cufitapi.common.api.dto.HttpResponse
-import com.official.cufitapi.domain.auth.api.docs.AuthApiDocs
+import com.official.cufitapi.domain.auth.api.docs.AuthorizationApiDocs
 import com.official.cufitapi.domain.auth.api.dto.OidcLoginHttpRequest
 import com.official.cufitapi.domain.auth.api.dto.OidcLoginHttpResponse
 import com.official.cufitapi.domain.auth.api.dto.RefreshLoginHttpRequest
@@ -32,10 +32,10 @@ class AuthorizationApi(
     private val memberRegistrationUseCase: MemberRegistrationUseCase,
     private val authorizationTokenCreationUseCase: AuthorizationTokenCreationUseCase,
     private val authorizationTokenRefreshUseCase: AuthorizationTokenRefreshUseCase,
-) : AuthApiDocs {
+) : AuthorizationApiDocs {
 
     @PostMapping("/auth/login/oidc")
-    fun loginByOidc(
+    override fun loginByOidc(
         @RequestHeader(HttpHeaders.AUTHORIZATION) authorization: String,
         @RequestBody request: OidcLoginHttpRequest,
     ): HttpResponse<OidcLoginHttpResponse> {
@@ -54,7 +54,7 @@ class AuthorizationApi(
     }
 
     @PostMapping("/auth/login/refresh")
-    fun loginByOidc(
+    override fun loginByOidc(
         @RequestHeader("X-Refresh-Token") refreshToken: String,
         @Authorization(AuthorizationType.ALL, expiredCheck = false) authorizationUser: AuthorizationUser,
         @RequestBody request: RefreshLoginHttpRequest,
@@ -71,7 +71,7 @@ class AuthorizationApi(
     }
 
     @PostMapping("/auth/login/test")
-    fun loginByOidc(
+    override fun loginByOidc(
         @RequestBody request: TestLoginHttpRequest,
     ): HttpResponse<OidcLoginHttpResponse> {
         val member = memberRegistrationUseCase.register(
