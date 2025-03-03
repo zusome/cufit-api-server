@@ -46,7 +46,7 @@ class AuthorizationArgumentResolver(
         }
         return authorization.value
             .firstOrNull { it.isAll() || authorizationMember.isSameAuthority(it.name) }
-            ?.let { AuthorizationUser(memberId, authorizationMember.authority.name, accessToken) }
+            ?.let { AuthorizationUser(memberId) }
     }
 
     private fun parsingBearerToken(bearerToken: String): String {

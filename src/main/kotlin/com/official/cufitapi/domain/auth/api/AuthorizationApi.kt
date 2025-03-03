@@ -13,6 +13,7 @@ import com.official.cufitapi.domain.auth.api.dto.RefreshLoginHttpResponse
 import com.official.cufitapi.domain.auth.api.dto.TestLoginHttpRequest
 import com.official.cufitapi.domain.auth.application.AuthorizationTokenCreationUseCase
 import com.official.cufitapi.domain.auth.application.AuthorizationTokenRefreshUseCase
+import com.official.cufitapi.domain.auth.application.MemberFindUseCase
 import com.official.cufitapi.domain.auth.application.MemberRegistrationUseCase
 import com.official.cufitapi.domain.auth.application.OidcProviderIdFindUseCase
 import com.official.cufitapi.domain.auth.application.command.AuthorizationTokenCreationCommand
@@ -30,6 +31,7 @@ import java.util.UUID
 class AuthorizationApi(
     private val oidcProviderIdFindUseCase: OidcProviderIdFindUseCase,
     private val memberRegistrationUseCase: MemberRegistrationUseCase,
+    private val memberFindUseCase: MemberFindUseCase,
     private val authorizationTokenCreationUseCase: AuthorizationTokenCreationUseCase,
     private val authorizationTokenRefreshUseCase: AuthorizationTokenRefreshUseCase,
 ) : AuthorizationApiDocs {
@@ -59,15 +61,15 @@ class AuthorizationApi(
         @Authorization(AuthorizationType.ALL, expiredCheck = false) authorizationUser: AuthorizationUser,
         @RequestBody request: RefreshLoginHttpRequest,
     ): HttpResponse<RefreshLoginHttpResponse> {
+        val member = memberFindUseCase.findById(authorizationUser.userId)
         val authorizationToken = authorizationTokenRefreshUseCase.refresh(
             AuthorizationTokenRefreshCommand(
                 authorizationUser.userId,
-                authorizationUser.authority,
-                authorizationUser.accessToken,
+                member.authority,
                 refreshToken
             )
         )
-        return HttpResponse.of(HttpStatus.OK, RefreshLoginHttpResponse(authorizationToken))
+        return HttpResponse.of(HttpStatus.OK, RefreshLoginHttpResponse(member, authorizationToken))
     }
 
     @PostMapping("/auth/login/test")

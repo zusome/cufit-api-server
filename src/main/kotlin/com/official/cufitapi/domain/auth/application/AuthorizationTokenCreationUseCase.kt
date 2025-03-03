@@ -46,12 +46,15 @@ class AuthorizationTokenCreationService(
     override fun refresh(command: AuthorizationTokenRefreshCommand): AuthorizationToken {
         val secretKey = secretKeyGenerator.generate(authorizationProperties.secretKey)
         val memberId = command.memberId
-        val accessToken = AccessToken(command.accessToken)
-        val authorizationToken = authorizationTokenRepository.findByMemberIdAndAccessToken(memberId, accessToken)
+        val authorizationToken = authorizationTokenRepository.findByMemberId(memberId)
             ?: throw EntityNotFoundException()
-        val renewAccessToken = createAccessToken(secretKey, memberId, command.authority)
-        val refreshToken = refreshToken(secretKey, memberId)
-        authorizationToken.refresh(renewAccessToken, refreshToken)
+        val refreshToken = authorizationToken.refreshToken
+        if(refreshToken.isNotSame(command.refreshToken)) {
+            throw IllegalArgumentException()
+        }
+        val renewAccessToken = createAccessToken(secretKey, memberId, command.authority.name)
+        val renewRefreshToken = refreshToken(secretKey, memberId)
+        authorizationToken.refresh(renewAccessToken, renewRefreshToken)
         return authorizationTokenRepository.save(authorizationToken)
     }
 
