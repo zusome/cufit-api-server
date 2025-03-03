@@ -8,5 +8,6 @@ import org.springframework.core.annotation.Order
 @Target(AnnotationTarget.VALUE_PARAMETER)
 @Order(Ordered.HIGHEST_PRECEDENCE)
 annotation class Authorization(
-    vararg val value: AuthorizationType
+    vararg val value: AuthorizationType,
+    val expiredCheck: Boolean = true
 )
