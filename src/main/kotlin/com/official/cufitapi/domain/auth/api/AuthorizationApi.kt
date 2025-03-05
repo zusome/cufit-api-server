@@ -13,12 +13,12 @@ import com.official.cufitapi.domain.auth.api.dto.RefreshLoginHttpResponse
 import com.official.cufitapi.domain.auth.api.dto.TestLoginHttpRequest
 import com.official.cufitapi.domain.auth.application.AuthorizationTokenCreationUseCase
 import com.official.cufitapi.domain.auth.application.AuthorizationTokenRefreshUseCase
-import com.official.cufitapi.domain.auth.application.MemberFindUseCase
-import com.official.cufitapi.domain.auth.application.MemberRegistrationUseCase
+import com.official.cufitapi.domain.auth.application.FindMemberUseCase
+import com.official.cufitapi.domain.auth.application.RegisterMemberUseCase
 import com.official.cufitapi.domain.auth.application.OidcProviderIdFindUseCase
 import com.official.cufitapi.domain.auth.application.command.AuthorizationTokenCreationCommand
 import com.official.cufitapi.domain.auth.application.command.AuthorizationTokenRefreshCommand
-import com.official.cufitapi.domain.auth.application.command.MemberRegistrationCommand
+import com.official.cufitapi.domain.auth.application.command.RegisterMemberCommand
 import com.official.cufitapi.domain.auth.application.command.OidcProviderIdFindCommand
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
@@ -30,8 +30,8 @@ import java.util.UUID
 @ApiV1Controller
 class AuthorizationApi(
     private val oidcProviderIdFindUseCase: OidcProviderIdFindUseCase,
-    private val memberRegistrationUseCase: MemberRegistrationUseCase,
-    private val memberFindUseCase: MemberFindUseCase,
+    private val registerMemberUseCase: RegisterMemberUseCase,
+    private val findMemberUseCase: FindMemberUseCase,
     private val authorizationTokenCreationUseCase: AuthorizationTokenCreationUseCase,
     private val authorizationTokenRefreshUseCase: AuthorizationTokenRefreshUseCase,
 ) : AuthorizationApiDocs {
@@ -43,8 +43,8 @@ class AuthorizationApi(
     ): HttpResponse<OidcLoginHttpResponse> {
         val idToken = authorization.replace(BEARER, BLANK)
         val providerId = oidcProviderIdFindUseCase.find(OidcProviderIdFindCommand(idToken, request.provider))
-        val member = memberRegistrationUseCase.register(
-            MemberRegistrationCommand(
+        val member = registerMemberUseCase.register(
+            RegisterMemberCommand(
                 request.username,
                 request.email,
                 request.provider,
@@ -61,7 +61,7 @@ class AuthorizationApi(
         @Authorization(AuthorizationType.ALL, expiredCheck = false) authorizationUser: AuthorizationUser,
         @RequestBody request: RefreshLoginHttpRequest,
     ): HttpResponse<RefreshLoginHttpResponse> {
-        val member = memberFindUseCase.findById(authorizationUser.userId)
+        val member = findMemberUseCase.findById(authorizationUser.userId)
         val authorizationToken = authorizationTokenRefreshUseCase.refresh(
             AuthorizationTokenRefreshCommand(
                 authorizationUser.userId,
@@ -76,8 +76,8 @@ class AuthorizationApi(
     override fun loginByOidc(
         @RequestBody request: TestLoginHttpRequest,
     ): HttpResponse<OidcLoginHttpResponse> {
-        val member = memberRegistrationUseCase.register(
-            MemberRegistrationCommand(
+        val member = registerMemberUseCase.register(
+            RegisterMemberCommand(
                 request.username,
                 request.email,
                 request.provider,
