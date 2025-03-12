@@ -1,4 +1,5 @@
 package com.official.cufitapi.common.exception
 
-class InvalidRequestException(message: String) : BadRequestException(message) {
-}
+import com.official.cufitapi.common.config.ErrorCode
+
+class InvalidRequestException(errorCode: ErrorCode) : BadRequestException(errorCode)

@@ -1,3 +1,5 @@
 package com.official.cufitapi.common.exception
 
-open class BadRequestException(message: String) : CufitException(message)
+import com.official.cufitapi.common.config.ErrorCode
+
+open class BadRequestException(errorCode: ErrorCode) : CufitException(errorCode)

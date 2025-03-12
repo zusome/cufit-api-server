@@ -1,6 +1,7 @@
 package com.official.cufitapi.domain.member.application
 
 import com.official.cufitapi.common.exception.InvalidRequestException
+import com.official.cufitapi.common.exception.NotFoundException
 import com.official.cufitapi.domain.member.domain.vo.MemberType
 import com.official.cufitapi.domain.invitation.infrastructure.persistence.InvitationCardJpaRepository
 import com.official.cufitapi.domain.member.application.command.UpdateMemberProfileCommand
@@ -37,7 +38,7 @@ class MemberService(
 
     @Transactional(readOnly = true)
     fun findById(memberId: Long): MemberEntity = memberJpaRepository.findById(memberId)
-        .orElseThrow { InvalidRequestException("존재하지 않는 사용자 id: $memberId") }
+        .orElseThrow { NotFoundException("존재하지 않는 사용자") }
 
     @Transactional
     fun updateRealName(command: UpdateMemberProfileCommand): MemberEntity {

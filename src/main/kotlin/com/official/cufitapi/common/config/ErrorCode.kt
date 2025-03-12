@@ -1,6 +1,8 @@
+package com.official.cufitapi.common.config
+
 import org.springframework.http.HttpStatus
 
-public enum class ErrorCode(
+enum class ErrorCode(
     val code: HttpStatus,
     val message: String
 ) {

@@ -1,3 +1,5 @@
 package com.official.cufitapi.common.exception
 
-open class NotFoundException(message: String) : CufitException(message)
+import com.official.cufitapi.common.config.ErrorCode
+
+open class NotFoundException(errorCode: ErrorCode) : CufitException(errorCode)
