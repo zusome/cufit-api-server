@@ -1,6 +1,7 @@
 package com.official.cufitapi.domain.arrangement.application
 
 import com.official.cufitapi.common.DateTimeUtils
+import com.official.cufitapi.common.config.ErrorCode
 import com.official.cufitapi.common.exception.InvalidRequestException
 import com.official.cufitapi.common.tomorrow
 import com.official.cufitapi.domain.arrangement.application.command.SuggestArrangementCommand
@@ -54,17 +55,17 @@ class ArrangementService(
 
     private fun verifyExists(matchMakerId: Long, leftCandidateId: Long, rightCandidateId: Long) {
         if(arrangementJpaRepository.existsCandidates(matchMakerId, leftCandidateId, rightCandidateId)) {
-            throw InvalidRequestException("이미 주선된 후보자입니다.")
+            throw InvalidRequestException(ErrorCode.ALREADY_MATCHED_CANDIDATE)
         }
     }
 
     private fun verifySameGender(leftCandidateId: Long, rightCandidateId: Long) {
         val leftCandidate = matchCandidateJpaRepository.findByMemberId(leftCandidateId)
-            ?: throw InvalidRequestException("존재하지 않는 Receiver")
+            ?: throw InvalidRequestException(ErrorCode.NOT_FOUND_RECEIVER)
         val rightCandidate = matchCandidateJpaRepository.findByMemberId(rightCandidateId)
-            ?: throw InvalidRequestException("존재하지 않는 Sender")
+            ?: throw InvalidRequestException(ErrorCode.NOT_FOUND_SENDER)
         if (leftCandidate.isSameGender(rightCandidate)) {
-            throw InvalidRequestException("같은 성별에게는 연결 요청을 보낼 수 없습니다.")
+            throw InvalidRequestException(ErrorCode.CONNECTION_REQUEST_SAME_GENDER)
         }
     }
 
@@ -78,7 +79,7 @@ class ArrangementService(
         if (isMyCandidate) {
             val count = arrangementJpaRepository.todayCount(matchMakerId, candidateId, today, tomorrow)
             if (count >= 3) {
-                throw RuntimeException("하루에 3회 이상 매칭을 할 수 없습니다.")
+                throw InvalidRequestException(ErrorCode.DAILY_MAXIMUM_MATCHING_COUNT)
             }
         }
     }
@@ -87,7 +88,7 @@ class ArrangementService(
         val arrangement = arrangementRepository.findById(command.arrangementId)
         arrangement.nextStatus(command.isAccepted)
         val arrangementEntity = arrangementJpaRepository.findByIdOrNull(command.arrangementId)
-            ?: throw InvalidRequestException("존재하지 않는 주선")
+            ?: throw InvalidRequestException(ErrorCode.NOT_FOUND_ARRANGEMENT)
         arrangementEntity.nextStatus(command.isAccepted)
         arrangementJpaRepository.save(arrangementEntity)
     }

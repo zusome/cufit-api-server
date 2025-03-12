@@ -1,5 +1,7 @@
 package com.official.cufitapi.domain.notification.infrastructure
 
+import com.official.cufitapi.common.config.ErrorCode
+import com.official.cufitapi.common.exception.NotFoundException
 import com.official.cufitapi.domain.notification.domain.DeviceToken
 import com.official.cufitapi.domain.notification.domain.DeviceTokenRepository
 import com.official.cufitapi.domain.notification.infrastructure.persistence.DeviceTokenEntity
@@ -24,7 +26,7 @@ class DeviceTokenRepositoryAdapter(
 
     override fun findByMemberIdAndPlatform(memberId: Long, platform: String): DeviceToken {
         val entity = deviceTokenJpaRepository.findByMemberIdAndPlatform(memberId, platform)
-            ?: throw IllegalArgumentException("DeviceToken not found")
+            ?: throw NotFoundException(ErrorCode.NOT_FOUND_DEVICE_TOKEN_NOT_FOUND)
         return mapToDomain(entity)
     }
 

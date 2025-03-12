@@ -1,6 +1,8 @@
 package com.official.cufitapi.domain.invitation.application
 
+import com.official.cufitapi.common.config.ErrorCode
 import com.official.cufitapi.common.exception.InvalidRequestException
+import com.official.cufitapi.common.exception.NotFoundException
 import com.official.cufitapi.domain.invitation.application.command.InvitationCardGenerationCommand
 import com.official.cufitapi.domain.invitation.application.command.InvitationCardAcceptCommand
 import com.official.cufitapi.domain.invitation.domain.vo.InvitationCard
@@ -42,7 +44,7 @@ class InvitationCardService(
     @Transactional
     override fun generate(command: InvitationCardGenerationCommand): InvitationCard {
         val inviter = memberJpaRepository.findByIdOrNull(command.memberId)
-            ?: throw InvalidRequestException("잘못된 사용자 id 요청 : ${command.memberId}")
+            ?: throw NotFoundException(ErrorCode.NOT_FOUND_MEMBER)
         val invitationCode = invitationCode(command.memberType, command.relationType)
         val invitationCard = invitationCardJpaRepository.save(
             InvitationCardEntity(
@@ -79,14 +81,14 @@ class InvitationCardService(
             }
             else -> {
                 val invitation = invitationCardJpaRepository.findByCode(invitationCode)
-                    ?: throw InvalidRequestException("유효하지 않은 초대 코드")
+                    ?: throw InvalidRequestException(ErrorCode.INVALID_INVITATION_CODE)
                 invitation.deactivate()
                 invitation.inviterId to invitation.relationType
             }
         }
 
-        val inviter = memberJpaRepository.findByIdOrNull(invitationInfo.first) ?: throw InvalidRequestException("초대 보낸 사용자를 찾을 수 없음")
-        val invitee = memberJpaRepository.findByIdOrNull(inviteeId) ?: throw InvalidRequestException("존재하지 않는 사용자 id : $inviteeId")
+        val inviter = memberJpaRepository.findByIdOrNull(invitationInfo.first) ?: throw NotFoundException(ErrorCode.NOT_FOUND_MEMBER)
+        val invitee = memberJpaRepository.findByIdOrNull(inviteeId) ?: throw NotFoundException(ErrorCode.NOT_FOUND_MEMBER)
         val memberRelationEntity = MemberRelationEntity(
             inviterId = inviter.id!!,
             inviteeId = invitee.id!!,

@@ -1,5 +1,7 @@
 package com.official.cufitapi.domain.member.infrastructure
 
+import com.official.cufitapi.common.config.ErrorCode
+import com.official.cufitapi.common.exception.NotFoundException
 import com.official.cufitapi.domain.member.domain.MatchCandidate
 import com.official.cufitapi.domain.member.domain.repository.MatchCandidateRepository
 import com.official.cufitapi.domain.member.domain.vo.CandidateImage
@@ -14,9 +16,9 @@ class MatchCandidateRepositoryAdapter(
 
     override fun findByMemberId(memberId: Long): MatchCandidate {
         val entity = matchCandidateJpaRepository.findByMemberId(memberId)
-            ?: throw RuntimeException("후보자가 아닙니다.")
+            ?: throw NotFoundException(ErrorCode.NOT_FOUND_MATCH_CANDIDATE)
         return MatchCandidate(
-            id = entity.id ?: throw RuntimeException(),
+            id = entity.id ?: throw NotFoundException(ErrorCode.NOT_FOUND_MATCH_CANDIDATE),
             images = entity.images?.map { image -> CandidateImage(image.imageUrl, image.profileOrder) } ?: emptyList(),
             isMatchAgreed = entity.isMatchAgreed,
             memberId = entity.member.id ?: throw RuntimeException(),
@@ -41,7 +43,7 @@ class MatchCandidateRepositoryAdapter(
 
     override fun updateProfile(matchCandidate: MatchCandidate) {
         val entity = matchCandidateJpaRepository.findById(matchCandidate.id)
-            .orElseThrow { RuntimeException() }
+            .orElseThrow { NotFoundException(ErrorCode.NOT_FOUND_MATCH_CANDIDATE) }
         val matchCandidateImageEntities = matchCandidate.images.map { image -> matchCandidateImageEntity(image) }
         entity.updateProfile(
             images = matchCandidateImageEntities,
