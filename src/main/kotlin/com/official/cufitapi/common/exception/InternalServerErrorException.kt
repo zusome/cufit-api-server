@@ -2,4 +2,4 @@ package com.official.cufitapi.common.exception
 
 import com.official.cufitapi.common.config.ErrorCode
 
-open class CufitException(errorCode: ErrorCode) : RuntimeException(errorCode.message)
+class InternalServerErrorException(errorCode: ErrorCode) : CufitException(errorCode)
