@@ -2,7 +2,7 @@ package com.official.cufitapi.domain.member.application
 
 import com.official.cufitapi.common.exception.InvalidRequestException
 import com.official.cufitapi.domain.member.domain.vo.MemberType
-import com.official.cufitapi.domain.invitation.infrastructure.persistence.InvitationCardJpaRepository
+import com.official.cufitapi.domain.invitation.infrastructure.persistence.JpaInvitationCardRepository
 import com.official.cufitapi.domain.member.application.command.UpdateMemberProfileCommand
 import com.official.cufitapi.domain.member.infrastructure.persistence.MemberAuthorizationEntity
 import com.official.cufitapi.domain.member.infrastructure.persistence.MemberEntity
@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class MemberService(
     private val memberJpaRepository: MemberJpaRepository,
-    private val invitationCardJpaRepository: InvitationCardJpaRepository
 ) {
 
     @Transactional

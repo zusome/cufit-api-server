@@ -13,7 +13,7 @@ class AuthorizationMember(
 ) {
     constructor(provider: String, providerId: String, authority: Authority, username: String?, email: String?) : this(
         providerId = providerId,
-        provider = Provider.valueOf(provider),
+        provider = Provider.of(provider),
         authority = authority,
         username = username,
         email = email,

@@ -11,17 +11,17 @@ Content-Type: application/json
     client.test("SignIn Or Login", function () {
         client.assert(response.status === 200, "Response status is not 200");
         client.assert(response.contentType.mimeType === "application/json", "Expected 'application/json'");
-        client.assert(response.body.payload.access_token.length > 0); // 토큰 길이가 0보다 크면 통과
+        client.assert(response.body.payload.accessToken.length > 0); // 토큰 길이가 0보다 크면 통과
     });
 
-    client.log(response.body.payload.access_token);
-    client.global.set("matchmaker_access_token2", response.body.payload.access_token)
+    client.log(response.body.payload.accessToken);
+    client.global.set("matchmaker_accessToken2", response.body.payload.accessToken)
 %}
 
 ### 주선자2용 실명 인증
 POST http://{{host}}/api/v1/members/name
 Content-Type: application/json
-Authorization: Bearer {{matchmaker_access_token2}}
+Authorization: Bearer {{matchmaker_accessToken2}}
 
 {
   "name": "주선자2"
@@ -30,7 +30,7 @@ Authorization: Bearer {{matchmaker_access_token2}}
 ### 주선자2용 타입 확인
 GET http://{{host}}/api/v1/members/type
 Content-Type: application/json
-Authorization: Bearer {{matchmaker_access_token2}}
+Authorization: Bearer {{matchmaker_accessToken2}}
 
 
 ### 후보자2 초대용 회원 가입
@@ -45,17 +45,17 @@ Content-Type: application/json
     client.test("SignIn Or Login", function () {
         client.assert(response.status === 200, "Response status is not 200");
         client.assert(response.contentType.mimeType === "application/json", "Expected 'application/json'");
-        client.assert(response.body.payload.access_token.length > 0); // 토큰 길이가 0보다 크면 통과
+        client.assert(response.body.payload.accessToken.length > 0); // 토큰 길이가 0보다 크면 통과
     });
 
-    client.log(response.body.payload.access_token);
-    client.global.set("candidate_access_token2", response.body.payload.access_token)
+    client.log(response.body.payload.accessToken);
+    client.global.set("candidate_accessToken2", response.body.payload.accessToken)
 %}
 
 ### 후보자2 실명 인증
 POST http://{{host}}/api/v1/members/name
 Content-Type: application/json
-Authorization: Bearer {{candidate_access_token2}}
+Authorization: Bearer {{candidate_accessToken2}}
 
 {
   "name": "후보자2"
@@ -64,5 +64,5 @@ Authorization: Bearer {{candidate_access_token2}}
 ### 후보자2 타입 확인
 GET http://{{host}}/api/v1/members/type
 Content-Type: application/json
-Authorization: Bearer {{candidate_access_token2}}
+Authorization: Bearer {{candidate_accessToken2}}
 

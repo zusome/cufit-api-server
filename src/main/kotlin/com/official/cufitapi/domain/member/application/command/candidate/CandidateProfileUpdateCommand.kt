@@ -6,7 +6,7 @@ import com.official.cufitapi.domain.member.domain.vo.IdealAge
 import com.official.cufitapi.domain.member.domain.vo.IdealHeightUnit
 
 data class CandidateProfileUpdateCommand(
-    val images: List<CandidateImage>,
+    val images: MutableList<CandidateImage>,
     val memberId: Long,
     val gender: Gender,
     val yearOfBirth: Int,

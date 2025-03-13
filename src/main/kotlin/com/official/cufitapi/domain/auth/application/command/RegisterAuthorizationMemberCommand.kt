@@ -3,7 +3,7 @@ package com.official.cufitapi.domain.auth.application.command
 import com.official.cufitapi.domain.auth.domain.AuthorizationMember
 import com.official.cufitapi.domain.auth.domain.vo.Authority
 
-data class RegisterMemberCommand(
+data class RegisterAuthorizationMemberCommand(
     val username: String? = null,
     val email: String? = null,
     val provider: String,

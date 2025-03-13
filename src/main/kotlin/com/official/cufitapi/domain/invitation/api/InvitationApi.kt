@@ -6,53 +6,43 @@ import com.official.cufitapi.common.annotation.AuthorizationUser
 import com.official.cufitapi.common.api.ApiV1Controller
 import com.official.cufitapi.common.api.dto.HttpResponse
 import com.official.cufitapi.domain.invitation.api.docs.InvitationApiDocs
-import com.official.cufitapi.domain.invitation.api.dto.InvitationCodeGenerateRequest
-import com.official.cufitapi.domain.invitation.api.dto.InvitationCodeRequest
-import com.official.cufitapi.domain.invitation.api.dto.InvitationCodeResponse
-import com.official.cufitapi.domain.invitation.api.dto.InvitationValidationResponse
-import com.official.cufitapi.domain.invitation.application.InvitationCardAcceptUseCase
-import com.official.cufitapi.domain.invitation.application.InvitationCardGenerationUseCase
-import com.official.cufitapi.domain.invitation.application.command.InvitationCardAcceptCommand
-import com.official.cufitapi.domain.invitation.application.command.InvitationCardGenerationCommand
-import com.official.cufitapi.domain.invitation.domain.vo.InvitationCard
+import com.official.cufitapi.domain.invitation.api.dto.AcceptInvitationCardRequest
+import com.official.cufitapi.domain.invitation.api.dto.AcceptInvitationCardResponse
+import com.official.cufitapi.domain.invitation.api.dto.GenerateInvitationCardRequest
+import com.official.cufitapi.domain.invitation.api.dto.GenerateInvitationCardResponse
+import com.official.cufitapi.domain.invitation.application.AcceptInvitationCardUseCase
+import com.official.cufitapi.domain.invitation.application.FindInvitersUseCase
+import com.official.cufitapi.domain.invitation.application.GenerateInvitationCardUseCase
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 
 @ApiV1Controller
 class InvitationApi(
-    private val invitationCardGenerationUseCase: InvitationCardGenerationUseCase,
-    private val invitationCardAcceptUseCase: InvitationCardAcceptUseCase,
+    private val generateInvitationCardUseCase: GenerateInvitationCardUseCase,
+    private val acceptInvitationCardUseCase: AcceptInvitationCardUseCase,
+    private val findInvitersUseCase: FindInvitersUseCase,
 ) : InvitationApiDocs {
 
-    // 초대 코드 생성
     @PostMapping("/invitations")
     override fun generate(
         @Authorization(AuthorizationType.ALL) authorizationUser: AuthorizationUser,
-        @RequestBody request: InvitationCodeGenerateRequest,
-    ): HttpResponse<InvitationCodeResponse> {
-        val invitationCode = invitationCardGenerationUseCase.generate(
-            InvitationCardGenerationCommand(
-                memberId = authorizationUser.userId,
-                memberType = request.memberType,
-                relationType = request.relationType
-            )
-        )
-        return HttpResponse.of(HttpStatus.OK, InvitationCodeResponse(invitationCode))
+        @RequestBody request: GenerateInvitationCardRequest,
+    ): HttpResponse<GenerateInvitationCardResponse> {
+        val invitationCard = generateInvitationCardUseCase.generate(request.toCommand(authorizationUser.userId))
+        return HttpResponse.of(HttpStatus.OK, GenerateInvitationCardResponse(invitationCard))
     }
 
-    // 초대 코드 검증
     @PostMapping("/invitations/code")
-    override fun validateInvitation(
+    override fun accept(
         @Authorization(AuthorizationType.ALL) authorizationUser: AuthorizationUser,
-        @RequestBody request: InvitationCodeRequest,
-    ): HttpResponse<InvitationValidationResponse> {
-        val response = invitationCardAcceptUseCase.accept(
-            InvitationCardAcceptCommand(
-                inviteeId = authorizationUser.userId,
-                invitationCode = InvitationCard(code = request.invitationCode)
-            )
+        @RequestBody request: AcceptInvitationCardRequest,
+    ): HttpResponse<AcceptInvitationCardResponse> {
+        val invitationCard = acceptInvitationCardUseCase.accept(request.toCommand(authorizationUser.userId))
+        val inviter = findInvitersUseCase.findByInviterId(invitationCard.inviterId)
+        return HttpResponse.of(
+            HttpStatus.OK,
+            AcceptInvitationCardResponse(invitationCard.relationType.name, inviter.name)
         )
-        return HttpResponse.of(HttpStatus.OK, InvitationValidationResponse(response.first, response.second))
     }
 }
