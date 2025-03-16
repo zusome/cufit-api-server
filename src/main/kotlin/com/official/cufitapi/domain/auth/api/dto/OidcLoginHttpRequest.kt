@@ -1,6 +1,7 @@
 package com.official.cufitapi.domain.auth.api.dto
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.official.cufitapi.domain.auth.application.command.RegisterAuthorizationMemberCommand
 
 data class OidcLoginHttpRequest(
 
@@ -15,6 +16,9 @@ data class OidcLoginHttpRequest(
 
     @JsonProperty("provider")
     val provider: String,
-)
+) {
+    fun toCommand(providerId: String): RegisterAuthorizationMemberCommand =
+        RegisterAuthorizationMemberCommand(username, email, provider, providerId)
+}
 
 

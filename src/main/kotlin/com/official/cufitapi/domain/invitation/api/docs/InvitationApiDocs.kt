@@ -4,10 +4,10 @@ import com.official.cufitapi.common.annotation.Authorization
 import com.official.cufitapi.common.annotation.AuthorizationType
 import com.official.cufitapi.common.annotation.AuthorizationUser
 import com.official.cufitapi.common.api.dto.HttpResponse
-import com.official.cufitapi.domain.invitation.api.dto.InvitationValidationResponse
-import com.official.cufitapi.domain.invitation.api.dto.InvitationCodeGenerateRequest
-import com.official.cufitapi.domain.invitation.api.dto.InvitationCodeRequest
-import com.official.cufitapi.domain.invitation.api.dto.InvitationCodeResponse
+import com.official.cufitapi.domain.invitation.api.dto.AcceptInvitationCardResponse
+import com.official.cufitapi.domain.invitation.api.dto.GenerateInvitationCardRequest
+import com.official.cufitapi.domain.invitation.api.dto.AcceptInvitationCardRequest
+import com.official.cufitapi.domain.invitation.api.dto.GenerateInvitationCardResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
@@ -26,10 +26,10 @@ interface InvitationApiDocs {
         ApiResponse(responseCode = "401", description = "인증 실패"),
         ApiResponse(responseCode = "500", description = "서버 에러")
     )
-    fun validateInvitation(
+    fun accept(
         @Authorization(AuthorizationType.ALL) authorizationUser: AuthorizationUser,
-        @RequestBody request: InvitationCodeRequest
-    ) : HttpResponse<InvitationValidationResponse>
+        @RequestBody request: AcceptInvitationCardRequest
+    ) : HttpResponse<AcceptInvitationCardResponse>
 
 
     @Operation(
@@ -42,6 +42,6 @@ interface InvitationApiDocs {
     )
     fun generate(
         @Authorization(AuthorizationType.ALL) authorizationUser: AuthorizationUser,
-        @RequestBody request: InvitationCodeGenerateRequest
-    ) : HttpResponse<InvitationCodeResponse>
+        @RequestBody request: GenerateInvitationCardRequest
+    ) : HttpResponse<GenerateInvitationCardResponse>
 }

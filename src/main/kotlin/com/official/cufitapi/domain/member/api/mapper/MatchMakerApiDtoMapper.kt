@@ -22,7 +22,7 @@ class MatchMakerApiDtoMapper {
     private fun mapToCandidates(matchCandidateEntity: MatchCandidateEntity) =
         CandidatesInfoResponseDto(
             id = matchCandidateEntity.id!!,
-            memberId = matchCandidateEntity.member.id!!,
+            memberId = matchCandidateEntity.memberId,
             isMatchAgreed = matchCandidateEntity.isMatchAgreed,
             idealMbti = matchCandidateEntity.idealMbti,
             idealAgeRange = matchCandidateEntity.idealAgeRange,
@@ -38,7 +38,7 @@ class MatchMakerApiDtoMapper {
     private fun mapToOtherCandidates(matchCandidateEntity: MatchCandidateEntity) =
         OtherCandidatesInfoResponseDto(
             id = matchCandidateEntity.id!!,
-            memberId = matchCandidateEntity.member.id!!,
+            memberId = matchCandidateEntity.memberId,
             isMatchAgreed = matchCandidateEntity.isMatchAgreed,
             idealMbti = matchCandidateEntity.idealMbti,
             idealAgeRange = matchCandidateEntity.idealAgeRange,

@@ -1,7 +1,7 @@
 ### 후보자 프로필 업데이트
 POST http://{{host}}/api/v1/candidates
 Content-Type: application/json
-Authorization: Bearer {{candidate_access_token}}
+Authorization: Bearer {{candidate_accessToken}}
 
 {
   "images": {
@@ -38,4 +38,4 @@ Authorization: Bearer {{candidate_access_token}}
 ### 후보자 프로필 조회
 GET http://{{host}}/api/v1/candidates/profile
 Content-Type: application/json
-Authorization: Bearer {{candidate_access_token}}
+Authorization: Bearer {{candidate_accessToken}}

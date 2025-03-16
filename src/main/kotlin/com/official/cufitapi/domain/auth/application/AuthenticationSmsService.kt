@@ -1,7 +1,5 @@
 package com.official.cufitapi.domain.auth.application
 
-import com.official.cufitapi.common.config.ErrorCode
-import com.official.cufitapi.common.exception.InvalidRequestException
 import com.official.cufitapi.domain.auth.application.command.SmsAuthenticationIssueCommand
 import com.official.cufitapi.domain.auth.application.command.SmsAuthenticationValidationCommand
 import com.official.cufitapi.domain.auth.domain.SmsAuthentication
@@ -36,11 +34,11 @@ class AuthenticationSmsService(
 
     override fun validateSmsAuthCode(command: SmsAuthenticationValidationCommand) {
         val authorizationMember = authorizationMemberRepository.findById(command.memberId)
-        authorizationMember.smsAuthCode?.let {
-            if (it != command.authCode) {
-                throw InvalidRequestException(ErrorCode.NOT_MATCHED_SMS_AUTH_CODE)
-            }
-        }
+        // authorizationMember.smsAuthCode?.let {
+        //     if (it != command.authCode) {
+        //         throw IllegalArgumentException("인증번호가 일치하지 않습니다.")
+        //     }
+        // }
     }
 
     private fun generateRandomSmsAuthCode(): String {

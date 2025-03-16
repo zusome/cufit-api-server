@@ -2,8 +2,8 @@ package com.official.cufitapi.domain.member.application
 
 import com.official.cufitapi.domain.member.application.command.candidate.CandidateMatchBreakCommand
 import com.official.cufitapi.domain.member.application.command.candidate.CandidateProfileUpdateCommand
+import com.official.cufitapi.domain.member.domain.MatchCandidate
 import com.official.cufitapi.domain.member.domain.repository.MatchCandidateRepository
-import com.official.cufitapi.domain.member.infrastructure.persistence.MatchCandidateImageEntity
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -15,13 +15,20 @@ interface CandidateProfileUpdateUseCase {
     fun updateProfile(candidateProfileUpdateCommand: CandidateProfileUpdateCommand)
 }
 
+interface RegisterMatchCandidateUseCase {
+    fun register(memberId: Long)
+}
+
 @Service
-@Transactional(readOnly = true)
 class CandidateService(
     private val matchCandidateRepository: MatchCandidateRepository,
-) : CandidateProfileUpdateUseCase, CandidateMatchBreakUseCase {
+) : CandidateProfileUpdateUseCase, CandidateMatchBreakUseCase, RegisterMatchCandidateUseCase {
 
-    @Transactional
+
+    override fun register(memberId: Long) {
+        matchCandidateRepository.save(MatchCandidate(memberId = memberId))
+    }
+
     override fun updateProfile(command: CandidateProfileUpdateCommand) {
         val matchCandidate = (matchCandidateRepository.findByMemberId(command.memberId))
         matchCandidate.updateProfile(

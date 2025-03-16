@@ -9,9 +9,7 @@ import jakarta.persistence.Enumerated
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
-import jakarta.persistence.JoinColumn
 import jakarta.persistence.OneToMany
-import jakarta.persistence.OneToOne
 import jakarta.persistence.Table
 import org.hibernate.annotations.Comment
 
@@ -19,9 +17,8 @@ import org.hibernate.annotations.Comment
 @Table(name = "match_candidate")
 class MatchCandidateEntity(
 
-    @JoinColumn(name = "member_id")
-    @OneToOne
-    var member: MemberEntity,
+    @Column(name = "member_id", unique = false, nullable = false)
+    var memberId: Long,
 
     @Column(name = "is_match_agreed", unique = false, nullable = false)
     @Comment("매칭동의여부")
@@ -75,6 +72,9 @@ class MatchCandidateEntity(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
 ) {
+    init {
+        images.forEach { it.matchCandidateEntity = this }
+    }
 
     fun deactivateMatching() {
         isMatchAgreed = false
@@ -95,10 +95,10 @@ class MatchCandidateEntity(
         job: String,
         yearOfBirth: Int,
         gender: Gender,
-        phoneNumber: String
+        phoneNumber: String,
     ) {
         this.images.addAll(images)
-        this.images.forEach { it.matchCandidateEntity = this}
+        images.forEach { it.matchCandidateEntity = this }
         this.idealMbti = idealMbti
         this.idealAgeRange = idealAgeRange
         this.idealHeightRange = idealHeightRange
