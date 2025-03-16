@@ -1,5 +1,6 @@
 package com.official.cufitapi.domain.member.domain.vo
 
+import com.official.cufitapi.common.config.ErrorCode
 import com.official.cufitapi.common.exception.InvalidRequestException
 
 enum class MatchMakerCandidateRelationType {
@@ -24,13 +25,13 @@ enum class MatchMakerCandidateRelationType {
             "CO" -> COMPANION
             "AC" -> ACQUAINTANCE
             else -> {
-                throw InvalidRequestException("잘못된 suffix")
+                throw InvalidRequestException(ErrorCode.INVALID_SUFFIX)
             }
         }
 
         fun of(type: String): MatchMakerCandidateRelationType {
             return entries.firstOrNull { it.name == type }
-                ?: throw InvalidRequestException("Invalid relation type: $type")
+                ?: throw InvalidRequestException(ErrorCode.INVALID_RELATION_TYPE)
         }
     }
 }

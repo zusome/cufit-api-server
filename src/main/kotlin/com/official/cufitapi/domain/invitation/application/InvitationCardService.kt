@@ -1,125 +1,88 @@
 package com.official.cufitapi.domain.invitation.application
 
-import com.official.cufitapi.common.exception.InvalidRequestException
-import com.official.cufitapi.domain.invitation.application.command.InvitationCardGenerationCommand
-import com.official.cufitapi.domain.invitation.application.command.InvitationCardAcceptCommand
-import com.official.cufitapi.domain.invitation.domain.vo.InvitationCard
-import com.official.cufitapi.domain.invitation.infrastructure.persistence.InvitationCardEntity
-import com.official.cufitapi.domain.invitation.infrastructure.persistence.InvitationCardJpaRepository
 // 의존성 개선 필요
-import com.official.cufitapi.domain.member.domain.vo.MatchMakerCandidateRelationType
-import com.official.cufitapi.domain.member.domain.vo.MemberType
-import com.official.cufitapi.domain.member.infrastructure.persistence.MatchCandidateEntity
-import com.official.cufitapi.domain.member.infrastructure.persistence.MatchCandidateJpaRepository
-import com.official.cufitapi.domain.member.infrastructure.persistence.MatchMakerEntity
-import com.official.cufitapi.domain.member.infrastructure.persistence.MatchMakerJpaRepository
-import com.official.cufitapi.domain.member.infrastructure.persistence.MemberJpaRepository
-import com.official.cufitapi.domain.member.infrastructure.persistence.MemberRelationEntity
-import com.official.cufitapi.domain.member.infrastructure.persistence.MemberRelationJpaRepository
-import org.springframework.data.repository.findByIdOrNull
+import com.official.cufitapi.domain.invitation.application.command.AcceptInvitationCardCommand
+import com.official.cufitapi.domain.invitation.application.command.GenerateInvitationCardCommand
+import com.official.cufitapi.domain.invitation.domain.InvitationCard
+import com.official.cufitapi.domain.invitation.domain.InvitationCardRepository
+import com.official.cufitapi.domain.invitation.domain.Inviters
+import com.official.cufitapi.domain.invitation.domain.event.InvitationAcceptEvent
+import com.official.cufitapi.domain.invitation.domain.factory.InvitationCodeFactory
+import com.official.cufitapi.domain.invitation.domain.vo.InvitationCode
+import com.official.cufitapi.domain.invitation.domain.vo.InvitationRelationType
+import com.official.cufitapi.domain.invitation.domain.vo.InvitationType
+import com.official.cufitapi.domain.invitation.domain.vo.Inviter
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
-import kotlin.random.Random
 
-interface InvitationCardGenerationUseCase {
-    fun generate(command: InvitationCardGenerationCommand): InvitationCard
+interface GenerateInvitationCardUseCase {
+    fun generate(command: GenerateInvitationCardCommand): InvitationCard
 }
 
-interface InvitationCardAcceptUseCase {
-    fun accept(command: InvitationCardAcceptCommand): Pair<MemberType, String>
+interface AcceptInvitationCardUseCase {
+    fun accept(command: AcceptInvitationCardCommand): InvitationCard
+}
+
+interface FindInvitersUseCase {
+    fun findByInviterId(inviterId: Long): Inviter
 }
 
 @Service
-@Transactional(readOnly = true)
 class InvitationCardService(
-    private val invitationCardJpaRepository: InvitationCardJpaRepository,
-    private val memberJpaRepository: MemberJpaRepository,
-    private val memberRelationJpaRepository: MemberRelationJpaRepository,
-    private val matchMakerJpaRepository: MatchMakerJpaRepository,
-    private val matchCandidateJpaRepository: MatchCandidateJpaRepository
-) : InvitationCardGenerationUseCase, InvitationCardAcceptUseCase {
+    private val inviters: Inviters,
+    private val invitationCodeFactory: InvitationCodeFactory,
+    private val invitationCardRepository: InvitationCardRepository,
+    private val applicationEventPublisher: ApplicationEventPublisher,
+) : GenerateInvitationCardUseCase, AcceptInvitationCardUseCase, FindInvitersUseCase {
 
-    @Transactional
-    override fun generate(command: InvitationCardGenerationCommand): InvitationCard {
-        val inviter = memberJpaRepository.findByIdOrNull(command.memberId)
-            ?: throw InvalidRequestException("잘못된 사용자 id 요청 : ${command.memberId}")
-        val invitationCode = invitationCode(command.memberType, command.relationType)
-        val invitationCard = invitationCardJpaRepository.save(
-            InvitationCardEntity(
-                code = invitationCode,
-                relationType = command.relationType,
-                inviterId = inviter.id!!
+    override fun generate(command: GenerateInvitationCardCommand): InvitationCard {
+        val inviter = inviters.findById(command.inviterId)
+        val invitationType = InvitationType.of(command.invitationType)
+        val invitationRelationType = InvitationRelationType.of(command.invitationRelationType)
+        return invitationCardRepository.save(
+            InvitationCard(
+                code = invitationCodeFactory.generate(invitationType, invitationRelationType),
+                relationType = invitationRelationType,
+                inviterId = inviter.inviterId,
+                isAccepted = false
             )
         )
-        return InvitationCard(invitationCard.code)
     }
 
-    private fun invitationCode(memberType: MemberType, relationType: MatchMakerCandidateRelationType): String {
-        val invitationCodePrefix = memberType.code
-        val invitationCode = generateRandomBase62String()
-        val invitationCodeSuffix = MatchMakerCandidateRelationType.invitationCodeSuffix(relationType)
-        return "${invitationCodePrefix}$invitationCode${invitationCodeSuffix}"
-    }
-
-    private fun generateRandomBase62String(length: Int = 8): String {
-        return (1..length)
-            .map { Random.nextInt(0, BASE_62_CHARS.length) }
-            .map(BASE_62_CHARS::get)
-            .joinToString("")
-    }
-
-    @Transactional
-    override fun accept(command: InvitationCardAcceptCommand): Pair<MemberType, String> {
-        val inviteeId = command.inviteeId
-        val invitationCode = command.invitationCode.code
-
-        val invitationInfo = when (invitationCode) {
-            "a123456", "b123456", "c123456" -> {
-                1L to MatchMakerCandidateRelationType.FRIEND
-            }
-            else -> {
-                val invitation = invitationCardJpaRepository.findByCode(invitationCode)
-                    ?: throw InvalidRequestException("유효하지 않은 초대 코드")
-                invitation.deactivate()
-                invitation.inviterId to invitation.relationType
-            }
+    override fun accept(command: AcceptInvitationCardCommand): InvitationCard {
+        if (command.invitationCode == "a123456" || command.invitationCode == "b123456" || command.invitationCode == "c123456") {
+            applicationEventPublisher.publishEvent(
+                InvitationAcceptEvent.mock(
+                    command.invitationCode,
+                    command.inviteeId,
+                    "FRIEND"
+                )
+            )
+            return InvitationCard(
+                code = InvitationCode(command.invitationCode),
+                inviterId = 1L,
+                inviteeId = command.inviteeId,
+                relationType = InvitationRelationType.FRIEND,
+                isAccepted = true,
+            )
         }
-
-        val inviter = memberJpaRepository.findByIdOrNull(invitationInfo.first) ?: throw InvalidRequestException("초대 보낸 사용자를 찾을 수 없음")
-        val invitee = memberJpaRepository.findByIdOrNull(inviteeId) ?: throw InvalidRequestException("존재하지 않는 사용자 id : $inviteeId")
-        val memberRelationEntity = MemberRelationEntity(
-            inviterId = inviter.id!!,
-            inviteeId = invitee.id!!,
-            relationType = invitationInfo.second
+        val invitationCard = invitationCardRepository.findByCode(InvitationCode(command.invitationCode))
+        invitationCard.accept(command.inviteeId)
+        invitationCardRepository.save(invitationCard)
+        applicationEventPublisher.publishEvent(
+            InvitationAcceptEvent(
+                invitationCard.code.value,
+                invitationCard.inviterId,
+                invitationCard.relationType.name,
+                invitationCard.isAccepted,
+                invitationCard.inviteeId!!,
+                invitationCard.id!!
+            )
         )
-        memberRelationJpaRepository.save(memberRelationEntity)
-
-        when(invitationCode) {
-            "a123456" -> {
-                return MemberType.MATCHMAKER to inviter.name!!
-            }
-            "b123456" -> {
-                return MemberType.CANDIDATE to inviter.name!!
-            }
-            else -> {
-                invitee.memberType = MemberType.ofCode(invitationCode.substring(0, 2))
-                when (invitee.memberType) {
-                    MemberType.CANDIDATE -> {
-                        invitee.memberType = MemberType.CANDIDATE
-                        matchCandidateJpaRepository.save(MatchCandidateEntity(member = invitee))
-                    }
-                    MemberType.MATCHMAKER -> {
-                        invitee.memberType = MemberType.MATCHMAKER
-                        matchMakerJpaRepository.save(MatchMakerEntity(member = invitee))
-                    }
-                    else -> {}
-                }
-                return invitee.memberType to inviter.name!!
-            }
-        }
+        return invitationCard
     }
 
-    companion object {
-        private const val BASE_62_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+    override fun findByInviterId(inviterId: Long): Inviter {
+        return inviters.findById(inviterId)
     }
 }

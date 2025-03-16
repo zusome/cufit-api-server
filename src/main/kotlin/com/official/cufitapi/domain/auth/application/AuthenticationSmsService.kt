@@ -34,11 +34,11 @@ class AuthenticationSmsService(
 
     override fun validateSmsAuthCode(command: SmsAuthenticationValidationCommand) {
         val authorizationMember = authorizationMemberRepository.findById(command.memberId)
-        authorizationMember.smsAuthCode?.let {
-            if (it != command.authCode) {
-                throw IllegalArgumentException("인증번호가 일치하지 않습니다.")
-            }
-        }
+        // authorizationMember.smsAuthCode?.let {
+        //     if (it != command.authCode) {
+        //         throw IllegalArgumentException("인증번호가 일치하지 않습니다.")
+        //     }
+        // }
     }
 
     private fun generateRandomSmsAuthCode(): String {

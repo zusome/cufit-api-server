@@ -1,5 +1,7 @@
 package com.official.cufitapi.domain.member.infrastructure
 
+import com.official.cufitapi.common.config.ErrorCode
+import com.official.cufitapi.common.exception.NotFoundException
 import com.official.cufitapi.domain.member.domain.Member
 import com.official.cufitapi.domain.member.domain.repository.MemberRepository
 import com.official.cufitapi.domain.member.domain.vo.MemberType
@@ -17,7 +19,7 @@ class MemberRepositoryAdapter(
 
     override fun findById(memberId: Long) : Member {
         val entity = memberJpaRepository.findById(memberId)
-            .orElseThrow { IllegalArgumentException("Member not found") }
+            .orElseThrow { NotFoundException(ErrorCode.NOT_FOUND_MEMBER) }
         return mapToDomain(entity)
     }
 

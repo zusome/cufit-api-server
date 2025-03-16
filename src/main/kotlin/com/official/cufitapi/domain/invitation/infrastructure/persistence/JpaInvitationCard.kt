@@ -1,11 +1,8 @@
 package com.official.cufitapi.domain.invitation.infrastructure.persistence
 
 import com.official.cufitapi.common.jpa.BaseTimeEntity
-import com.official.cufitapi.domain.member.domain.vo.MatchMakerCandidateRelationType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
-import jakarta.persistence.EnumType
-import jakarta.persistence.Enumerated
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
@@ -17,7 +14,7 @@ import org.hibernate.annotations.Comment
  */
 @Entity
 @Table(name = "invitation_card")
-class InvitationCardEntity(
+class JpaInvitationCard(
 
     @Comment("초대 코드")
     @Column(name = "code", nullable = false, updatable = false)
@@ -29,21 +26,30 @@ class InvitationCardEntity(
 
     @Comment("초대하는 사람과의 관계")
     @Column(name = "relationType", nullable = false, updatable = false)
-    @Enumerated(EnumType.STRING)
-    var relationType: MatchMakerCandidateRelationType,
+    var relationType: String,
 
-    /**
-     * 초대코드는 사용되면, 삭제 되어야하지만 이후에 추적을 위해서, Soft Delete
-     */
-    @Comment("사용 여부")
-    @Column(name = "is_activated", nullable = false)
-    var isActivated: Boolean = true,
+    @Comment("수락 여부")
+    @Column(name = "is_accepted", nullable = false)
+    var isAccepted: Boolean = false,
+
+    @Comment("초대받는 사용자 ID")
+    @Column(name = "invitee_id", nullable = true, updatable = true)
+    var inviteeId: Long? = null,
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
 ) : BaseTimeEntity() {
 
-    fun deactivate() {
-        isActivated = false;
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as JpaInvitationCard
+
+        return id == other.id
+    }
+
+    override fun hashCode(): Int {
+        return id?.hashCode() ?: 0
     }
 }

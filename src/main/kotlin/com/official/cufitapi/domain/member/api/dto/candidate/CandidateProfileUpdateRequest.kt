@@ -1,5 +1,6 @@
 package com.official.cufitapi.domain.member.api.dto.candidate
 
+import com.official.cufitapi.common.config.ErrorCode
 import com.official.cufitapi.common.exception.InvalidRequestException
 import com.official.cufitapi.domain.member.domain.vo.Gender
 import com.official.cufitapi.domain.member.domain.vo.IdealAge
@@ -34,7 +35,7 @@ data class CandidateProfileUpdateRequest(
 ) {
     init {
         if (yearOfBirth >= LocalDateTime.now().year) {
-            throw InvalidRequestException("생년은 올해 이전 값이어야 합니다. : $yearOfBirth")
+            throw InvalidRequestException(ErrorCode.YEAR_OF_BIRTH_INVALID)
         }
     }
 }

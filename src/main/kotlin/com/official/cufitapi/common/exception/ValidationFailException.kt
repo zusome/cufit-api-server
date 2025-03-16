@@ -1,4 +1,5 @@
 package com.official.cufitapi.common.exception
 
-class ValidationFailException(message: String) : BadRequestException(message){
-}
+import com.official.cufitapi.common.config.ErrorCode
+
+class ValidationFailException(errorCode: ErrorCode) : BadRequestException(errorCode)

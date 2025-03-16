@@ -1,6 +1,8 @@
 package com.official.cufitapi.domain.auth.application
 
+import com.official.cufitapi.common.config.ErrorCode
 import com.official.cufitapi.common.config.property.AuthorizationProperties
+import com.official.cufitapi.common.exception.UnAuthorizedException
 import com.official.cufitapi.domain.auth.application.command.AuthorizationTokenCreationCommand
 import com.official.cufitapi.domain.auth.application.command.AuthorizationTokenRefreshCommand
 import com.official.cufitapi.domain.auth.application.service.SecretKeyGenerator
@@ -98,5 +100,5 @@ class AuthorizationTokenCreationService(
             .build()
             .parseClaimsJws(accessToken)
             .body
-            ?: throw IllegalArgumentException()
+            ?: throw UnAuthorizedException(ErrorCode.INVALID_TOKEN)
 }

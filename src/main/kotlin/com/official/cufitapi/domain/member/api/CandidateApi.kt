@@ -89,7 +89,7 @@ class CandidateApi(
     ): HttpResponse<Unit> {
         candidateProfileUpdateUseCase.updateProfile(
             CandidateProfileUpdateCommand(
-                images = request.images.images.map { CandidateImage(it.imageUrl, it.profileOrder)},
+                images = request.images.images.map { CandidateImage(it.imageUrl, it.profileOrder)}.toMutableList(),
                 memberId = authorizationUser.userId,
                 gender = request.gender,
                 yearOfBirth = request.yearOfBirth,

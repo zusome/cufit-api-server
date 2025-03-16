@@ -1,7 +1,7 @@
 ### 어드민 -> 주선자2 초대 코드 생성
 POST http://{{host}}/api/v1/invitations
 Content-Type: application/json
-Authorization: Bearer {{access_token}}
+Authorization: Bearer {{accessToken}}
 
 {
   "memberType": "MATCHMAKER",
@@ -22,7 +22,7 @@ Authorization: Bearer {{access_token}}
 ### 주선자 초대 수락
 POST http://{{host}}/api/v1/invitations/code
 Content-Type: application/json
-Authorization: Bearer {{matchmaker_access_token2}}
+Authorization: Bearer {{matchmaker_accessToken2}}
 
 {
   "invitationCode": "{{matchmaker_invitation_code2}}"
@@ -31,7 +31,7 @@ Authorization: Bearer {{matchmaker_access_token2}}
 ### 주선자 -> 후보자 초대 코드 생성
 POST http://{{host}}/api/v1/invitations
 Content-Type: application/json
-Authorization: Bearer {{matchmaker_access_token2}}
+Authorization: Bearer {{matchmaker_accessToken2}}
 
 {
   "memberType": "CANDIDATE",
@@ -52,7 +52,7 @@ Authorization: Bearer {{matchmaker_access_token2}}
 ### 후보자 초대 수락
 POST http://{{host}}/api/v1/invitations/code
 Content-Type: application/json
-Authorization: Bearer {{candidate_access_token2}}
+Authorization: Bearer {{candidate_accessToken2}}
 
 {
   "invitationCode": "{{candidate_invitation_code2}}"
