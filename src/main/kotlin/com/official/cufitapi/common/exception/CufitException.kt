@@ -1,3 +1,5 @@
 package com.official.cufitapi.common.exception
 
-open class CufitException(override val message: String) : RuntimeException(message)
+import com.official.cufitapi.common.config.ErrorCode
+
+open class CufitException(errorCode: ErrorCode) : RuntimeException(errorCode.message)

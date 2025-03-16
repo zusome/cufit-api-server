@@ -1,6 +1,8 @@
 package com.official.cufitapi.domain.auth.infrastructure
 
+import com.official.cufitapi.common.config.ErrorCode
 import com.official.cufitapi.common.exception.CufitException
+import com.official.cufitapi.common.exception.NotFoundException
 import com.official.cufitapi.domain.auth.domain.AuthorizationMember
 import com.official.cufitapi.domain.auth.domain.SmsAuthentication
 import com.official.cufitapi.domain.auth.domain.repository.AuthorizationMemberRepository
@@ -29,7 +31,7 @@ class AuthorizationMemberRepositoryAdapter(
 
     override fun saveAuthCode(smsAuthentication: SmsAuthentication) {
         val memberAuthorization = memberAuthorizationJpaRepository.findById(smsAuthentication.memberId)
-            .orElseThrow { throw CufitException("MemberAuthorization not found") }
+            .orElseThrow { throw NotFoundException(ErrorCode.NOT_FOUND_MEMBER) }
         // TODO: 전화 번호는 어떻게 처리할지 고민.
         memberAuthorization.smsAuthCode = smsAuthentication.authCode
 
