@@ -1,5 +1,6 @@
 package com.official.cufitapi.domain.invitation.domain.vo
 
+import com.official.cufitapi.common.config.ErrorCode
 import com.official.cufitapi.common.exception.InvalidRequestException
 
 enum class InvitationRelationType {
@@ -15,7 +16,7 @@ enum class InvitationRelationType {
     companion object {
         fun of(type: String): InvitationRelationType {
             return entries.firstOrNull { it.name == type }
-                ?: throw InvalidRequestException("Invalid relation type: $type")
+                ?: throw InvalidRequestException(ErrorCode.INVALID_RELATION_TYPE)
         }
     }
 }
