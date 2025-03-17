@@ -1,6 +1,6 @@
 package com.official.cufitapi.domain.member.application.command
 
-data class UpdateMemberProfileCommand(
+data class UpdateMemberRealNameCommand(
     val memberId: Long,
     val name: String,
 ) {

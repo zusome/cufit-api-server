@@ -32,9 +32,8 @@ class MemberEntity(
     @OneToOne(mappedBy = "member", cascade = [CascadeType.ALL], orphanRemoval = true)
     var memberAuthorization: MemberAuthorizationEntity,
 
-    @Enumerated(value = EnumType.STRING)
     @Column(name = "authority", unique = false, nullable = false)
-    var memberType: MemberType,
+    var memberType: String,
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
@@ -42,10 +41,6 @@ class MemberEntity(
 ) : BaseTimeEntity() {
     init {
         memberAuthorization.member = this
-    }
-
-    fun updateName(name: String) {
-        this.name = name
     }
 
     override fun equals(other: Any?): Boolean {
@@ -59,13 +54,5 @@ class MemberEntity(
 
     override fun hashCode(): Int {
         return id?.hashCode() ?: 0
-    }
-
-    fun updateMatchMaker() {
-        this.memberType = MemberType.MATCHMAKER
-    }
-
-    fun updateMatchCandidate() {
-        this.memberType = MemberType.CANDIDATE
     }
 }
