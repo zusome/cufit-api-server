@@ -10,7 +10,7 @@ import com.official.cufitapi.domain.member.api.dto.matchmaker.MatchMakerCandidat
 import com.official.cufitapi.domain.member.api.dto.matchmaker.MatchMakerOtherCandidateResponse
 import com.official.cufitapi.domain.member.api.dto.matchmaker.MatchMakerOtherCandidatesCountResponse
 import com.official.cufitapi.domain.member.api.dto.matchmaker.MatchMakerOtherCandidatesResponse
-import com.official.cufitapi.domain.member.infrastructure.persistence.MatchCandidateEntity
+import com.official.cufitapi.domain.member.infrastructure.persistence.JpaMatchCandidate
 import com.official.cufitapi.domain.member.infrastructure.persistence.dto.MatchCandidate
 import com.official.cufitapi.domain.member.infrastructure.persistence.dto.MatchCandidates
 import com.official.cufitapi.domain.member.infrastructure.persistence.dto.OtherMatchCandidate
@@ -19,36 +19,36 @@ import org.springframework.stereotype.Component
 
 @Component
 class MatchMakerApiDtoMapper {
-    private fun mapToCandidates(matchCandidateEntity: MatchCandidateEntity) =
+    private fun mapToCandidates(jpaMatchCandidate: JpaMatchCandidate) =
         CandidatesInfoResponseDto(
-            id = matchCandidateEntity.id!!,
-            memberId = matchCandidateEntity.memberId,
-            isMatchAgreed = matchCandidateEntity.isMatchAgreed,
-            idealMbti = matchCandidateEntity.idealMbti,
-            idealAgeRange = matchCandidateEntity.idealAgeRange,
-            idealHeightRange = matchCandidateEntity.idealHeightRange,
-            height = matchCandidateEntity.height,
-            station = matchCandidateEntity.station,
-            job = matchCandidateEntity.job,
-            yearOfBirth = matchCandidateEntity.yearOfBirth,
-            gender = matchCandidateEntity.gender?.name,
-            phoneNumber = matchCandidateEntity.phoneNumber
+            id = jpaMatchCandidate.id!!,
+            memberId = jpaMatchCandidate.memberId,
+            isMatchAgreed = jpaMatchCandidate.isMatchAgreed,
+            idealMbti = jpaMatchCandidate.idealMbti,
+            idealAgeRange = jpaMatchCandidate.idealAgeRange,
+            idealHeightRange = jpaMatchCandidate.idealHeightRange,
+            height = jpaMatchCandidate.height,
+            station = jpaMatchCandidate.station,
+            job = jpaMatchCandidate.job,
+            yearOfBirth = jpaMatchCandidate.yearOfBirth,
+            gender = jpaMatchCandidate.gender?.name,
+            phoneNumber = jpaMatchCandidate.phoneNumber
         )
 
-    private fun mapToOtherCandidates(matchCandidateEntity: MatchCandidateEntity) =
+    private fun mapToOtherCandidates(jpaMatchCandidate: JpaMatchCandidate) =
         OtherCandidatesInfoResponseDto(
-            id = matchCandidateEntity.id!!,
-            memberId = matchCandidateEntity.memberId,
-            isMatchAgreed = matchCandidateEntity.isMatchAgreed,
-            idealMbti = matchCandidateEntity.idealMbti,
-            idealAgeRange = matchCandidateEntity.idealAgeRange,
-            idealHeightRange = matchCandidateEntity.idealHeightRange,
-            height = matchCandidateEntity.height,
-            station = matchCandidateEntity.station,
-            job = matchCandidateEntity.job,
-            yearOfBirth = matchCandidateEntity.yearOfBirth,
-            gender = matchCandidateEntity.gender?.name,
-            phoneNumber = matchCandidateEntity.phoneNumber
+            id = jpaMatchCandidate.id!!,
+            memberId = jpaMatchCandidate.memberId,
+            isMatchAgreed = jpaMatchCandidate.isMatchAgreed,
+            idealMbti = jpaMatchCandidate.idealMbti,
+            idealAgeRange = jpaMatchCandidate.idealAgeRange,
+            idealHeightRange = jpaMatchCandidate.idealHeightRange,
+            height = jpaMatchCandidate.height,
+            station = jpaMatchCandidate.station,
+            job = jpaMatchCandidate.job,
+            yearOfBirth = jpaMatchCandidate.yearOfBirth,
+            gender = jpaMatchCandidate.gender?.name,
+            phoneNumber = jpaMatchCandidate.phoneNumber
         )
 
     fun candidateCount(candidateCount: Long): MatchMakerCandidateCountResponse =

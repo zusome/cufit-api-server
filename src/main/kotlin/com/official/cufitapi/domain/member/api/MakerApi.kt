@@ -5,7 +5,7 @@ import com.official.cufitapi.common.annotation.AuthorizationType
 import com.official.cufitapi.common.annotation.AuthorizationUser
 import com.official.cufitapi.common.api.ApiV1Controller
 import com.official.cufitapi.common.api.dto.HttpResponse
-import com.official.cufitapi.domain.member.api.docs.MatchMakerApiDocs
+import com.official.cufitapi.domain.member.api.docs.MakerApiDocs
 import com.official.cufitapi.domain.member.api.dto.matchmaker.MatchMakerCandidateCountResponse
 import com.official.cufitapi.domain.member.api.dto.matchmaker.MatchMakerCandidatesResponse
 import com.official.cufitapi.domain.member.api.dto.matchmaker.MatchMakerOtherCandidatesCountResponse
@@ -17,10 +17,10 @@ import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
 
 @ApiV1Controller
-class MatchMakerApi(
+class MakerApi(
     @Qualifier("matchMakerDaoJdbcTemplateDao")private val matchMakerDao: MatchMakerDao,
     private val matchMakerApiResponseMapper: MatchMakerApiDtoMapper,
-) : MatchMakerApiDocs {
+) : MakerApiDocs {
 
     @GetMapping("/matchmakers/candidates/count")
     override fun findCandidatesCount(

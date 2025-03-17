@@ -2,14 +2,14 @@ package com.official.cufitapi.domain.invitation.infrastructure
 
 import com.official.cufitapi.domain.invitation.domain.Inviters
 import com.official.cufitapi.domain.invitation.domain.vo.Inviter
-import com.official.cufitapi.domain.member.infrastructure.persistence.MemberJpaRepository
+import com.official.cufitapi.domain.member.infrastructure.persistence.JpaMemberRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 
 @Component
 class DefaultInviters(
-    private val memberJpaRepository: MemberJpaRepository,
+    private val jpaMemberRepository: JpaMemberRepository,
 ) : Inviters {
 
     @Transactional(readOnly = true)
@@ -19,6 +19,6 @@ class DefaultInviters(
 
     @Transactional(readOnly = true)
     override fun findByIdOrNull(inviterId: Long): Inviter? =
-        memberJpaRepository.findByIdOrNull(inviterId)
+        jpaMemberRepository.findByIdOrNull(inviterId)
             ?.let { Inviter(it.id!!, it.name ?: throw IllegalStateException("name is null")) }
 }

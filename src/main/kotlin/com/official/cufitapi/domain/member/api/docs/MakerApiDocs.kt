@@ -6,14 +6,13 @@ import com.official.cufitapi.domain.member.api.dto.matchmaker.MatchMakerCandidat
 import com.official.cufitapi.domain.member.api.dto.matchmaker.MatchMakerCandidatesResponse
 import com.official.cufitapi.domain.member.api.dto.matchmaker.MatchMakerOtherCandidatesCountResponse
 import com.official.cufitapi.domain.member.api.dto.matchmaker.MatchMakerOtherCandidatesResponse
-import com.official.cufitapi.domain.member.infrastructure.persistence.dto.MatchCandidates
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
 
 @Tag(name = "주선자 관련 API")
-interface MatchMakerApiDocs {
+interface MakerApiDocs {
 
     @Operation(
         summary = "내 후보자 수 조회 API",

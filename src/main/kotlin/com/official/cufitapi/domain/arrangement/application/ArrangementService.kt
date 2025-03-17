@@ -10,8 +10,8 @@ import com.official.cufitapi.domain.arrangement.domain.ArrangementRepository
 import com.official.cufitapi.domain.arrangement.infrastructure.persistence.ArrangementEntity
 import com.official.cufitapi.domain.arrangement.infrastructure.persistence.ArrangementJpaRepository
 import com.official.cufitapi.domain.arrangement.infrastructure.persistence.ArrangementStatus
-import com.official.cufitapi.domain.member.infrastructure.persistence.MatchCandidateJpaRepository
-import com.official.cufitapi.domain.member.infrastructure.persistence.MemberRelationJpaRepository
+import com.official.cufitapi.domain.member.infrastructure.persistence.JpaMatchCandidateRepository
+import com.official.cufitapi.domain.member.infrastructure.persistence.JpaMemberRelationRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
@@ -26,8 +26,8 @@ fun interface UpdateArrangementUsecase {
 
 @Service
 class ArrangementService(
-    private val matchCandidateJpaRepository: MatchCandidateJpaRepository,
-    private val memberRelationJpaRepository: MemberRelationJpaRepository,
+    private val jpaMatchCandidateRepository: JpaMatchCandidateRepository,
+    private val jpaMemberRelationRepository: JpaMemberRelationRepository,
     private val arrangementJpaRepository: ArrangementJpaRepository,
     private val arrangementRepository: ArrangementRepository
 ): SuggestArrangementUsecase, UpdateArrangementUsecase {
@@ -60,9 +60,9 @@ class ArrangementService(
     }
 
     private fun verifySameGender(leftCandidateId: Long, rightCandidateId: Long) {
-        val leftCandidate = matchCandidateJpaRepository.findByMemberId(leftCandidateId)
+        val leftCandidate = jpaMatchCandidateRepository.findByMemberId(leftCandidateId)
             ?: throw InvalidRequestException(ErrorCode.NOT_FOUND_RECEIVER)
-        val rightCandidate = matchCandidateJpaRepository.findByMemberId(rightCandidateId)
+        val rightCandidate = jpaMatchCandidateRepository.findByMemberId(rightCandidateId)
             ?: throw InvalidRequestException(ErrorCode.NOT_FOUND_SENDER)
         if (leftCandidate.isSameGender(rightCandidate)) {
             throw InvalidRequestException(ErrorCode.CONNECTION_REQUEST_SAME_GENDER)
@@ -75,7 +75,7 @@ class ArrangementService(
         today: LocalDateTime,
         tomorrow: LocalDateTime,
     ) {
-        val isMyCandidate = memberRelationJpaRepository.existsByInviterIdAndInviteeId(matchMakerId, candidateId)
+        val isMyCandidate = jpaMemberRelationRepository.existsByInviterIdAndInviteeId(matchMakerId, candidateId)
         if (isMyCandidate) {
             val count = arrangementJpaRepository.todayCount(matchMakerId, candidateId, today, tomorrow)
             if (count >= 3) {

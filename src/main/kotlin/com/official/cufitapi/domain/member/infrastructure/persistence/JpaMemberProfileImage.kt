@@ -12,7 +12,7 @@ import java.util.UUID
  */
 @Entity
 @Table(name = "member_profile_image")
-class MemberProfileImageEntity(
+class JpaMemberProfileImage(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int? = null,
 

@@ -12,7 +12,7 @@ import org.hibernate.annotations.Comment
  */
 @Entity
 @Table(name = "member_relations")
-class MemberRelationEntity(
+class JpaMemberRelation(
 
     @Comment("초대 하는 회원 ID")
     @Column(name = "inviter_id", nullable = false, updatable = false)

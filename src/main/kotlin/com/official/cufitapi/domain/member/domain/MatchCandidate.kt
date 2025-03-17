@@ -5,7 +5,7 @@ import com.official.cufitapi.domain.member.domain.vo.Gender
 
 class MatchCandidate(
     val memberId: Long,
-    val isMatchAgreed: Boolean = true,
+    var isMatchAgreed: Boolean = true,
     var images: MutableList<CandidateImage> = mutableListOf(),
     var idealMbti: String? = null,
     var idealAgeRange: String? = null,
@@ -43,5 +43,22 @@ class MatchCandidate(
         this.yearOfBirth = yearOfBirth
         this.gender = gender
         this.phoneNumber = phoneNumber
+    }
+
+    fun breakMatch(matchAgreed: Boolean) {
+        this.isMatchAgreed = matchAgreed
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as MatchCandidate
+
+        return id == other.id
+    }
+
+    override fun hashCode(): Int {
+        return id?.hashCode() ?: 0
     }
 }

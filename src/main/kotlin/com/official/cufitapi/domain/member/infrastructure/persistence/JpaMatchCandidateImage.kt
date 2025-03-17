@@ -10,7 +10,7 @@ import jakarta.persistence.Table
 
 @Table(name = "match_candidate_images")
 @Entity
-class MatchCandidateImageEntity(
+class JpaMatchCandidateImage(
     @Column(name = "image_url", unique = false, nullable = false)
     var imageUrl: String,
 
@@ -19,7 +19,7 @@ class MatchCandidateImageEntity(
 
     @ManyToOne
     @JoinColumn(name = "match_candidate_id")
-    var matchCandidateEntity: MatchCandidateEntity? = null,
+    var jpaMatchCandidate: JpaMatchCandidate? = null,
 
     @Id @GeneratedValue
     var id: Long? = null,
