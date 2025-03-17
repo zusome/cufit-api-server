@@ -3,7 +3,8 @@ package com.official.cufitapi.domain.auth.api.dto
 import com.official.cufitapi.common.config.ErrorCode
 import com.official.cufitapi.common.exception.InvalidRequestException
 
-data class SmsAuthValidationRequest(
+data class VerifySmsAuthenticationRequest(
+    val phoneNumber: String,
     val authCode: String
 ) {
     init {

@@ -1,6 +1,7 @@
 package com.official.cufitapi.domain.auth.application.command
 
-data class SmsAuthenticationValidationCommand(
+data class VerifySmsAuthenticationCodeCommand(
     val memberId: Long,
+    val phoneNumber: String,
     val authCode: String
 )
