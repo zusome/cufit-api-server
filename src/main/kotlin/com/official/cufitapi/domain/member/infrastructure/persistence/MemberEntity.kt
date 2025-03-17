@@ -60,4 +60,12 @@ class MemberEntity(
     override fun hashCode(): Int {
         return id?.hashCode() ?: 0
     }
+
+    fun updateMatchMaker() {
+        this.memberType = MemberType.MATCHMAKER
+    }
+
+    fun updateMatchCandidate() {
+        this.memberType = MemberType.CANDIDATE
+    }
 }

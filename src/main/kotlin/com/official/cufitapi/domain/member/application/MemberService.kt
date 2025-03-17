@@ -13,10 +13,16 @@ import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
+
+interface UpdateAuthorityMemberUseCase {
+    fun updateMatchMaker(memberId: Long)
+    fun updateMatchCandidate(memberId: Long)
+}
+
 @Service
 class MemberService(
     private val memberJpaRepository: MemberJpaRepository,
-) {
+): UpdateAuthorityMemberUseCase {
 
     @Transactional
     fun register(memberRegisterCommand: MemberRegisterCommand): MemberEntity {
@@ -51,6 +57,18 @@ class MemberService(
     fun validatePhoneNumber() {
         // TODO : 문자 메시지로 인증번호 요청
         // TODO : 응답 cache에 저장
+    }
+
+    @Transactional(readOnly = false)
+    override fun updateMatchMaker(memberId: Long) {
+        val member = memberJpaRepository.findByIdOrNull(memberId) ?: throw NotFoundException(ErrorCode.NOT_FOUND_MEMBER)
+        member.updateMatchMaker()
+    }
+
+    @Transactional(readOnly = false)
+    override fun updateMatchCandidate(memberId: Long) {
+        val member = memberJpaRepository.findByIdOrNull(memberId) ?: throw NotFoundException(ErrorCode.NOT_FOUND_MEMBER)
+        member.updateMatchCandidate()
     }
 }
 
