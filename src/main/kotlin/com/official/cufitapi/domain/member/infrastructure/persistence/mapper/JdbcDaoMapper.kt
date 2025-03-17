@@ -8,7 +8,7 @@ import com.official.cufitapi.domain.member.infrastructure.persistence.dto.Member
 import org.springframework.jdbc.core.RowMapper
 import java.sql.ResultSet
 
-class MemberRelationDtoMapper : RowMapper<MemberRelationDto> {
+class JdbcMemberRelationDtoMapper : RowMapper<MemberRelationDto> {
     override fun mapRow(rs: ResultSet, rowNum: Int): MemberRelationDto =
         MemberRelationDto(
             inviterId = rs.getLong("inviter_id"),
@@ -18,7 +18,7 @@ class MemberRelationDtoMapper : RowMapper<MemberRelationDto> {
         )
 }
 
-class MatchCandidateDtoMapper : RowMapper<MatchCandidateDto> {
+class JdbcMatchCandidateDtoMapper : RowMapper<MatchCandidateDto> {
     override fun mapRow(rs: ResultSet, rowNum: Int): MatchCandidateDto {
         return MatchCandidateDto(
             memberId = rs.getLong("member_id"),
@@ -38,7 +38,7 @@ class MatchCandidateDtoMapper : RowMapper<MatchCandidateDto> {
     }
 }
 
-class MemberDtoMapper : RowMapper<MemberDto> {
+class JdbcMemberDtoMapper : RowMapper<MemberDto> {
     override fun mapRow(rs: ResultSet, rowNum: Int): MemberDto {
         return MemberDto(
             id = rs.getLong("id"),
@@ -48,7 +48,7 @@ class MemberDtoMapper : RowMapper<MemberDto> {
     }
 }
 
-class MatchCandidateImageDtoMapper : RowMapper<MatchCandidateImageDto> {
+class JdbcMatchCandidateImageDtoMapper : RowMapper<MatchCandidateImageDto> {
     override fun mapRow(rs: ResultSet, rowNum: Int): MatchCandidateImageDto {
         return MatchCandidateImageDto(
             imageUrl = rs.getString("image_url"),
@@ -59,7 +59,7 @@ class MatchCandidateImageDtoMapper : RowMapper<MatchCandidateImageDto> {
     }
 }
 
-class ArrangementDtoMapper : RowMapper<ArrangementDto> {
+class JdbcArrangementDtoMapper : RowMapper<ArrangementDto> {
     override fun mapRow(rs: ResultSet, rowNum: Int): ArrangementDto {
         return ArrangementDto(
             matchMakerMemberId = rs.getLong("match_maker_member_id"),

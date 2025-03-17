@@ -12,11 +12,11 @@ import com.official.cufitapi.domain.member.infrastructure.persistence.dto.Member
 import com.official.cufitapi.domain.member.infrastructure.persistence.dto.MemberRelationDto
 import com.official.cufitapi.domain.member.infrastructure.persistence.dto.OtherMatchCandidate
 import com.official.cufitapi.domain.member.infrastructure.persistence.dto.OtherMatchCandidates
-import com.official.cufitapi.domain.member.infrastructure.persistence.mapper.ArrangementDtoMapper
-import com.official.cufitapi.domain.member.infrastructure.persistence.mapper.MatchCandidateDtoMapper
-import com.official.cufitapi.domain.member.infrastructure.persistence.mapper.MatchCandidateImageDtoMapper
-import com.official.cufitapi.domain.member.infrastructure.persistence.mapper.MemberDtoMapper
-import com.official.cufitapi.domain.member.infrastructure.persistence.mapper.MemberRelationDtoMapper
+import com.official.cufitapi.domain.member.infrastructure.persistence.mapper.JdbcArrangementDtoMapper
+import com.official.cufitapi.domain.member.infrastructure.persistence.mapper.JdbcMatchCandidateDtoMapper
+import com.official.cufitapi.domain.member.infrastructure.persistence.mapper.JdbcMatchCandidateImageDtoMapper
+import com.official.cufitapi.domain.member.infrastructure.persistence.mapper.JdbcMemberDtoMapper
+import com.official.cufitapi.domain.member.infrastructure.persistence.mapper.JdbcMemberRelationDtoMapper
 import com.official.cufitapi.domain.member.infrastructure.persistence.sql.MemberSqlConstant.CANDIDATE_COUNT_SQL
 import com.official.cufitapi.domain.member.infrastructure.persistence.sql.MemberSqlConstant.OTHER_CANDIDATE_COUNT_SQL
 import org.springframework.jdbc.core.simple.JdbcClient
@@ -30,7 +30,7 @@ class MatchMakerDaoJdbcClientDao(
     override fun candidateCount(memberId: Long): Long =
         jdbcClient.sql(CANDIDATE_COUNT_SQL)
             .param("memberId", memberId)
-            .query(MatchCandidateDtoMapper())
+            .query(JdbcMatchCandidateDtoMapper())
             .list()
             .count { it.hasProfile() }
             .toLong()
@@ -38,7 +38,7 @@ class MatchMakerDaoJdbcClientDao(
     override fun otherCandidateCount(memberId: Long): Long =
         jdbcClient.sql(OTHER_CANDIDATE_COUNT_SQL)
             .param("memberId", memberId)
-            .query(MatchCandidateDtoMapper())
+            .query(JdbcMatchCandidateDtoMapper())
             .list()
             .count { it.hasProfile() }
             .toLong()
@@ -165,14 +165,14 @@ class MatchMakerDaoJdbcClientDao(
         }
         return jdbcClient.sql("SELECT id, name, email FROM member WHERE id IN (:ids)")
             .param("ids", map)
-            .query(MemberDtoMapper())
+            .query(JdbcMemberDtoMapper())
             .list()
     }
 
     private fun arrangements(memberId: Long): MutableList<ArrangementDto> {
         return jdbcClient.sql("SELECT * FROM arrangements WHERE match_maker_member_id = :match_maker_member_ids")
             .param("match_maker_member_ids", memberId)
-            .query(ArrangementDtoMapper())
+            .query(JdbcArrangementDtoMapper())
             .list()
     }
 
@@ -182,7 +182,7 @@ class MatchMakerDaoJdbcClientDao(
         }
         return jdbcClient.sql("SELECT * FROM arrangements WHERE left_candidate_member_id IN (:candidateIds)")
             .param("candidateIds", candidateIds)
-            .query(ArrangementDtoMapper())
+            .query(JdbcArrangementDtoMapper())
             .list()
     }
 
@@ -192,7 +192,7 @@ class MatchMakerDaoJdbcClientDao(
         }
         return jdbcClient.sql("SELECT * FROM arrangements WHERE right_candidate_member_id IN (:candidateIds)")
             .param("candidateIds", candidateIds)
-            .query(ArrangementDtoMapper())
+            .query(JdbcArrangementDtoMapper())
             .list()
     }
 
@@ -202,7 +202,7 @@ class MatchMakerDaoJdbcClientDao(
         }
         return jdbcClient.sql("SELECT * FROM match_candidate_images WHERE match_candidate_id IN(:ids)")
             .param("ids", matchCandidateIds)
-            .query(MatchCandidateImageDtoMapper())
+            .query(JdbcMatchCandidateImageDtoMapper())
             .list()
     }
 
@@ -212,19 +212,19 @@ class MatchMakerDaoJdbcClientDao(
         }
         return jdbcClient.sql("SELECT * FROM match_candidate WHERE member_id IN(:ids)")
             .param("ids", invitees)
-            .query(MatchCandidateDtoMapper())
+            .query(JdbcMatchCandidateDtoMapper())
             .list()
     }
 
     private fun memberRelations(memberId: Long): MutableList<MemberRelationDto> =
         jdbcClient.sql("SELECT * FROM member_relations WHERE inviter_id = :inviterId")
             .param("inviterId", memberId)
-            .query(MemberRelationDtoMapper())
+            .query(JdbcMemberRelationDtoMapper())
             .list()
 
     private fun memberRelationsByNotMemberId(memberId: Long): MutableList<MemberRelationDto> =
         jdbcClient.sql("SELECT * FROM member_relations WHERE inviter_id != :inviterId")
             .param("inviterId", memberId)
-            .query(MemberRelationDtoMapper())
+            .query(JdbcMemberRelationDtoMapper())
             .list()
 }
