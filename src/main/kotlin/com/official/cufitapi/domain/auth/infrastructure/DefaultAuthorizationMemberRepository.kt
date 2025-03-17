@@ -11,7 +11,7 @@ import com.official.cufitapi.domain.member.domain.Member
 import org.springframework.stereotype.Component
 
 @Component
-class AuthorizationMemberRepositoryAdapter(
+class DefaultAuthorizationMemberRepository(
     private val registerMemberUseCase: RegisterMemberUseCase,
     private val findMemberUseCase: FindMemberUseCase,
 ) : AuthorizationMemberRepository {

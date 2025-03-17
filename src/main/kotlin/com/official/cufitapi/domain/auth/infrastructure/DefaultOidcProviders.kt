@@ -3,7 +3,7 @@ package com.official.cufitapi.domain.auth.infrastructure
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.official.cufitapi.domain.auth.domain.OidcPublicKey
 import com.official.cufitapi.domain.auth.domain.OidcPublicKeys
-import com.official.cufitapi.domain.auth.domain.repository.OidcProviderIdClient
+import com.official.cufitapi.domain.auth.domain.repository.OidcProviders
 import com.official.cufitapi.domain.auth.domain.vo.OidcPublicKeyId
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
@@ -16,9 +16,9 @@ import java.security.spec.RSAPublicKeySpec
 import java.util.Base64
 
 @Component
-class OidcProviderIdClientAdapter(
+class DefaultOidcProviders(
     restClientBuilder: RestClient.Builder,
-) : OidcProviderIdClient {
+) : OidcProviders {
 
     private val appleClient: RestClient = restClientBuilder
         .baseUrl("https://appleid.apple.com")

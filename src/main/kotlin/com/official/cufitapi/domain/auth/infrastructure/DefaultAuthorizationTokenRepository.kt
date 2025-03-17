@@ -9,7 +9,7 @@ import com.official.cufitapi.domain.auth.infrastructure.persist.JpaAuthorization
 import org.springframework.stereotype.Component
 
 @Component
-class AuthorizationTokenRepositoryAdapter(
+class DefaultAuthorizationTokenRepository(
     private val repository: JpaAuthorizationTokenRepository,
 ) : AuthorizationTokenRepository {
 

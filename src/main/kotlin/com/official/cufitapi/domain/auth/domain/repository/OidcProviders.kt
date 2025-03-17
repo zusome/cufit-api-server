@@ -1,6 +1,6 @@
 package com.official.cufitapi.domain.auth.domain.repository
 
 @FunctionalInterface
-interface OidcProviderIdClient {
+interface OidcProviders {
     fun findByIdToken(idToken: String, provider: String): String
 }
