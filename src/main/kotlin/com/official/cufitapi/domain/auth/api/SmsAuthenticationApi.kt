@@ -5,41 +5,43 @@ import com.official.cufitapi.common.annotation.AuthorizationType
 import com.official.cufitapi.common.annotation.AuthorizationUser
 import com.official.cufitapi.common.api.ApiV1Controller
 import com.official.cufitapi.common.api.dto.HttpResponse
-import com.official.cufitapi.domain.auth.api.docs.SmsAuthorizationApiDocs
+import com.official.cufitapi.domain.auth.api.docs.SmsAuthenticationApiDocs
 import com.official.cufitapi.domain.auth.api.dto.SmsAuthCodeIssueRequest
-import com.official.cufitapi.domain.auth.api.dto.SmsAuthValidationRequest
-import com.official.cufitapi.domain.auth.application.AuthenticationSmsService
+import com.official.cufitapi.domain.auth.api.dto.VerifySmsAuthenticationRequest
+import com.official.cufitapi.domain.auth.api.dto.VerifySmsAuthenticationResponse
+import com.official.cufitapi.domain.auth.application.SmsAuthenticationService
 import com.official.cufitapi.domain.auth.application.command.SmsAuthenticationIssueCommand
-import com.official.cufitapi.domain.auth.application.command.SmsAuthenticationValidationCommand
+import com.official.cufitapi.domain.auth.application.command.VerifySmsAuthenticationCodeCommand
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 
 @ApiV1Controller
-class SmsAuthorizationApi(
-    private val authorizationSmsService: AuthenticationSmsService
-) : SmsAuthorizationApiDocs {
+class SmsAuthenticationApi(
+    private val authorizationSmsService: SmsAuthenticationService
+) : SmsAuthenticationApiDocs {
 
     @PostMapping("/auth/sms/issue")
     override fun issueSmsAuthCode(
         @Authorization(AuthorizationType.ALL) authorizationUser: AuthorizationUser,
         @RequestBody request: SmsAuthCodeIssueRequest
     ): HttpResponse<Unit> {
-        authorizationSmsService.issueSmsAuthCode(SmsAuthenticationIssueCommand(authorizationUser.userId, request.phoneNumber))
+        authorizationSmsService.issue(SmsAuthenticationIssueCommand(authorizationUser.userId, request.phoneNumber))
         return HttpResponse.of(HttpStatus.NO_CONTENT, Unit)
     }
 
-    @PostMapping("/auth/sms/validation")
-    override fun validateSmsAuthCode(
+    @PostMapping("/auth/sms/verify")
+    override fun verifySmsAuthCode(
         @Authorization(AuthorizationType.ALL) authorizationUser: AuthorizationUser,
-        @RequestBody request: SmsAuthValidationRequest
-    ): HttpResponse<Unit> {
-        authorizationSmsService.validateSmsAuthCode(
-            SmsAuthenticationValidationCommand(
+        @RequestBody request: VerifySmsAuthenticationRequest
+    ): HttpResponse<VerifySmsAuthenticationResponse> {
+        val smsAuthentication = authorizationSmsService.verify(
+            VerifySmsAuthenticationCodeCommand(
                 authorizationUser.userId,
+                request.phoneNumber,
                 request.authCode
             )
         )
-        return HttpResponse.of(HttpStatus.NO_CONTENT, Unit)
+        return HttpResponse.of(HttpStatus.OK, VerifySmsAuthenticationResponse(smsAuthentication.isVerified))
     }
 }
