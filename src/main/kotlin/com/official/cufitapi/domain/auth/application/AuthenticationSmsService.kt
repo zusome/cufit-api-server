@@ -17,7 +17,6 @@ interface AuthenticationSmsValidateUseCase {
 
 @Service
 class AuthenticationSmsService(
-    private val authorizationMemberRepository: AuthorizationMemberRepository
 ) : AuthenticationSmsIssueUseCase, AuthenticationSmsValidateUseCase {
 
     override fun issueSmsAuthCode(command: SmsAuthenticationIssueCommand): SmsAuthentication {
@@ -28,12 +27,10 @@ class AuthenticationSmsService(
             authCode = "123456",
             memberId = command.memberId
         )
-        authorizationMemberRepository.saveAuthCode(smsAuthentication)
         return smsAuthentication
     }
 
     override fun validateSmsAuthCode(command: SmsAuthenticationValidationCommand) {
-        val authorizationMember = authorizationMemberRepository.findById(command.memberId)
         // authorizationMember.smsAuthCode?.let {
         //     if (it != command.authCode) {
         //         throw IllegalArgumentException("인증번호가 일치하지 않습니다.")
