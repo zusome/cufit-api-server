@@ -44,12 +44,12 @@ class CandidateService(
             gender = command.gender,
             phoneNumber = command.phoneNumber
         )
-        matchCandidateRepository.updateProfile(matchCandidate)
+        matchCandidateRepository.save(matchCandidate)
     }
 
-    @Transactional
     override fun breakMatch(command: CandidateMatchBreakCommand) {
         val matchCandidate = matchCandidateRepository.findByMemberId(command.memberId)
-        matchCandidateRepository.matchBreak(matchCandidate, command.isMatchAgreed)
+        matchCandidate.breakMatch(command.isMatchAgreed)
+        matchCandidateRepository.save(matchCandidate)
     }
 }

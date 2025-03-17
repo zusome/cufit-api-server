@@ -15,7 +15,7 @@ import org.hibernate.annotations.Comment
 
 @Entity
 @Table(name = "match_candidate")
-class MatchCandidateEntity(
+class JpaMatchCandidate(
 
     @Column(name = "member_id", unique = false, nullable = false)
     var memberId: Long,
@@ -65,15 +65,15 @@ class MatchCandidateEntity(
     @Comment("사용자 전화 번호")
     var phoneNumber: String? = null,
 
-    @OneToMany(mappedBy = "matchCandidateEntity", orphanRemoval = true, cascade = [CascadeType.ALL])
+    @OneToMany(mappedBy = "jpaMatchCandidate", orphanRemoval = true, cascade = [CascadeType.ALL])
     @Comment("매칭 후보자 이미지")
-    var images: MutableList<MatchCandidateImageEntity> = mutableListOf(),
+    var images: MutableList<JpaMatchCandidateImage> = mutableListOf(),
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
 ) {
     init {
-        images.forEach { it.matchCandidateEntity = this }
+        images.forEach { it.jpaMatchCandidate = this }
     }
 
     fun deactivateMatching() {
@@ -85,7 +85,7 @@ class MatchCandidateEntity(
     }
 
     fun updateProfile(
-        images: List<MatchCandidateImageEntity>,
+        images: List<JpaMatchCandidateImage>,
         idealMbti: String,
         idealAgeRange: String,
         idealHeightRange: String,
@@ -98,7 +98,7 @@ class MatchCandidateEntity(
         phoneNumber: String,
     ) {
         this.images.addAll(images)
-        images.forEach { it.matchCandidateEntity = this }
+        images.forEach { it.jpaMatchCandidate = this }
         this.idealMbti = idealMbti
         this.idealAgeRange = idealAgeRange
         this.idealHeightRange = idealHeightRange
@@ -111,7 +111,7 @@ class MatchCandidateEntity(
         this.phoneNumber = phoneNumber
     }
 
-    fun isSameGender(other: MatchCandidateEntity): Boolean =
+    fun isSameGender(other: JpaMatchCandidate): Boolean =
         this.gender == other.gender
 
     fun updateMatchingAgreement(isMatchAgreed: Boolean) {
