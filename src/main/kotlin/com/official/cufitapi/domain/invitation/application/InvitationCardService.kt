@@ -6,7 +6,7 @@ import com.official.cufitapi.domain.invitation.application.command.GenerateInvit
 import com.official.cufitapi.domain.invitation.domain.InvitationCard
 import com.official.cufitapi.domain.invitation.domain.InvitationCardRepository
 import com.official.cufitapi.domain.invitation.domain.Inviters
-import com.official.cufitapi.domain.invitation.domain.event.InvitationAcceptEvent
+import com.official.cufitapi.domain.invitation.domain.event.AcceptedInvitationCardEvent
 import com.official.cufitapi.domain.invitation.domain.factory.InvitationCodeFactory
 import com.official.cufitapi.domain.invitation.domain.vo.InvitationCode
 import com.official.cufitapi.domain.invitation.domain.vo.InvitationRelationType
@@ -39,7 +39,7 @@ class InvitationCardService(
         val inviter = inviters.findById(command.inviterId)
         val invitationType = InvitationType.of(command.invitationType)
         val invitationRelationType = InvitationRelationType.of(command.invitationRelationType)
-        return invitationCardRepository.save(
+        val invitationCard = invitationCardRepository.save(
             InvitationCard(
                 code = invitationCodeFactory.generate(invitationType, invitationRelationType),
                 relationType = invitationRelationType,
@@ -47,12 +47,13 @@ class InvitationCardService(
                 isAccepted = false
             )
         )
+        return invitationCard
     }
 
     override fun accept(command: AcceptInvitationCardCommand): InvitationCard {
         if (command.invitationCode == "a123456" || command.invitationCode == "b123456" || command.invitationCode == "c123456") {
             applicationEventPublisher.publishEvent(
-                InvitationAcceptEvent.mock(
+                AcceptedInvitationCardEvent.mock(
                     command.invitationCode,
                     command.inviteeId,
                     "FRIEND"
@@ -70,7 +71,7 @@ class InvitationCardService(
         invitationCard.accept(command.inviteeId)
         invitationCardRepository.save(invitationCard)
         applicationEventPublisher.publishEvent(
-            InvitationAcceptEvent(
+            AcceptedInvitationCardEvent(
                 invitationCard.code.value,
                 invitationCard.inviterId,
                 invitationCard.relationType.name,
