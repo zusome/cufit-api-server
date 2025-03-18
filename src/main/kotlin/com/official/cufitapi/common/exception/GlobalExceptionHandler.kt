@@ -1,7 +1,7 @@
 package com.official.cufitapi.common.exception
 
 import com.official.cufitapi.common.config.ErrorCode
-import com.official.cufitapi.domain.notification.infrastructure.DiscordWebhookClientAdapter
+import com.official.cufitapi.domain.notification.infrastructure.temp.DiscordWebhookClientAdapter
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 

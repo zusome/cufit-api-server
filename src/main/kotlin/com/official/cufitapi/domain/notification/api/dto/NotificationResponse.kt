@@ -1,7 +1,7 @@
 package com.official.cufitapi.domain.notification.api.dto
 
 import com.fasterxml.jackson.annotation.JsonFormat
-import com.official.cufitapi.domain.notification.appliaction.NotificationType
+import com.official.cufitapi.domain.notification.application.temp.InAppNotificationType
 import com.official.cufitapi.domain.notification.domain.Notification
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.LocalDateTime
@@ -15,7 +15,7 @@ data class NotificationResponse(
     @Schema(description = "알림 내용", example = "박유나님이 프로필을 완성했어요.")
     val content: String,
     @Schema(description = "알림 타입", example = "CANDIDATE,MATCHING")
-    val notificationType: NotificationType,
+    val inAppNotificationType: InAppNotificationType,
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     val createdDate: LocalDateTime
 ) {
@@ -24,7 +24,7 @@ data class NotificationResponse(
             id = id,
             title = title,
             content = content,
-            notificationType = notificationType,
+            inAppNotificationType = inAppNotificationType,
             createdDate = createdDate
         )
     }
