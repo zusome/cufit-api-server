@@ -1,6 +1,6 @@
 package com.official.cufitapi.domain.member.api
 
-import com.official.cufitapi.domain.invitation.domain.event.InvitationAcceptEvent
+import com.official.cufitapi.domain.invitation.domain.event.AcceptedInvitationCardEvent
 import com.official.cufitapi.domain.member.application.RegisterMatchCandidateUseCase
 import com.official.cufitapi.domain.member.application.RegisterMatchMakerUseCase
 import com.official.cufitapi.domain.member.application.RegisterMemberRelationUseCase
@@ -19,7 +19,7 @@ class MemberInternalEventHandler(
 ) {
 
     @EventListener
-    fun handleEvent(event: InvitationAcceptEvent) {
+    fun handleEvent(event: AcceptedInvitationCardEvent) {
         val memberRelation = registerMemberRelationUseCase.register(event.inviterId, event.inviteeId, event.relationType)
         if(event.code == "a123456") {
             updateAuthorityMemberUseCase.updateMatchMaker(event.inviteeId)

@@ -7,7 +7,7 @@ import com.official.cufitapi.common.api.ApiV1Controller
 import com.official.cufitapi.common.api.dto.HttpResponse
 import com.official.cufitapi.domain.notification.api.docs.NotificationApiDocs
 import com.official.cufitapi.domain.notification.api.dto.NotificationResponse
-import com.official.cufitapi.domain.notification.appliaction.NotificationFindUseCase
+import com.official.cufitapi.domain.notification.application.temp.NotificationFindUseCase
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
 
@@ -28,7 +28,7 @@ class NotificationApi(
                     id = it.id,
                     title = it.title,
                     content = it.content,
-                    notificationType = it.notificationType,
+                    inAppNotificationType = it.inAppNotificationType,
                     createdDate = it.createdDate
                 )
             }
