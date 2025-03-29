@@ -7,6 +7,7 @@ import com.official.cufitapi.domain.invitation.domain.InvitationCard
 import com.official.cufitapi.domain.invitation.domain.InvitationCardRepository
 import com.official.cufitapi.domain.invitation.domain.Inviters
 import com.official.cufitapi.domain.invitation.domain.event.AcceptedInvitationCardEvent
+import com.official.cufitapi.domain.invitation.domain.event.RegisteredInvitationCardEvent
 import com.official.cufitapi.domain.invitation.domain.factory.InvitationCodeFactory
 import com.official.cufitapi.domain.invitation.domain.vo.InvitationCode
 import com.official.cufitapi.domain.invitation.domain.vo.InvitationRelationType
@@ -45,6 +46,16 @@ class InvitationCardService(
                 relationType = invitationRelationType,
                 inviterId = inviter.inviterId,
                 isAccepted = false
+            )
+        )
+        applicationEventPublisher.publishEvent(
+            RegisteredInvitationCardEvent(
+                invitationCard.code.value,
+                invitationCard.inviterId,
+                invitationCard.relationType.name,
+                invitationCard.isAccepted,
+                invitationCard.inviteeId,
+                invitationCard.id!!
             )
         )
         return invitationCard

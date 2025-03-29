@@ -1,0 +1,17 @@
+### 주선자 초대 수락
+POST http://{{host}}/api/v1/invitations/code
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwiYXV0aG9yaXR5IjoiQkFTSUMiLCJpYXQiOjE3NDIyMTU0NTIsImV4cCI6MTc0MjMwMTg1Mn0.pgJYx2dTw-7gZ62UZOjkdjN7XFHv6eS055syVbT6-jo
+
+{
+  "invitationCode": "a123456"
+}
+
+### 주선자 초대 수락2
+POST http://{{host}}/api/v1/invitations/code
+Content-Type: application/json
+Authorization: Bearer {{candidate_accessToken}}
+
+{
+  "invitationCode": "b123456"
+}
