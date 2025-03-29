@@ -3,9 +3,10 @@ package com.official.cufitapi.domain.member.application
 import com.official.cufitapi.domain.member.application.command.candidate.CandidateMatchBreakCommand
 import com.official.cufitapi.domain.member.application.command.candidate.CandidateProfileUpdateCommand
 import com.official.cufitapi.domain.member.domain.MatchCandidate
+import com.official.cufitapi.domain.member.domain.event.UpdatedCandidateProfileEvent
 import com.official.cufitapi.domain.member.domain.repository.MatchCandidateRepository
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 
 interface CandidateMatchBreakUseCase {
     fun breakMatch(candidateMatchBreakCommand: CandidateMatchBreakCommand)
@@ -22,6 +23,7 @@ interface RegisterMatchCandidateUseCase {
 @Service
 class CandidateService(
     private val matchCandidateRepository: MatchCandidateRepository,
+    private val applicationEventPublisher: ApplicationEventPublisher
 ) : CandidateProfileUpdateUseCase, CandidateMatchBreakUseCase, RegisterMatchCandidateUseCase {
 
 
@@ -45,6 +47,9 @@ class CandidateService(
             phoneNumber = command.phoneNumber
         )
         matchCandidateRepository.save(matchCandidate)
+        applicationEventPublisher.publishEvent(
+            UpdatedCandidateProfileEvent(matchCandidate.id!!, matchCandidate.memberId)
+        )
     }
 
     override fun breakMatch(command: CandidateMatchBreakCommand) {

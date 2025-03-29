@@ -1,12 +1,13 @@
 package com.official.cufitapi.domain.arrangement.infrastructure.persistence
 
 enum class ArrangementStatus(
-    private val step: Int
+    val step: Int
 ) {
     SUGGESTED(0),
     ACCEPTED(1),
     MATCHED(2),
-    REJECTED(3)
+    REJECTED(3),
+    CANCELED(4) // 24시간 정책으로 인해 취소된 케이스를 의미한다.
     ;
 
     fun nextStatus(): ArrangementStatus {
@@ -14,6 +15,21 @@ enum class ArrangementStatus(
             SUGGESTED -> ACCEPTED
             ACCEPTED -> MATCHED
             else -> this
+        }
+    }
+
+    fun hasNext(): Boolean {
+        return this.step < MATCHED.step
+    }
+
+    fun isCancelled(): Boolean {
+        return this == CANCELED
+    }
+
+    companion object {
+        fun of(arrangementStatus: Int): ArrangementStatus {
+            return entries.firstOrNull { it.step == arrangementStatus }
+                ?: throw IllegalArgumentException("Invalid arrangement status")
         }
     }
 }

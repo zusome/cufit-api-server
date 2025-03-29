@@ -51,7 +51,7 @@ class ArrangementApi(
         ) authorizationUser: AuthorizationUser,
         @RequestBody request: UpdateArrangementRequest,
     ): HttpResponse<Void> {
-        updateArrangementUseCase.updateArrangement(request.toCommand(arrangementId))
+        updateArrangementUseCase.nextStep(request.toCommand(arrangementId, authorizationUser.userId))
         return HttpResponse.of(HttpStatus.OK, null)
     }
 
