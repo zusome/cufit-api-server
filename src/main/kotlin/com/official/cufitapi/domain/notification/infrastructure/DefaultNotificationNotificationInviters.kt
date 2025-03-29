@@ -1,13 +1,13 @@
 package com.official.cufitapi.domain.notification.infrastructure
 
 import com.official.cufitapi.domain.member.infrastructure.persistence.JpaMemberRelationRepository
-import com.official.cufitapi.domain.notification.domain.Inviters
+import com.official.cufitapi.domain.notification.domain.NotificationInviters
 import org.springframework.stereotype.Component
 
 @Component
-class DefaultInviters(
+class DefaultNotificationNotificationInviters(
     private val memberRelationRepository: JpaMemberRelationRepository,
-) : Inviters {
+) : NotificationInviters {
 
     override fun inviterId(inviteeId: Long): Long {
         return memberRelationRepository.findByInviteeId(inviteeId)

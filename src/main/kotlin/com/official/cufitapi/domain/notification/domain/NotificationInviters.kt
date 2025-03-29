@@ -1,5 +1,5 @@
 package com.official.cufitapi.domain.notification.domain
 
-interface Inviters {
+interface NotificationInviters {
     fun inviterId(inviteeId: Long): Long
 }

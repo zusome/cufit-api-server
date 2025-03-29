@@ -4,19 +4,30 @@ import com.official.cufitapi.domain.arrangement.infrastructure.persistence.Arran
 import com.official.cufitapi.domain.arrangement.infrastructure.persistence.ArrangementStatus
 
 class Arrangement(
-    val id: Long?,
     val matchMakerId: Long,
     val leftCandidateId: Long,
     val rightCandidateId: Long,
-    var arrangementStatus: ArrangementStatus
+    var arrangementStatus: ArrangementStatus,
+    val id: Long? = null,
 ) {
 
-    fun nextStatus(isAccepted: Boolean) {
-        if (isAccepted) {
+    fun nextStep(isAccepted: Boolean) {
+        if (isAccepted && arrangementStatus.hasNext()) {
             this.arrangementStatus = arrangementStatus.nextStatus()
             return
         }
+        if(arrangementStatus.isCancelled()) {
+            throw IllegalStateException("Already cancelled")
+        }
         this.arrangementStatus = ArrangementStatus.REJECTED
+    }
+
+    fun isMatched(): Boolean {
+        return this.arrangementStatus == ArrangementStatus.MATCHED
+    }
+
+    fun isRejected(): Boolean {
+        return this.arrangementStatus == ArrangementStatus.REJECTED
     }
 
     companion object {
@@ -26,7 +37,7 @@ class Arrangement(
                 matchMakerId = entity.matchMakerMemberId,
                 leftCandidateId = entity.leftCandidateMemberId,
                 rightCandidateId = entity.rightCandidateId,
-                arrangementStatus = entity.arrangementStatus
+                arrangementStatus = ArrangementStatus.of(entity.arrangementStatus)
             )
         }
     }

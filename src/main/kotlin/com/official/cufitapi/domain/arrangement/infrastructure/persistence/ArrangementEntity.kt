@@ -29,18 +29,22 @@ class ArrangementEntity(
 
     @Comment("주선 상태")
     @Column(name = "arrangement_status", unique = false, nullable = false, updatable = true)
-    @Enumerated(EnumType.STRING)
-    var arrangementStatus: ArrangementStatus = ArrangementStatus.SUGGESTED,
+    var arrangementStatus: Int,
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
 ): BaseTimeEntity() {
 
-    fun nextStatus(isAccepted: Boolean) {
-        if(isAccepted) {
-            this.arrangementStatus = arrangementStatus.nextStatus()
-            return
-        }
-        this.arrangementStatus = ArrangementStatus.REJECTED
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as ArrangementEntity
+
+        return id == other.id
+    }
+
+    override fun hashCode(): Int {
+        return id?.hashCode() ?: 0
     }
 }
