@@ -1,12 +1,12 @@
 ### Get all arrangements
 GET http://{{host}}/api/v1/arrangements/candidates?targetId=1
 Content-Type: application/json
-Authorization: Bearer {{matchmaker_accessToken}}
+Authorization: Bearer {{maker_accessToken}}
 
 ### 주선 요청하기
 POST http://localhost:8080/api/v1/arrangements
 Content-Type: application/json
-Authorization: Bearer {{matchmaker_accessToken}}
+Authorization: Bearer {{maker_accessToken}}
 
 {
   "leftCandidateId": 3,

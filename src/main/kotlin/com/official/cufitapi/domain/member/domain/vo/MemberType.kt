@@ -7,7 +7,7 @@ enum class MemberType(
     ADMIN("관리자", "AD"),
     BASIC("일반 사용자", "BA"),
     CANDIDATE("후보자", "CA"),
-    MATCHMAKER("주선자", "MA");
+    MAKER("주선자", "MA");
 
     companion object {
         fun ofName(authority: String): MemberType =

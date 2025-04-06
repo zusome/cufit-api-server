@@ -12,7 +12,7 @@ import com.official.cufitapi.domain.notification.domain.NotificationMembers
 import org.springframework.stereotype.Component
 
 @Component
-class ArrangementEventMatchMakerAntiCorruptionMapper(
+class ArrangementEventMakerAntiCorruptionMapper(
     private val objectMapper: ObjectMapper,
     private val notificationInviters: NotificationInviters,
     private val notificationMembers: NotificationMembers,
@@ -33,7 +33,7 @@ class ArrangementEventMatchMakerAntiCorruptionMapper(
 
     private fun matchedArrangementEvent(payload: MatchedArrangementEvent): RegisterInAppNotificationCommand {
         val inviterId = notificationInviters.inviterId(payload.leftCandidateId)
-        val isMakerLeft = payload.matchMakerId == inviterId
+        val isMakerLeft = payload.makerId == inviterId
         val leftName =
             if (isMakerLeft) notificationMembers.name(payload.leftCandidateId) else notificationMembers.name(payload.rightCandidateId)
         val rightName =
@@ -50,7 +50,7 @@ class ArrangementEventMatchMakerAntiCorruptionMapper(
 
     private fun rejectedArrangementEvent(payload: RejectedArrangementEvent): RegisterInAppNotificationCommand {
         val inviterId = notificationInviters.inviterId(payload.leftCandidateId)
-        val isMakerLeft = payload.matchMakerId == inviterId
+        val isMakerLeft = payload.makerId == inviterId
         val isRejectedByLeft = payload.rejectedBy == payload.leftCandidateId
         val leftName =
             if (isMakerLeft) notificationMembers.name(payload.leftCandidateId) else notificationMembers.name(payload.rightCandidateId)

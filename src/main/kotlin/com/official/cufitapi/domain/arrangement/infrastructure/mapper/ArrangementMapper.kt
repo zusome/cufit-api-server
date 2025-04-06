@@ -10,7 +10,7 @@ class ArrangementMapper {
 
     fun mapToDomain(arrangementEntity: ArrangementEntity): Arrangement {
         return Arrangement(
-            matchMakerId = arrangementEntity.matchMakerMemberId,
+            makerMemberId = arrangementEntity.makerMemberId,
             leftCandidateId = arrangementEntity.leftCandidateMemberId,
             rightCandidateId = arrangementEntity.rightCandidateId,
             arrangementStatus = ArrangementStatus.of(arrangementEntity.arrangementStatus),
@@ -20,7 +20,7 @@ class ArrangementMapper {
 
     fun mapToEntity(arrangement: Arrangement): ArrangementEntity {
         return ArrangementEntity(
-            matchMakerMemberId = arrangement.matchMakerId,
+            makerMemberId = arrangement.makerMemberId,
             leftCandidateMemberId = arrangement.leftCandidateId,
             rightCandidateId = arrangement.rightCandidateId,
             arrangementStatus = arrangement.arrangementStatus.step,

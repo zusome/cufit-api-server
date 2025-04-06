@@ -13,10 +13,10 @@ import org.springframework.stereotype.Component
 import javax.sql.DataSource
 
 @Component
-class MatchMakerDaoJdbcTemplateDao(
+class MakerDaoJdbcTemplateDao(
     private val dataSource: DataSource,
     private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate = NamedParameterJdbcTemplate(dataSource),
-) : MatchMakerDao {
+) : MakerDao {
 
     override fun otherCandidateCount(memberId: Long): Long {
         return namedParameterJdbcTemplate.queryForObject(
@@ -104,8 +104,8 @@ class MatchMakerDaoJdbcTemplateDao(
                     height = 165,
                     station = "정자역",
                     job = "디자이너",
-                    matchMakerRelation = "직장동료",
-                    matchMakerName = "김철수",
+                    relation = "직장동료",
+                    makerName = "김철수",
                     idealHeightRange = listOf(170, 190),
                     idealAgeRange = listOf("연상", "연하", "동갑"),
                     idealMbti = listOf("외향적", "직관적", "계획형", "즉흥형")

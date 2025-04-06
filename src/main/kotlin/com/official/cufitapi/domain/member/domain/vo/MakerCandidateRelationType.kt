@@ -3,7 +3,7 @@ package com.official.cufitapi.domain.member.domain.vo
 import com.official.cufitapi.common.config.ErrorCode
 import com.official.cufitapi.common.exception.InvalidRequestException
 
-enum class MatchMakerCandidateRelationType {
+enum class MakerCandidateRelationType {
     FRIEND,
     FAMILY,
     COMPANION,
@@ -11,7 +11,7 @@ enum class MatchMakerCandidateRelationType {
 
     companion object {
         @JvmStatic
-        fun invitationCodeSuffix(relationType: MatchMakerCandidateRelationType) = when (relationType) {
+        fun invitationCodeSuffix(relationType: MakerCandidateRelationType) = when (relationType) {
             FRIEND -> "FR"
             FAMILY -> "FA"
             COMPANION -> "CO"
@@ -29,7 +29,7 @@ enum class MatchMakerCandidateRelationType {
             }
         }
 
-        fun of(type: String): MatchMakerCandidateRelationType {
+        fun of(type: String): MakerCandidateRelationType {
             return entries.firstOrNull { it.name == type }
                 ?: throw InvalidRequestException(ErrorCode.INVALID_RELATION_TYPE)
         }

@@ -9,18 +9,18 @@ interface ArrangementJpaRepository : JpaRepository<ArrangementEntity, Long> {
         """
             SELECT a
             FROM ArrangementEntity a
-            WHERE a.matchMakerMemberId = :matchMakerId
+            WHERE a.makerMemberId = :makerMemberId
             AND (a.leftCandidateMemberId = :candidateId or a.rightCandidateId = :candidateId)
             AND a.createdDate BETWEEN :today AND :tomorrow
         """
     )
-    fun findAllByPeriod(matchMakerId: Long, candidateId: Long, today: LocalDateTime, tomorrow: LocalDateTime): List<ArrangementEntity>
+    fun findAllByPeriod(makerMemberId: Long, candidateId: Long, today: LocalDateTime, tomorrow: LocalDateTime): List<ArrangementEntity>
 
     @Query(
         """
             SELECT a
             FROM ArrangementEntity a
-            WHERE a.matchMakerMemberId = :matchMakerId
+            WHERE a.makerMemberId = :makerMemberId
             AND (
                     (a.leftCandidateMemberId = :leftCandidateId and a.rightCandidateId = :rightCandidateId)
                     or 
@@ -28,5 +28,5 @@ interface ArrangementJpaRepository : JpaRepository<ArrangementEntity, Long> {
             )
         """
     )
-    fun findByCandidates(matchMakerId: Long, leftCandidateId: Long, rightCandidateId: Long): ArrangementEntity?
+    fun findByCandidates(makerMemberId: Long, leftCandidateId: Long, rightCandidateId: Long): ArrangementEntity?
 }

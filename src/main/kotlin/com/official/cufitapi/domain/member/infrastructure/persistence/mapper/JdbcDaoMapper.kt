@@ -62,7 +62,7 @@ class JdbcMatchCandidateImageDtoMapper : RowMapper<MatchCandidateImageDto> {
 class JdbcArrangementDtoMapper : RowMapper<ArrangementDto> {
     override fun mapRow(rs: ResultSet, rowNum: Int): ArrangementDto {
         return ArrangementDto(
-            matchMakerMemberId = rs.getLong("match_maker_member_id"),
+            makerMemberId = rs.getLong("match_maker_member_id"),
             leftCandidateMemberId = rs.getLong("left_candidate_member_id"),
             rightCandidateMemberId = rs.getLong("right_candidate_member_id"),
             arrangementStatus = rs.getString("status"),

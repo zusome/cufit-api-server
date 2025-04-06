@@ -4,7 +4,7 @@ import com.official.cufitapi.domain.arrangement.infrastructure.persistence.Arran
 import com.official.cufitapi.domain.arrangement.infrastructure.persistence.ArrangementStatus
 
 class Arrangement(
-    val matchMakerId: Long,
+    val makerMemberId: Long,
     val leftCandidateId: Long,
     val rightCandidateId: Long,
     var arrangementStatus: ArrangementStatus,
@@ -34,7 +34,7 @@ class Arrangement(
         fun fromEntity(entity: ArrangementEntity): Arrangement {
             return Arrangement(
                 id = entity.id,
-                matchMakerId = entity.matchMakerMemberId,
+                makerMemberId = entity.makerMemberId,
                 leftCandidateId = entity.leftCandidateMemberId,
                 rightCandidateId = entity.rightCandidateId,
                 arrangementStatus = ArrangementStatus.of(entity.arrangementStatus)

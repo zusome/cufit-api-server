@@ -27,15 +27,15 @@ class ArrangementRepositoryAdapter(
     }
 
     override fun findAllByPeriod(
-        matchMakerId: Long,
+        makerMemberId: Long,
         candidateId: Long,
         today: LocalDateTime,
         tomorrow: LocalDateTime,
-    ): List<Arrangement> = arrangementJpaRepository.findAllByPeriod(matchMakerId, candidateId, today, tomorrow)
+    ): List<Arrangement> = arrangementJpaRepository.findAllByPeriod(makerMemberId, candidateId, today, tomorrow)
         .map { arrangementMapper.mapToDomain(it) }
 
-    override fun findByCandidates(matchMakerId: Long, leftCandidateId: Long, rightCandidateId: Long): Arrangement? {
-        val entity = arrangementJpaRepository.findByCandidates(matchMakerId, leftCandidateId, rightCandidateId)
+    override fun findByCandidates(makerMemberId: Long, leftCandidateId: Long, rightCandidateId: Long): Arrangement? {
+        val entity = arrangementJpaRepository.findByCandidates(makerMemberId, leftCandidateId, rightCandidateId)
         return entity?.let { arrangementMapper.mapToDomain(it) }
     }
 }

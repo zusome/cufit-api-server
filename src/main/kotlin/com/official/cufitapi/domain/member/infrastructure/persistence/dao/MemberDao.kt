@@ -1,7 +1,7 @@
 package com.official.cufitapi.domain.member.infrastructure.persistence.dao
 
 import com.official.cufitapi.domain.member.api.dto.MemberTypeInfo
-import com.official.cufitapi.domain.member.domain.vo.MatchMakerCandidateRelationType
+import com.official.cufitapi.domain.member.domain.vo.MakerCandidateRelationType
 import com.official.cufitapi.domain.member.infrastructure.persistence.dto.MemberInfoResponse
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
@@ -63,6 +63,6 @@ class MemberInfoResponseMapper : RowMapper<MemberInfoResponse> {
         rs.getString("name"),
         rs.getString("email"),
         rs.getString("inviterName"),
-        MatchMakerCandidateRelationType.of(rs.getString("relationWithInvitee"))
+        MakerCandidateRelationType.of(rs.getString("relationWithInvitee"))
     )
 }

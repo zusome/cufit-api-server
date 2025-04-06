@@ -3,8 +3,6 @@ package com.official.cufitapi.domain.arrangement.infrastructure.persistence
 import com.official.cufitapi.common.jpa.BaseTimeEntity
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
-import jakarta.persistence.EnumType
-import jakarta.persistence.Enumerated
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
@@ -17,7 +15,7 @@ class ArrangementEntity(
 
     @Comment("주선 신청자")
     @Column(name = "match_maker_member_id", unique = false, nullable = false, updatable = false)
-    var matchMakerMemberId: Long,
+    var makerMemberId: Long,
 
     @Comment("첫번째 주선 대상자")
     @Column(name = "left_candidate_member_id", unique = false, nullable = false, updatable = false)

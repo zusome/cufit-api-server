@@ -44,13 +44,13 @@ class ArrangementService(
         val today = DateTimeUtils.beginToday()
         val tomorrow = today.tomorrow()
 
-        verifyCandidate(command.matchMakerMemberId, command.leftCandidateId, today, tomorrow)
-        verifyCandidate(command.matchMakerMemberId, command.rightCandidateId, today, tomorrow)
+        verifyCandidate(command.makerMemberId, command.leftCandidateId, today, tomorrow)
+        verifyCandidate(command.makerMemberId, command.rightCandidateId, today, tomorrow)
         verifySameGender(command.leftCandidateId, command.rightCandidateId)
-        verifyExists(command.matchMakerMemberId, command.leftCandidateId, command.rightCandidateId)
+        verifyExists(command.makerMemberId, command.leftCandidateId, command.rightCandidateId)
 
         val arrangement = Arrangement(
-            matchMakerId = command.matchMakerMemberId,
+            makerMemberId = command.makerMemberId,
             leftCandidateId = command.leftCandidateId,
             rightCandidateId = command.rightCandidateId,
             arrangementStatus = ArrangementStatus.SUGGESTED
@@ -59,7 +59,7 @@ class ArrangementService(
         applicationEventPublisher.publishEvent(
             SuggestedArrangementEvent(
                 arrangementId,
-                command.matchMakerMemberId,
+                command.makerMemberId,
                 command.leftCandidateId,
                 command.rightCandidateId,
                 arrangement.arrangementStatus.step
@@ -68,8 +68,8 @@ class ArrangementService(
         return arrangementId
     }
 
-    private fun verifyExists(matchMakerId: Long, leftCandidateId: Long, rightCandidateId: Long) {
-        val arrangement = arrangementRepository.findByCandidates(matchMakerId, leftCandidateId, rightCandidateId)
+    private fun verifyExists(makerMemberId: Long, leftCandidateId: Long, rightCandidateId: Long) {
+        val arrangement = arrangementRepository.findByCandidates(makerMemberId, leftCandidateId, rightCandidateId)
         if (Objects.nonNull(arrangement)) {
             throw InvalidRequestException(ErrorCode.ALREADY_MATCHED_CANDIDATE)
         }
@@ -82,14 +82,14 @@ class ArrangementService(
     }
 
     private fun verifyCandidate(
-        matchMakerId: Long,
+        makerMemberId: Long,
         candidateId: Long,
         today: LocalDateTime,
         tomorrow: LocalDateTime,
     ) {
-        val memberRelation = memberRelations.findByInviterIdAndInviteeId(matchMakerId, candidateId)
+        val memberRelation = memberRelations.findByInviterIdAndInviteeId(makerMemberId, candidateId)
         if (Objects.nonNull(memberRelation)) {
-            val arrangements = arrangementRepository.findAllByPeriod(matchMakerId, candidateId, today, tomorrow)
+            val arrangements = arrangementRepository.findAllByPeriod(makerMemberId, candidateId, today, tomorrow)
             if (arrangements.size >= 3) {
                 throw InvalidRequestException(ErrorCode.DAILY_MAXIMUM_MATCHING_COUNT)
             }
@@ -104,7 +104,7 @@ class ArrangementService(
             applicationEventPublisher.publishEvent(
                 MatchedArrangementEvent(
                     arrangement.id!!,
-                    arrangement.matchMakerId,
+                    arrangement.makerMemberId,
                     arrangement.leftCandidateId,
                     arrangement.rightCandidateId,
                     arrangement.arrangementStatus.step
@@ -115,7 +115,7 @@ class ArrangementService(
             applicationEventPublisher.publishEvent(
                 RejectedArrangementEvent(
                     arrangement.id!!,
-                    arrangement.matchMakerId,
+                    arrangement.makerMemberId,
                     arrangement.leftCandidateId,
                     arrangement.rightCandidateId,
                     arrangement.arrangementStatus.step,

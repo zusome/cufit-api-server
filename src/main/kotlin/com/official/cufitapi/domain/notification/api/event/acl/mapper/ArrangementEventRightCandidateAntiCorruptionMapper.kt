@@ -56,11 +56,11 @@ class ArrangementEventRightCandidateAntiCorruptionMapper(
     }
 
     private fun suggestedArrangementEvent(payload: SuggestedArrangementEvent): RegisterInAppNotificationCommand {
-        val matchMakerName = notificationMembers.name(payload.matchMakerId)
+        val makerName = notificationMembers.name(payload.makerId)
         val rightCandidateName = notificationMembers.name(payload.rightCandidateId)
         return RegisterInAppNotificationCommand(
             title = "새로운 매칭 요청",
-            body = "주선자 ${matchMakerName}님이 ${rightCandidateName}님의 카드를 보냈어요.",
+            body = "주선자 ${makerName}님이 ${rightCandidateName}님의 카드를 보냈어요.",
             inAppNotificationType = InAppNotificationType.MATCHING.name,
             receiverId = notificationInviters.inviterId(payload.leftCandidateId),
             payload = objectMapper.writeValueAsString(payload)

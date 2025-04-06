@@ -1,6 +1,6 @@
-package com.official.cufitapi.domain.member.api.dto.matchmaker
+package com.official.cufitapi.domain.member.api.dto.maker
 
-data class MatchMakerCandidateResponse(
+data class MakerCandidateResponse(
     val image: String,
     val name: String,
     val relation: String,

@@ -17,7 +17,7 @@ data class CandidateResponse(
     @Schema(description = "주선자와의 관계", example = "직장동료")
     val relation: String,
     @Schema(description = "매칭 주선자 이름", example = "김민지")
-    val matchMakerName: String,
+    val makerName: String,
     @Schema(description = "MBTI", example = "[\"I\",\"N\",\"T\",\"J\"]")
     val mbti: List<MBTILetter>,
     @Schema(description = "키", example = "170")
@@ -35,7 +35,7 @@ data class CandidateResponse(
             name: String,
             yearOfBirth: String,
             relation: String,
-            matchMakerName: String,
+            makerName: String,
             mbti: List<MBTILetter>,
             height: Int,
             station: String,
@@ -47,7 +47,7 @@ data class CandidateResponse(
                 name = name,
                 yearOfBirth = yearOfBirth,
                 relation = relation,
-                matchMakerName = matchMakerName,
+                makerName = makerName,
                 mbti = mbti,
                 height = height,
                 station = station,

@@ -51,7 +51,7 @@ class CandidateApi(
                     name = "John Doe",
                     yearOfBirth = "1990",
                     relation = "Friend",
-                    matchMakerName = "Jane Smith",
+                    makerName = "Jane Smith",
                     mbti = listOf(MBTILetter.I, MBTILetter.N, MBTILetter.T, MBTILetter.J),
                     height = 180,
                     station = "Gangnam Station",

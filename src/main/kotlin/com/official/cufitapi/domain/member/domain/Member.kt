@@ -13,14 +13,14 @@ class Member(
         this.name = name
     }
 
-    fun updateMatchMaker() {
+    fun updateMaker() {
         if(this.memberType != MemberType.BASIC) {
             throw IllegalStateException("MemberType is not BASIC")
         }
-        this.memberType = MemberType.MATCHMAKER
+        this.memberType = MemberType.MAKER
     }
 
-    fun updateMatchCandidate() {
+    fun updateCandidate() {
         if(this.memberType != MemberType.BASIC) {
             throw IllegalStateException("MemberType is not BASIC")
         }

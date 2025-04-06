@@ -2,13 +2,11 @@ package com.official.cufitapi.domain.arrangement.infrastructure.persistence
 
 import com.official.cufitapi.common.DateTimeUtils
 import com.official.cufitapi.common.tomorrow
-import com.official.cufitapi.domain.arrangement.infrastructure.persistence.ArrangementDao.ArrangementCandidates
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.stereotype.Component
 import java.sql.ResultSet
-import java.time.LocalDate
 import javax.sql.DataSource
 
 @Component
@@ -35,7 +33,7 @@ class ArrangementDao(
      * 요청을 다 보낸 사용자의 경우 disabled 되어야 함
      * 이미 주선을 보냈었다면 보여지지도 않아야 함
      */
-    fun findAllByArrangementId(matchMakerId: Long, targetId: Long): ArrangementCandidates {
+    fun findAllByArrangementId(makerId: Long, targetId: Long): ArrangementCandidates {
         // 내 후보자 조회
         return ArrangementCandidates(
             listOf(
@@ -62,31 +60,14 @@ class ArrangementDao(
                 )
             )
         )
-        // val matchMakerCandidateRelations = matchMakerCandidateRelations(matchMakerId, targetId)
-        // // 주선 가능한 후보자 조회
-        // val availableMatchMakerCandidateRelations = matchMakerCandidateRelations.filter { matchMakerCandidateRelations.containsKey(it.key) }
-        // val existedArrangementCandidates = existedArrangementCandidates(matchMakerId, targetId, availableMatchMakerCandidateRelations.keys)
-        // val realAvailableMatchMakerCandidateRelations = availableMatchMakerCandidateRelations.filterKeys { !existedArrangementCandidates.contains(it) }
-        // val candidateArrangementCountMap = availableCandidateIds(matchMakerId, realAvailableMatchMakerCandidateRelations.keys)
-        // val matchCandidates = matchCandidates(realAvailableMatchMakerCandidateRelations.keys)
-        // return matchCandidates.map { (memberId, matchCandidate) ->
-        //
-        //     ArrangementCandidate(
-        //         "image",
-        //         matchCandidate.name,
-        //         realAvailableMatchMakerCandidateRelations[memberId]!!.relationType,
-        //         matchCandidate.yearOfBirth,
-        //         3 - (candidateArrangementCountMap[memberId] ?: 0)
-        //     )
-        // }.let { ArrangementCandidates(it) }
     }
 
-    private fun matchMakerCandidateRelations(
-        matchMakerId: Long,
+    private fun makerCandidateRelations(
+        makerId: Long,
         targetId: Long,
-    ): Map<Long, MatchMakerCandidateRelation> {
+    ): Map<Long, MakerCandidateRelation> {
         val firstQueryParameters = MapSqlParameterSource()
-            .addValue("matchMakerId", matchMakerId)
+            .addValue("makerId", makerId)
             .addValue("targetId", targetId)
         val firstSql = """
                 SELECT 
@@ -95,21 +76,21 @@ class ArrangementDao(
                 FROM
                     member_relations mr
                 WHERE 
-                    mr.inviter_id = :matchMakerId
+                    mr.inviter_id = :makerId
                 AND
                     mr.invitee_id != :targetId 
             """.trimIndent()
         return namedParameterJdbcTemplate.query(
-            firstSql, firstQueryParameters, MatchMakerCandidateRelationMapper()
-        ).associateBy(MatchMakerCandidateRelation::inviteeId)
+            firstSql, firstQueryParameters, MakerCandidateRelationMapper()
+        ).associateBy(MakerCandidateRelation::inviteeId)
     }
 
     private fun availableCandidateIds(
-        matchMakerId: Long,
+        makerId: Long,
         candidateIds: Set<Long>,
     ): MutableMap<Long, Int> {
-        val existLeftCandidateIds = existsLeftCandidateIds(matchMakerId, candidateIds)
-        val existRightCandidateIds = existsRightCandidateIds(matchMakerId, candidateIds)
+        val existLeftCandidateIds = existsLeftCandidateIds(makerId, candidateIds)
+        val existRightCandidateIds = existsRightCandidateIds(makerId, candidateIds)
         val resultMap = mutableMapOf<Long, Int>()
         for ((key, value) in existLeftCandidateIds) {
             resultMap[key] = value
@@ -145,7 +126,7 @@ class ArrangementDao(
     }
 
     private fun existedArrangementCandidates(
-        matchMakerId: Long,
+        makerId: Long,
         targetId: Long,
         inviteeIds: Set<Long>,
     ): MutableList<Long> {
@@ -153,7 +134,7 @@ class ArrangementDao(
             return mutableListOf()
         }
         val thirdQueryParameters = MapSqlParameterSource()
-            .addValue("matchMakerId", matchMakerId)
+            .addValue("makerId", makerId)
             .addValue("leftTargetId", targetId)
             .addValue("rightTargetId", targetId)
             .addValue("inviteeIds", inviteeIds)
@@ -165,7 +146,7 @@ class ArrangementDao(
                 FROM 
                     arrangements a
                 WHERE
-                    a.match_maker_id = :matchMakerId
+                    a.match_maker_id = :makerId
                 AND
                 (
                     (a.left_candidate_id = :leftTargetId AND a.right_candidate_id in (:inviteeIds))
@@ -188,11 +169,11 @@ class ArrangementDao(
     }
 
     private fun existsLeftCandidateIds(
-        matchMakerId: Long,
+        makerId: Long,
         inviteeIds: Set<Long>,
     ): MutableMap<Long, Int> {
         val fourthQueryParameters = MapSqlParameterSource()
-            .addValue("matchMakerId", matchMakerId)
+            .addValue("makerId", makerId)
             .addValue("inviteeIds", inviteeIds)
             .addValue("today", DateTimeUtils.beginToday())
             .addValue("tomorrow", DateTimeUtils.beginToday().tomorrow())
@@ -203,7 +184,7 @@ class ArrangementDao(
                 FROM
                     arrangements a
                 WHERE
-                    a.match_maker_id = :matchMakerId
+                    a.match_maker_id = :makerId
                 AND
                     a.left_candidate_id in (:inviteeIds)
                 AND
@@ -218,11 +199,11 @@ class ArrangementDao(
     }
 
     private fun existsRightCandidateIds(
-        matchMakerId: Long,
+        makerId: Long,
         inviteeIds: Set<Long>,
     ): MutableMap<Long, Int> {
         val fourthQueryParameters = MapSqlParameterSource()
-            .addValue("matchMakerId", matchMakerId)
+            .addValue("makerId", makerId)
             .addValue("inviteeIds", inviteeIds)
             .addValue("today", DateTimeUtils.beginToday())
             .addValue("tomorrow", DateTimeUtils.beginToday().tomorrow())
@@ -233,7 +214,7 @@ class ArrangementDao(
                 FROM
                     arrangements a
                 WHERE
-                    a.match_maker_id = :matchMakerId
+                    a.match_maker_id = :makerId
                 AND
                     a.right_candidate_id in (:inviteeIds)
                 AND
@@ -248,16 +229,16 @@ class ArrangementDao(
     }
 }
 
-class MatchMakerCandidateRelationMapper : RowMapper<MatchMakerCandidateRelation> {
-    override fun mapRow(rs: ResultSet, rowNum: Int): MatchMakerCandidateRelation {
-        return MatchMakerCandidateRelation(
+class MakerCandidateRelationMapper : RowMapper<MakerCandidateRelation> {
+    override fun mapRow(rs: ResultSet, rowNum: Int): MakerCandidateRelation {
+        return MakerCandidateRelation(
             rs.getLong("invitee_id"),
             rs.getString("relation_type"),
         )
     }
 }
 
-data class MatchMakerCandidateRelation(
+data class MakerCandidateRelation(
     val inviteeId: Long,
     val relationType: String,
 )

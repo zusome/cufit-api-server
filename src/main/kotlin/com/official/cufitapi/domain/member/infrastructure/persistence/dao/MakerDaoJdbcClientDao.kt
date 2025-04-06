@@ -23,9 +23,9 @@ import org.springframework.jdbc.core.simple.JdbcClient
 import org.springframework.stereotype.Component
 
 @Component
-class MatchMakerDaoJdbcClientDao(
+class MakerDaoJdbcClientDao(
     private val jdbcClient: JdbcClient,
-) : MatchMakerDao {
+) : MakerDao {
 
     override fun candidateCount(memberId: Long): Long =
         jdbcClient.sql(CANDIDATE_COUNT_SQL)
@@ -126,8 +126,8 @@ class MatchMakerDaoJdbcClientDao(
                 height = matchCandidate?.height!!,
                 station = matchCandidate?.station!!,
                 job = matchCandidate?.job!!,
-                matchMakerRelation = relationMap[matchCandidate.memberId]!!,
-                matchMakerName = memberMap[matchCandidate.memberId]?.name!!,
+                relation = relationMap[matchCandidate.memberId]!!,
+                makerName = memberMap[matchCandidate.memberId]?.name!!,
                 idealHeightRange = mapToList(matchCandidate),
                 idealAgeRange = mapToString(matchCandidate),
                 idealMbti = mapToMbtiList(matchCandidate),

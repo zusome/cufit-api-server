@@ -1,4 +1,4 @@
-package com.official.cufitapi.domain.member.api.dto.matchmaker
+package com.official.cufitapi.domain.member.api.dto.maker
 
 data class ArrangementResponse(
     val image: String,

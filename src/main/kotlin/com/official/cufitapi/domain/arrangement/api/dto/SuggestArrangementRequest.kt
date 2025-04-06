@@ -6,9 +6,9 @@ data class SuggestArrangementRequest(
     val leftCandidateId: Long,
     val rightCandidateId: Long,
 ) {
-    fun toCommand(matchMakerMemberId: Long): SuggestArrangementCommand {
+    fun toCommand(makerMemberId: Long): SuggestArrangementCommand {
         return SuggestArrangementCommand(
-            matchMakerMemberId = matchMakerMemberId,
+            makerMemberId = makerMemberId,
             leftCandidateId = leftCandidateId,
             rightCandidateId = rightCandidateId
         )

@@ -1,7 +1,7 @@
 package com.official.cufitapi.domain.member.infrastructure.persistence.dto
 
 data class ArrangementDto(
-    var matchMakerMemberId: Long,
+    var makerMemberId: Long,
     var leftCandidateMemberId: Long,
     var rightCandidateMemberId: Long,
     var arrangementStatus: String,

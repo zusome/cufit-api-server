@@ -35,7 +35,7 @@ class ArrangementMockApi(
     override fun suggestArrangement(
         @Authorization(
             AuthorizationType.BASIC,
-            AuthorizationType.MATCHMAKER
+            AuthorizationType.MAKER
         ) authorizationUser: AuthorizationUser,
         @RequestBody request: SuggestArrangementRequest,
     ): HttpResponse<SuggestArrangementResponse> {
@@ -61,7 +61,7 @@ class ArrangementMockApi(
         @RequestParam("targetId") targetId: Long,
         @Authorization(
             AuthorizationType.BASIC,
-            AuthorizationType.MATCHMAKER
+            AuthorizationType.MAKER
         ) authorizationUser: AuthorizationUser,
     ): HttpResponse<ArrangementDao.ArrangementCandidates> {
         return HttpResponse.of(

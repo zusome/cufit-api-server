@@ -9,8 +9,8 @@ import jakarta.persistence.Table
 import org.hibernate.annotations.Comment
 
 @Entity
-@Table(name = "match_maker")
-class JpaMatchMaker(
+@Table(name = "maker")
+class JpaMaker(
 
     @Comment("고객")
     @Column(name = "member_id", unique = true, nullable = false)

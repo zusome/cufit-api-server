@@ -1,7 +1,7 @@
 package com.official.cufitapi.domain.member.domain
 
-class MatchMaker(
+class Maker(
     val memberId: Long,
-    val matchMakerId: Long? = null,
+    val makerId: Long? = null,
 ) {
 }

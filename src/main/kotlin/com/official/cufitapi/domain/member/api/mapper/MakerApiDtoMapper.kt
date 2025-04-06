@@ -2,14 +2,14 @@ package com.official.cufitapi.domain.member.api.mapper
 
 import com.official.cufitapi.domain.member.api.dto.candidate.CandidatesInfoResponseDto
 import com.official.cufitapi.domain.member.api.dto.candidate.OtherCandidatesInfoResponseDto
-import com.official.cufitapi.domain.member.api.dto.matchmaker.ArrangementResponse
-import com.official.cufitapi.domain.member.api.dto.matchmaker.MatchMakerCandidateCountResponse
-import com.official.cufitapi.domain.member.api.dto.matchmaker.MatchMakerCandidateImage
-import com.official.cufitapi.domain.member.api.dto.matchmaker.MatchMakerCandidateResponse
-import com.official.cufitapi.domain.member.api.dto.matchmaker.MatchMakerCandidatesResponse
-import com.official.cufitapi.domain.member.api.dto.matchmaker.MatchMakerOtherCandidateResponse
-import com.official.cufitapi.domain.member.api.dto.matchmaker.MatchMakerOtherCandidatesCountResponse
-import com.official.cufitapi.domain.member.api.dto.matchmaker.MatchMakerOtherCandidatesResponse
+import com.official.cufitapi.domain.member.api.dto.maker.ArrangementResponse
+import com.official.cufitapi.domain.member.api.dto.maker.CandidateCountResponse
+import com.official.cufitapi.domain.member.api.dto.maker.MakerCandidateImage
+import com.official.cufitapi.domain.member.api.dto.maker.MakerCandidateResponse
+import com.official.cufitapi.domain.member.api.dto.maker.MakerCandidatesResponse
+import com.official.cufitapi.domain.member.api.dto.maker.MakerOtherCandidateResponse
+import com.official.cufitapi.domain.member.api.dto.maker.MakerOtherCandidatesCountResponse
+import com.official.cufitapi.domain.member.api.dto.maker.MakerOtherCandidatesResponse
 import com.official.cufitapi.domain.member.infrastructure.persistence.JpaMatchCandidate
 import com.official.cufitapi.domain.member.infrastructure.persistence.dto.MatchCandidate
 import com.official.cufitapi.domain.member.infrastructure.persistence.dto.MatchCandidates
@@ -18,7 +18,7 @@ import com.official.cufitapi.domain.member.infrastructure.persistence.dto.OtherM
 import org.springframework.stereotype.Component
 
 @Component
-class MatchMakerApiDtoMapper {
+class MakerApiDtoMapper {
     private fun mapToCandidates(jpaMatchCandidate: JpaMatchCandidate) =
         CandidatesInfoResponseDto(
             id = jpaMatchCandidate.id!!,
@@ -51,18 +51,18 @@ class MatchMakerApiDtoMapper {
             phoneNumber = jpaMatchCandidate.phoneNumber
         )
 
-    fun candidateCount(candidateCount: Long): MatchMakerCandidateCountResponse =
-        MatchMakerCandidateCountResponse(candidateCount)
+    fun candidateCount(candidateCount: Long): CandidateCountResponse =
+        CandidateCountResponse(candidateCount)
 
-    fun otherCandidateCount(otherCandidateCount: Long): MatchMakerOtherCandidatesCountResponse =
-        MatchMakerOtherCandidatesCountResponse(otherCandidateCount)
+    fun otherCandidateCount(otherCandidateCount: Long): MakerOtherCandidatesCountResponse =
+        MakerOtherCandidatesCountResponse(otherCandidateCount)
 
-    fun matchCandidates(matchCandidates: MatchCandidates): MatchMakerCandidatesResponse {
-        return matchCandidates.candidates.map(::mapToCandidates).let(::MatchMakerCandidatesResponse)
+    fun matchCandidates(matchCandidates: MatchCandidates): MakerCandidatesResponse {
+        return matchCandidates.candidates.map(::mapToCandidates).let(::MakerCandidatesResponse)
     }
 
-    fun mapToCandidates(matchCandidate: MatchCandidate): MatchMakerCandidateResponse {
-        return MatchMakerCandidateResponse(
+    fun mapToCandidates(matchCandidate: MatchCandidate): MakerCandidateResponse {
+        return MakerCandidateResponse(
             image = matchCandidate.image,
             name = matchCandidate.name,
             relation = matchCandidate.relation,
@@ -78,15 +78,15 @@ class MatchMakerApiDtoMapper {
         )
     }
 
-    fun matchOtherCandidates(otherCandidates: OtherMatchCandidates): MatchMakerOtherCandidatesResponse {
-        return otherCandidates.candidates.map(::mapToOtherCandidates).let(::MatchMakerOtherCandidatesResponse)
+    fun matchOtherCandidates(otherCandidates: OtherMatchCandidates): MakerOtherCandidatesResponse {
+        return otherCandidates.candidates.map(::mapToOtherCandidates).let(::MakerOtherCandidatesResponse)
     }
 
-    fun mapToOtherCandidates(otherMatchCandidate: OtherMatchCandidate): MatchMakerOtherCandidateResponse {
-        return MatchMakerOtherCandidateResponse(
+    fun mapToOtherCandidates(otherMatchCandidate: OtherMatchCandidate): MakerOtherCandidateResponse {
+        return MakerOtherCandidateResponse(
             id = otherMatchCandidate.id,
             images = otherMatchCandidate.images.map {
-                MatchMakerCandidateImage(
+                MakerCandidateImage(
                     imageUrl = it.imageUrl,
                     profileOrder = it.profileOrder
                 )
@@ -97,8 +97,8 @@ class MatchMakerApiDtoMapper {
             height = otherMatchCandidate.height,
             station = otherMatchCandidate.station,
             job = otherMatchCandidate.job,
-            matchMakerRelation = otherMatchCandidate.matchMakerRelation,
-            matchMakerName = otherMatchCandidate.matchMakerName,
+            makerRelation = otherMatchCandidate.relation,
+            makerName = otherMatchCandidate.makerName,
             idealHeightRange = otherMatchCandidate.idealHeightRange,
             idealAgeRange = otherMatchCandidate.idealAgeRange,
             idealMbti = otherMatchCandidate.idealMbti

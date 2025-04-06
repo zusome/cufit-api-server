@@ -5,7 +5,7 @@ enum class AuthorizationType {
     ADMIN,
     BASIC,
     CANDIDATE,
-    MATCHMAKER,;
+    MAKER,;
 
     fun isAll(): Boolean =
         this == ALL
