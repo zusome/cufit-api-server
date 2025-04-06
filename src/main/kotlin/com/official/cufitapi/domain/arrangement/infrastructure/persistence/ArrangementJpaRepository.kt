@@ -7,18 +7,18 @@ import java.time.LocalDateTime
 interface ArrangementJpaRepository : JpaRepository<ArrangementEntity, Long> {
     @Query(
         """
-            SELECT count(1)
+            SELECT a
             FROM ArrangementEntity a
             WHERE a.matchMakerMemberId = :matchMakerId
             AND (a.leftCandidateMemberId = :candidateId or a.rightCandidateId = :candidateId)
             AND a.createdDate BETWEEN :today AND :tomorrow
         """
     )
-    fun todayCount(matchMakerId: Long, candidateId: Long, today: LocalDateTime, tomorrow: LocalDateTime): Long
+    fun findAllByPeriod(matchMakerId: Long, candidateId: Long, today: LocalDateTime, tomorrow: LocalDateTime): List<ArrangementEntity>
 
     @Query(
         """
-            SELECT count(1)
+            SELECT a
             FROM ArrangementEntity a
             WHERE a.matchMakerMemberId = :matchMakerId
             AND (
@@ -28,5 +28,5 @@ interface ArrangementJpaRepository : JpaRepository<ArrangementEntity, Long> {
             )
         """
     )
-    fun existsCandidates(matchMakerId: Long, leftCandidateId: Long, rightCandidateId: Long): Boolean
+    fun findByCandidates(matchMakerId: Long, leftCandidateId: Long, rightCandidateId: Long): ArrangementEntity?
 }

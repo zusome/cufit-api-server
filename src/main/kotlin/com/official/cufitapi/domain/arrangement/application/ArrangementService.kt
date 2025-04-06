@@ -6,31 +6,34 @@ import com.official.cufitapi.common.exception.InvalidRequestException
 import com.official.cufitapi.common.tomorrow
 import com.official.cufitapi.domain.arrangement.application.command.SuggestArrangementCommand
 import com.official.cufitapi.domain.arrangement.application.command.UpdateArrangementCommand
+import com.official.cufitapi.domain.arrangement.domain.Arrangement
 import com.official.cufitapi.domain.arrangement.domain.ArrangementRepository
-import com.official.cufitapi.domain.arrangement.infrastructure.persistence.ArrangementEntity
-import com.official.cufitapi.domain.arrangement.infrastructure.persistence.ArrangementJpaRepository
+import com.official.cufitapi.domain.arrangement.domain.MatchCandidates
+import com.official.cufitapi.domain.arrangement.domain.MemberRelations
+import com.official.cufitapi.domain.arrangement.domain.event.MatchedArrangementEvent
+import com.official.cufitapi.domain.arrangement.domain.event.RejectedArrangementEvent
+import com.official.cufitapi.domain.arrangement.domain.event.SuggestedArrangementEvent
 import com.official.cufitapi.domain.arrangement.infrastructure.persistence.ArrangementStatus
-import com.official.cufitapi.domain.member.infrastructure.persistence.JpaMatchCandidateRepository
-import com.official.cufitapi.domain.member.infrastructure.persistence.JpaMemberRelationRepository
-import org.springframework.data.repository.findByIdOrNull
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
+import java.util.Objects
 
 fun interface SuggestArrangementUsecase {
     fun suggestArrangement(command: SuggestArrangementCommand): Long
 }
 
 fun interface UpdateArrangementUsecase {
-    fun updateArrangement(command: UpdateArrangementCommand)
+    fun nextStep(command: UpdateArrangementCommand)
 }
 
 @Service
 class ArrangementService(
-    private val jpaMatchCandidateRepository: JpaMatchCandidateRepository,
-    private val jpaMemberRelationRepository: JpaMemberRelationRepository,
-    private val arrangementJpaRepository: ArrangementJpaRepository,
-    private val arrangementRepository: ArrangementRepository
-): SuggestArrangementUsecase, UpdateArrangementUsecase {
+    private val matchCandidates: MatchCandidates,
+    private val memberRelations: MemberRelations,
+    private val arrangementRepository: ArrangementRepository,
+    private val applicationEventPublisher: ApplicationEventPublisher,
+) : SuggestArrangementUsecase, UpdateArrangementUsecase {
 
     /**
      * 주선자 <-> 내후보자 == 하루에 3번 가능
@@ -40,31 +43,40 @@ class ArrangementService(
     override fun suggestArrangement(command: SuggestArrangementCommand): Long {
         val today = DateTimeUtils.beginToday()
         val tomorrow = today.tomorrow()
+
         verifyCandidate(command.matchMakerMemberId, command.leftCandidateId, today, tomorrow)
         verifyCandidate(command.matchMakerMemberId, command.rightCandidateId, today, tomorrow)
         verifySameGender(command.leftCandidateId, command.rightCandidateId)
         verifyExists(command.matchMakerMemberId, command.leftCandidateId, command.rightCandidateId)
-        val arrangementEntity = ArrangementEntity(
-            matchMakerMemberId = command.matchMakerMemberId,
-            leftCandidateMemberId = command.leftCandidateId,
+
+        val arrangement = Arrangement(
+            matchMakerId = command.matchMakerMemberId,
+            leftCandidateId = command.leftCandidateId,
             rightCandidateId = command.rightCandidateId,
             arrangementStatus = ArrangementStatus.SUGGESTED
         )
-        return arrangementJpaRepository.save(arrangementEntity).let { it.id!! }
+        val arrangementId = arrangementRepository.save(arrangement).let { it.id!! }
+        applicationEventPublisher.publishEvent(
+            SuggestedArrangementEvent(
+                arrangementId,
+                command.matchMakerMemberId,
+                command.leftCandidateId,
+                command.rightCandidateId,
+                arrangement.arrangementStatus.step
+            )
+        )
+        return arrangementId
     }
 
     private fun verifyExists(matchMakerId: Long, leftCandidateId: Long, rightCandidateId: Long) {
-        if(arrangementJpaRepository.existsCandidates(matchMakerId, leftCandidateId, rightCandidateId)) {
+        val arrangement = arrangementRepository.findByCandidates(matchMakerId, leftCandidateId, rightCandidateId)
+        if (Objects.nonNull(arrangement)) {
             throw InvalidRequestException(ErrorCode.ALREADY_MATCHED_CANDIDATE)
         }
     }
 
     private fun verifySameGender(leftCandidateId: Long, rightCandidateId: Long) {
-        val leftCandidate = jpaMatchCandidateRepository.findByMemberId(leftCandidateId)
-            ?: throw InvalidRequestException(ErrorCode.NOT_FOUND_RECEIVER)
-        val rightCandidate = jpaMatchCandidateRepository.findByMemberId(rightCandidateId)
-            ?: throw InvalidRequestException(ErrorCode.NOT_FOUND_SENDER)
-        if (leftCandidate.isSameGender(rightCandidate)) {
+        if (matchCandidates.isSameGender(leftCandidateId, rightCandidateId)) {
             throw InvalidRequestException(ErrorCode.CONNECTION_REQUEST_SAME_GENDER)
         }
     }
@@ -75,21 +87,41 @@ class ArrangementService(
         today: LocalDateTime,
         tomorrow: LocalDateTime,
     ) {
-        val isMyCandidate = jpaMemberRelationRepository.existsByInviterIdAndInviteeId(matchMakerId, candidateId)
-        if (isMyCandidate) {
-            val count = arrangementJpaRepository.todayCount(matchMakerId, candidateId, today, tomorrow)
-            if (count >= 3) {
+        val memberRelation = memberRelations.findByInviterIdAndInviteeId(matchMakerId, candidateId)
+        if (Objects.nonNull(memberRelation)) {
+            val arrangements = arrangementRepository.findAllByPeriod(matchMakerId, candidateId, today, tomorrow)
+            if (arrangements.size >= 3) {
                 throw InvalidRequestException(ErrorCode.DAILY_MAXIMUM_MATCHING_COUNT)
             }
         }
     }
 
-    override fun updateArrangement(command: UpdateArrangementCommand) {
+    override fun nextStep(command: UpdateArrangementCommand) {
         val arrangement = arrangementRepository.findById(command.arrangementId)
-        arrangement.nextStatus(command.isAccepted)
-        val arrangementEntity = arrangementJpaRepository.findByIdOrNull(command.arrangementId)
-            ?: throw InvalidRequestException(ErrorCode.NOT_FOUND_ARRANGEMENT)
-        arrangementEntity.nextStatus(command.isAccepted)
-        arrangementJpaRepository.save(arrangementEntity)
+        arrangement.nextStep(command.isAccepted)
+        arrangementRepository.save(arrangement)
+        if (arrangement.isMatched()) {
+            applicationEventPublisher.publishEvent(
+                MatchedArrangementEvent(
+                    arrangement.id!!,
+                    arrangement.matchMakerId,
+                    arrangement.leftCandidateId,
+                    arrangement.rightCandidateId,
+                    arrangement.arrangementStatus.step
+                )
+            )
+        }
+        if (arrangement.isRejected()) {
+            applicationEventPublisher.publishEvent(
+                RejectedArrangementEvent(
+                    arrangement.id!!,
+                    arrangement.matchMakerId,
+                    arrangement.leftCandidateId,
+                    arrangement.rightCandidateId,
+                    arrangement.arrangementStatus.step,
+                    command.memberId
+                )
+            )
+        }
     }
 }

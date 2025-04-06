@@ -5,6 +5,6 @@ import com.official.cufitapi.domain.arrangement.application.command.UpdateArrang
 data class UpdateArrangementRequest(
     val isAccepted: Boolean
 ) {
-    fun toCommand(arrangementId: Long): UpdateArrangementCommand =
-        UpdateArrangementCommand(arrangementId, isAccepted)
+    fun toCommand(arrangementId: Long, memberId: Long): UpdateArrangementCommand =
+        UpdateArrangementCommand(arrangementId, isAccepted, memberId)
 }
