@@ -1,6 +1,6 @@
 package com.official.cufitapi.domain.member.infrastructure.persistence.mapper
 
-import com.official.cufitapi.domain.member.infrastructure.persistence.dto.ArrangementDto
+import com.official.cufitapi.domain.member.infrastructure.persistence.dto.MatchDto
 import com.official.cufitapi.domain.member.infrastructure.persistence.dto.CandidateDto
 import com.official.cufitapi.domain.member.infrastructure.persistence.dto.CandidateImageDto
 import com.official.cufitapi.domain.member.infrastructure.persistence.dto.MemberDto
@@ -59,13 +59,13 @@ class JdbcCandidateImageDtoMapper : RowMapper<CandidateImageDto> {
     }
 }
 
-class JdbcArrangementDtoMapper : RowMapper<ArrangementDto> {
-    override fun mapRow(rs: ResultSet, rowNum: Int): ArrangementDto {
-        return ArrangementDto(
+class JdbcMatchDtoMapper : RowMapper<MatchDto> {
+    override fun mapRow(rs: ResultSet, rowNum: Int): MatchDto {
+        return MatchDto(
             makerMemberId = rs.getLong("maker_member_id"),
             leftCandidateMemberId = rs.getLong("left_candidate_member_id"),
             rightCandidateMemberId = rs.getLong("right_candidate_member_id"),
-            arrangementStatus = rs.getString("status"),
+            matchStatus = rs.getString("status"),
             id = rs.getLong("id")
         )
     }

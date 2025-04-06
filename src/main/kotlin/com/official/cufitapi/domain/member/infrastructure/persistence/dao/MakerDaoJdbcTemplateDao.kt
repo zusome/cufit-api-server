@@ -1,7 +1,7 @@
 package com.official.cufitapi.domain.member.infrastructure.persistence.dao
 
 import com.official.cufitapi.domain.member.domain.vo.CandidateImage
-import com.official.cufitapi.domain.member.infrastructure.persistence.dto.ArrangementInfo
+import com.official.cufitapi.domain.member.infrastructure.persistence.dto.MatchInfo
 import com.official.cufitapi.domain.member.infrastructure.persistence.dto.Candidate
 import com.official.cufitapi.domain.member.infrastructure.persistence.dto.Candidates
 import com.official.cufitapi.domain.member.infrastructure.persistence.dto.OtherCandidate
@@ -41,7 +41,7 @@ class MakerDaoJdbcTemplateDao(
                     image = "https://cataas.com/cat",
                     name = "김철수",
                     relation = "친구",
-                    arrangements = listOf(),
+                    matches = listOf(),
                     hasProfile = true,
                     isMatchingPaused = false
                 ),
@@ -49,21 +49,21 @@ class MakerDaoJdbcTemplateDao(
                     image = "https://cataas.com/cat",
                     name = "홍길동",
                     relation = "직장동료",
-                    arrangements = listOf(
-                        ArrangementInfo(
+                    matches = listOf(
+                        MatchInfo(
                             image = "https://cataas.com/cat",
                             name = "장충동",
-                            arrangementStatus = "성공"
+                            matchStatus = "성공"
                         ),
-                        ArrangementInfo(
+                        MatchInfo(
                             image = "https://cataas.com/cat",
                             name = "박혁거세",
-                            arrangementStatus = "실패"
+                            matchStatus = "실패"
                         ),
-                        ArrangementInfo(
+                        MatchInfo(
                             image = "https://cataas.com/cat",
                             name = "박동충",
-                            arrangementStatus = "대기"
+                            matchStatus = "대기"
                         )
                     ),
                     hasProfile = true,
@@ -73,7 +73,7 @@ class MakerDaoJdbcTemplateDao(
                     image = "https://cataas.com/cat",
                     name = "박혁거세",
                     relation = "직장동료",
-                    arrangements = listOf(),
+                    matches = listOf(),
                     hasProfile = false,
                     isMatchingPaused = false
                 ),
@@ -81,7 +81,7 @@ class MakerDaoJdbcTemplateDao(
                     image = "https://cataas.com/cat",
                     name = "김민지",
                     relation = "친구",
-                    arrangements = listOf(),
+                    matches = listOf(),
                     hasProfile = true,
                     isMatchingPaused = true
                 )

@@ -2,8 +2,8 @@ package com.official.cufitapi.domain.member.infrastructure.persistence.dao
 
 import com.official.cufitapi.domain.member.domain.vo.CandidateImage
 import com.official.cufitapi.domain.member.domain.vo.IdealHeightUnit
-import com.official.cufitapi.domain.member.infrastructure.persistence.dto.ArrangementDto
-import com.official.cufitapi.domain.member.infrastructure.persistence.dto.ArrangementInfo
+import com.official.cufitapi.domain.member.infrastructure.persistence.dto.MatchDto
+import com.official.cufitapi.domain.member.infrastructure.persistence.dto.MatchInfo
 import com.official.cufitapi.domain.member.infrastructure.persistence.dto.Candidate
 import com.official.cufitapi.domain.member.infrastructure.persistence.dto.CandidateDto
 import com.official.cufitapi.domain.member.infrastructure.persistence.dto.CandidateImageDto
@@ -12,7 +12,7 @@ import com.official.cufitapi.domain.member.infrastructure.persistence.dto.Member
 import com.official.cufitapi.domain.member.infrastructure.persistence.dto.MemberRelationDto
 import com.official.cufitapi.domain.member.infrastructure.persistence.dto.OtherCandidate
 import com.official.cufitapi.domain.member.infrastructure.persistence.dto.OtherCandidates
-import com.official.cufitapi.domain.member.infrastructure.persistence.mapper.JdbcArrangementDtoMapper
+import com.official.cufitapi.domain.member.infrastructure.persistence.mapper.JdbcMatchDtoMapper
 import com.official.cufitapi.domain.member.infrastructure.persistence.mapper.JdbcCandidateDtoMapper
 import com.official.cufitapi.domain.member.infrastructure.persistence.mapper.JdbcCandidateImageDtoMapper
 import com.official.cufitapi.domain.member.infrastructure.persistence.mapper.JdbcMemberDtoMapper
@@ -63,18 +63,18 @@ class MakerDaoJdbcClientDao(
 
         // 후보자 주선 과정 정보 조회, 주선이 있는 사람들의 경우, 상대방의 프로필도 보여줘야 한다.
         // 우측에 있는 사용자가 내 후보자임을 확정한 정책이다.
-        val leftArrangement = arrangementsByLeft(candidates.map(CandidateDto::memberId))
-        val leftArrangementGroup = leftArrangement.groupBy(ArrangementDto::leftCandidateMemberId)
-        val rightArrangement = arrangementsByRight(candidates.map(CandidateDto::memberId))
-        val rightArrangementGroup = rightArrangement.groupBy(ArrangementDto::rightCandidateMemberId)
-        val arrangementMap: Map<Long, List<ArrangementDto>> =
-            (leftArrangementGroup.asSequence() + rightArrangementGroup.asSequence())
+        val leftMatch = matchesByLeft(candidates.map(CandidateDto::memberId))
+        val leftMatchGroup = leftMatch.groupBy(MatchDto::leftCandidateMemberId)
+        val rightMatch = matchesByRight(candidates.map(CandidateDto::memberId))
+        val rightMatchGroup = rightMatch.groupBy(MatchDto::rightCandidateMemberId)
+        val matchesMap: Map<Long, List<MatchDto>> =
+            (leftMatchGroup.asSequence() + rightMatchGroup.asSequence())
                 .groupBy({ it.key }, { it.value })
                 .mapValues { (_, value) -> value.flatten() }
 
         // 상대 후보자 조회
         val daterIds =
-            arrangementMap.entries.flatMap { it.value.map { arrangement -> arrangement.otherCandidateId(it.key) } }
+            matchesMap.entries.flatMap { it.value.map { match -> match.otherCandidateId(it.key) } }
         val daters = members(daterIds)
         val daterMap = daters.associateBy(MemberDto::id)
         val daterImages = candidateImages(daterIds.toSet())
@@ -87,16 +87,16 @@ class MakerDaoJdbcClientDao(
                 relation = relationMap[candidate.memberId]!!,
                 isMatchingPaused = candidate.isMatchAgreed.not(),
                 hasProfile = candidate.hasProfile(),
-                arrangements = arrangementMap[candidate.memberId]?.map { arrangement ->
-                    val otherCandidateId = arrangement.otherCandidateId(candidate.memberId)
+                matches = matchesMap[candidate.memberId]?.map { match ->
+                    val otherCandidateId = match.otherCandidateId(candidate.memberId)
                     val otherCandidate = daterMap[otherCandidateId]!!
                     val otherCandidateImages = daterImageMap[otherCandidateId]!!
                     val otherCandidateImageUrl =
                         otherCandidateImages.firstOrNull { it.profileOrder == 1 }?.imageUrl ?: ""
-                    ArrangementInfo(
+                    MatchInfo(
                         image = otherCandidateImageUrl,
                         name = otherCandidate.name,
-                        arrangementStatus = arrangement.arrangementStatus
+                        matchStatus = match.matchStatus
                     )
                 } ?: emptyList()
             )
@@ -169,30 +169,30 @@ class MakerDaoJdbcClientDao(
             .list()
     }
 
-    private fun arrangements(memberId: Long): MutableList<ArrangementDto> {
-        return jdbcClient.sql("SELECT * FROM arrangements WHERE maker_member_id = :maker_member_ids")
+    private fun matches(memberId: Long): MutableList<MatchDto> {
+        return jdbcClient.sql("SELECT * FROM matches WHERE maker_member_id = :maker_member_ids")
             .param("maker_member_ids", memberId)
-            .query(JdbcArrangementDtoMapper())
+            .query(JdbcMatchDtoMapper())
             .list()
     }
 
-    private fun arrangementsByLeft(candidateIds: List<Long>): MutableList<ArrangementDto> {
+    private fun matchesByLeft(candidateIds: List<Long>): MutableList<MatchDto> {
         if (candidateIds.isEmpty()) {
             return mutableListOf()
         }
-        return jdbcClient.sql("SELECT * FROM arrangements WHERE left_candidate_member_id IN (:candidateIds)")
+        return jdbcClient.sql("SELECT * FROM matches WHERE left_candidate_member_id IN (:candidateIds)")
             .param("candidateIds", candidateIds)
-            .query(JdbcArrangementDtoMapper())
+            .query(JdbcMatchDtoMapper())
             .list()
     }
 
-    private fun arrangementsByRight(candidateIds: List<Long>): MutableList<ArrangementDto> {
+    private fun matchesByRight(candidateIds: List<Long>): MutableList<MatchDto> {
         if (candidateIds.isEmpty()) {
             return mutableListOf()
         }
-        return jdbcClient.sql("SELECT * FROM arrangements WHERE right_candidate_member_id IN (:candidateIds)")
+        return jdbcClient.sql("SELECT * FROM matches WHERE right_candidate_member_id IN (:candidateIds)")
             .param("candidateIds", candidateIds)
-            .query(JdbcArrangementDtoMapper())
+            .query(JdbcMatchDtoMapper())
             .list()
     }
 

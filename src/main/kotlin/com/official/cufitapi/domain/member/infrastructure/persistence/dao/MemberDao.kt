@@ -22,7 +22,7 @@ class MemberDao(
             SELECT
                 authority AS member_type
             FROM
-                member
+                members
             WHERE
                 id = :memberId
         """.trimIndent()
@@ -40,11 +40,11 @@ class MemberDao(
                 inviter.email AS inviterName,
                 mr.relation_type AS relationWithInvitee
             FROM
-                member m
+                members m
             LEFT JOIN
                 member_relations mr ON m.id = mr.invitee_id
             LEFT JOIN 
-                member inviter ON mr.inviter_id = inviter.id
+                members inviter ON mr.inviter_id = inviter.id
             WHERE
                 id = :memberId
         """.trimIndent()

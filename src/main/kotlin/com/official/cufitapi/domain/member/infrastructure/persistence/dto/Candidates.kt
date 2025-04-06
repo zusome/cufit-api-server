@@ -10,15 +10,15 @@ data class Candidate(
     val image: String,
     val name: String,
     val relation: String,
-    val arrangements: List<ArrangementInfo>,
+    val matches: List<MatchInfo>,
     val hasProfile: Boolean,
     val isMatchingPaused: Boolean,
 )
 
-data class ArrangementInfo(
+data class MatchInfo(
     val image: String,
     val name: String,
-    val arrangementStatus: String,
+    val matchStatus: String,
 )
 
 data class OtherCandidates(

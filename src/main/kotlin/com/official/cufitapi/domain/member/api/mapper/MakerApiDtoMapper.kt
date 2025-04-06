@@ -2,7 +2,7 @@ package com.official.cufitapi.domain.member.api.mapper
 
 import com.official.cufitapi.domain.member.api.dto.candidate.CandidatesInfoResponseDto
 import com.official.cufitapi.domain.member.api.dto.candidate.OtherCandidatesInfoResponseDto
-import com.official.cufitapi.domain.member.api.dto.maker.ArrangementResponse
+import com.official.cufitapi.domain.member.api.dto.maker.MatchResponse
 import com.official.cufitapi.domain.member.api.dto.maker.CandidateCountResponse
 import com.official.cufitapi.domain.member.api.dto.maker.MakerCandidateImage
 import com.official.cufitapi.domain.member.api.dto.maker.MakerCandidateResponse
@@ -66,11 +66,11 @@ class MakerApiDtoMapper {
             image = candidate.image,
             name = candidate.name,
             relation = candidate.relation,
-            arrangements = candidate.arrangements.map {
-                ArrangementResponse(
+            matches = candidate.matches.map {
+                MatchResponse(
                     image = it.image,
                     name = it.name,
-                    arrangementStatus = it.arrangementStatus
+                    matchStatus = it.matchStatus
                 )
             },
             hasProfile = candidate.hasProfile,
