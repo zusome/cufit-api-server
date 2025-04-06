@@ -1,5 +1,6 @@
 package com.official.cufitapi.domain.member.api
 
+import com.google.rpc.context.AttributeContext.Auth
 import com.official.cufitapi.common.annotation.Authorization
 import com.official.cufitapi.common.annotation.AuthorizationType
 import com.official.cufitapi.common.annotation.AuthorizationUser
@@ -50,7 +51,11 @@ class MemberApi(
 
     @PostMapping("/members/name")
     override fun realName(
-        @Authorization(AuthorizationType.BASIC) authorizationUser: AuthorizationUser,
+        @Authorization(
+            AuthorizationType.BASIC,
+            AuthorizationType.CANDIDATE,
+            AuthorizationType.MATCHMAKER
+        ) authorizationUser: AuthorizationUser,
         @RequestBody request: UpdateMemberProfileRequest,
     ): HttpResponse<Unit> {
         memberService.updateRealName(request.toCommand(authorizationUser.userId))
