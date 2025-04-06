@@ -14,11 +14,15 @@ data class CandidateProfileResponse(
     var idealHeightRange: String? = null,
     var mbti: String? = null,
     var height: Int? = null,
-    var station: String? = null,
+    var city: String? = null,
+    var district: String? = null,
     var job: String? = null,
     var yearOfBirth: Int? = null,
     var gender: Gender? = null,
     var phoneNumber: String? = null,
+    var hobbies: String? = null,
+    var smoke: Int? = null,
+    var drink: Int? = null,
 ) {
     constructor(candidateProfileInfo: CandidateProfileInfo) : this(
         candidateProfileInfo.idealMbti,
@@ -26,10 +30,14 @@ data class CandidateProfileResponse(
         candidateProfileInfo.idealHeightRange,
         candidateProfileInfo.mbti,
         candidateProfileInfo.height,
-        candidateProfileInfo.station,
+        candidateProfileInfo.city,
+        candidateProfileInfo.district,
         candidateProfileInfo.job,
         candidateProfileInfo.yearOfBirth,
         candidateProfileInfo.gender,
-        candidateProfileInfo.phoneNumber
+        candidateProfileInfo.phoneNumber,
+        candidateProfileInfo.hobbies,
+        candidateProfileInfo.smoke,
+        candidateProfileInfo.drink
     )
 }

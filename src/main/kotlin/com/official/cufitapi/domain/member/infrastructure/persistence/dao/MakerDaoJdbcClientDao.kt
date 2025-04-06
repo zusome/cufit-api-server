@@ -124,15 +124,26 @@ class MakerDaoJdbcClientDao(
                 yearOfBirth = candidate?.yearOfBirth!!,
                 mbti = candidate?.mbti!!,
                 height = candidate?.height!!,
-                station = candidate?.station!!,
+                city = candidate?.city!!,
+                district = candidate?.district!!,
                 job = candidate?.job!!,
                 relation = relationMap[candidate.memberId]!!,
                 makerName = memberMap[candidate.memberId]?.name!!,
                 idealHeightRange = mapToList(candidate),
                 idealAgeRange = mapToString(candidate),
                 idealMbti = mapToMbtiList(candidate),
+                hobbies = mapToHobbies(candidate),
+                drink = candidate?.drink!!,
+                smoke = candidate?.smoke!!
             )
         }.let { return OtherCandidates(it) }
+    }
+
+    private fun mapToHobbies(
+        candidate: CandidateDto,
+    ): List<String> {
+        val hobbies = candidate?.hobbies!!
+        return hobbies.split(",")
     }
 
     private fun mapToMbtiList(

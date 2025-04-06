@@ -44,9 +44,13 @@ class JpaCandidate(
     @Comment("신장")
     var height: Int? = null,
 
-    @Column(name = "station", unique = false, nullable = true)
-    @Comment("지하철역")
-    var station: String? = null,
+    @Column(name = "city", unique = false, nullable = true)
+    @Comment("도시")
+    var city: String? = null,
+
+    @Column(name = "district", unique = false, nullable = true)
+    @Comment("구역")
+    var district: String? = null,
 
     @Column(name = "job", unique = false, nullable = true)
     @Comment("직업")
@@ -65,6 +69,18 @@ class JpaCandidate(
     @Comment("사용자 전화 번호")
     var phoneNumber: String? = null,
 
+    @Column(name = "hobbies", unique = false, nullable = true)
+    @Comment("취미")
+    var hobbies: String? = null,
+
+    @Column(name = "smoke", unique = false, nullable = true)
+    @Comment("흡연")
+    var smoke: Int? = null,
+
+    @Column(name = "drink", unique = false, nullable = true)
+    @Comment("음주")
+    var drink: Int? = null,
+
     @OneToMany(mappedBy = "jpaCandidate", orphanRemoval = true, cascade = [CascadeType.ALL])
     @Comment("매칭 후보자 이미지")
     var images: MutableList<JpaCandidateImage> = mutableListOf(),
@@ -76,45 +92,6 @@ class JpaCandidate(
         images.forEach { it.jpaCandidate = this }
     }
 
-    fun deactivateMatching() {
-        isMatchAgreed = false
-    }
-
-    fun hasProfile(): Boolean {
-        return idealMbti != null || idealAgeRange != null || idealHeightRange != null || height != null || station != null || job != null || yearOfBirth != null
-    }
-
-    fun updateProfile(
-        images: List<JpaCandidateImage>,
-        idealMbti: String,
-        idealAgeRange: String,
-        idealHeightRange: String,
-        mbti: String,
-        height: Int,
-        station: String,
-        job: String,
-        yearOfBirth: Int,
-        gender: Gender,
-        phoneNumber: String,
-    ) {
-        this.images.addAll(images)
-        images.forEach { it.jpaCandidate = this }
-        this.idealMbti = idealMbti
-        this.idealAgeRange = idealAgeRange
-        this.idealHeightRange = idealHeightRange
-        this.mbti = mbti
-        this.height = height
-        this.station = station
-        this.job = job
-        this.yearOfBirth = yearOfBirth
-        this.gender = gender
-        this.phoneNumber = phoneNumber
-    }
-
     fun isSameGender(other: JpaCandidate): Boolean =
         this.gender == other.gender
-
-    fun updateMatchingAgreement(isMatchAgreed: Boolean) {
-        this.isMatchAgreed = isMatchAgreed
-    }
 }

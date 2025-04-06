@@ -28,11 +28,15 @@ class MakerApiDtoMapper {
             idealAgeRange = jpaCandidate.idealAgeRange,
             idealHeightRange = jpaCandidate.idealHeightRange,
             height = jpaCandidate.height,
-            station = jpaCandidate.station,
+            city = jpaCandidate.city,
+            district = jpaCandidate.district,
             job = jpaCandidate.job,
             yearOfBirth = jpaCandidate.yearOfBirth,
             gender = jpaCandidate.gender?.name,
-            phoneNumber = jpaCandidate.phoneNumber
+            phoneNumber = jpaCandidate.phoneNumber,
+            hobbies = jpaCandidate.hobbies,
+            smoke = jpaCandidate.smoke,
+            drink = jpaCandidate.drink
         )
 
     private fun mapToOtherCandidates(jpaCandidate: JpaCandidate) =
@@ -44,11 +48,15 @@ class MakerApiDtoMapper {
             idealAgeRange = jpaCandidate.idealAgeRange,
             idealHeightRange = jpaCandidate.idealHeightRange,
             height = jpaCandidate.height,
-            station = jpaCandidate.station,
+            city = jpaCandidate.city,
+            district = jpaCandidate.district,
             job = jpaCandidate.job,
             yearOfBirth = jpaCandidate.yearOfBirth,
             gender = jpaCandidate.gender?.name,
-            phoneNumber = jpaCandidate.phoneNumber
+            phoneNumber = jpaCandidate.phoneNumber,
+            hobbies = jpaCandidate.hobbies,
+            smoke = jpaCandidate.smoke,
+            drink = jpaCandidate.drink
         )
 
     fun candidateCount(candidateCount: Long): CandidateCountResponse =
@@ -95,13 +103,17 @@ class MakerApiDtoMapper {
             yearOfBirth = otherCandidate.yearOfBirth,
             mbti = otherCandidate.mbti,
             height = otherCandidate.height,
-            station = otherCandidate.station,
+            city = otherCandidate.city,
+            district = otherCandidate.district,
             job = otherCandidate.job,
             makerRelation = otherCandidate.relation,
             makerName = otherCandidate.makerName,
             idealHeightRange = otherCandidate.idealHeightRange,
             idealAgeRange = otherCandidate.idealAgeRange,
-            idealMbti = otherCandidate.idealMbti
+            idealMbti = otherCandidate.idealMbti,
+            hobbies = otherCandidate.hobbies,
+            smoke = otherCandidate.smoke,
+            drink = otherCandidate.drink
         )
     }
 }

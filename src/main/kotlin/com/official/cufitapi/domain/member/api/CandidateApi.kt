@@ -54,8 +54,12 @@ class CandidateApi(
                     makerName = "Jane Smith",
                     mbti = listOf(MBTILetter.I, MBTILetter.N, MBTILetter.T, MBTILetter.J),
                     height = 180,
-                    station = "Gangnam Station",
-                    job = "Developer"
+                    city = "서울특별시",
+                    district = "강남구",
+                    job = "Developer",
+                    hobbies = emptyList(),
+                    smoke = 1,
+                    drink = 1,
                 )
             ),
         )
@@ -95,12 +99,16 @@ class CandidateApi(
                 yearOfBirth = request.yearOfBirth,
                 height = request.height,
                 job = request.job,
-                station = request.station,
+                city = request.city,
+                district = request.district,
                 mbti = request.mbti,
                 idealHeightRange = request.idealHeightRange,
                 idealAgeRange = request.idealAgeRange,
                 idealMbti = request.idealMbti,
-                phoneNumber = request.phoneNumber
+                phoneNumber = request.phoneNumber,
+                hobbies = request.hobbies,
+                smoke = request.smoke,
+                drink = request.drink
             )
         )
         return HttpResponse.of(HttpStatus.NO_CONTENT, Unit)

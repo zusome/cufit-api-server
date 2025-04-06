@@ -40,11 +40,15 @@ class CandidateService(
             idealHeightRange = command.idealHeightRange.joinToString(),
             mbti = command.mbti,
             height = command.height,
-            station = command.station,
+            city = command.city,
+            district = command.district,
             job = command.job,
             yearOfBirth = command.yearOfBirth,
             gender = command.gender,
-            phoneNumber = command.phoneNumber
+            phoneNumber = command.phoneNumber,
+            hobbies = command.hobbies.joinToString(),
+            smoke = command.smoke,
+            drink = command.drink
         )
         candidateRepository.save(candidate)
         applicationEventPublisher.publishEvent(

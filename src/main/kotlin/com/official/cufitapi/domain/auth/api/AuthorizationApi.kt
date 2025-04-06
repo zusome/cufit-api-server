@@ -17,7 +17,7 @@ import com.official.cufitapi.domain.auth.application.FindAuthorizationMemberUseC
 import com.official.cufitapi.domain.auth.application.OidcProviderIdFindUseCase
 import com.official.cufitapi.domain.auth.application.RegisterAuthorizationMemberUseCase
 import com.official.cufitapi.domain.auth.application.command.AuthorizationTokenCreationCommand
-import com.official.cufitapi.domain.auth.application.command.AuthorizationTokenRefreshCommand
+import com.official.cufitapi.domain.auth.application.command.RefreshAuthorizationTokenCommand
 import com.official.cufitapi.domain.auth.application.command.OidcProviderIdFindCommand
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
@@ -54,7 +54,7 @@ class AuthorizationApi(
     ): HttpResponse<RefreshLoginHttpResponse> {
         val member = findAuthorizationMemberUseCase.findById(authorizationUser.userId)
         val authorizationToken = authorizationTokenRefreshUseCase.refresh(
-            AuthorizationTokenRefreshCommand(authorizationUser.userId, member.authority, refreshToken)
+            RefreshAuthorizationTokenCommand(authorizationUser.userId, member.authority, refreshToken)
         )
         return HttpResponse.of(HttpStatus.OK, RefreshLoginHttpResponse(member, authorizationToken))
     }

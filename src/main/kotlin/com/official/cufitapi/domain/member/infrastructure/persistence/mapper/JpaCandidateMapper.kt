@@ -25,11 +25,15 @@ class JpaCandidateMapper {
             idealHeightRange = entity.idealHeightRange,
             mbti = entity.mbti,
             height = entity.height,
-            station = entity.station,
+            city = entity.city,
+            district = entity.district,
             job = entity.job,
             yearOfBirth = entity.yearOfBirth,
             gender = entity.gender,
             phoneNumber = entity.phoneNumber,
+            hobbies = entity.hobbies,
+            smoke = entity.smoke,
+            drink = entity.drink,
             id = entity.id,
         )
     }
@@ -52,11 +56,15 @@ class JpaCandidateMapper {
             idealHeightRange = candidate.idealHeightRange,
             mbti = candidate.mbti,
             height = candidate.height,
-            station = candidate.station,
+            city = candidate.city,
+            district = candidate.district,
             job = candidate.job,
             yearOfBirth = candidate.yearOfBirth,
             gender = candidate.gender,
             phoneNumber = candidate.phoneNumber,
+            hobbies = candidate.hobbies,
+            smoke = candidate.smoke,
+            drink = candidate.drink,
             id = candidate.id
         )
     }

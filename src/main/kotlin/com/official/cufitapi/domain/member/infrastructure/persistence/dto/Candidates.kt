@@ -32,11 +32,15 @@ data class OtherCandidate(
     val yearOfBirth: Int,
     val mbti: String,
     val height: Int,
-    val station: String,
+    val city: String,
+    val district: String,
     val job: String,
     val relation: String,
     val makerName: String,
     val idealHeightRange: List<Int>,
     val idealAgeRange: List<String>,
     val idealMbti: List<String>,
+    val hobbies: List<String>,
+    val smoke: Int,
+    val drink: Int
 )

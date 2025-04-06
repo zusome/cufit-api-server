@@ -102,13 +102,17 @@ class MakerDaoJdbcTemplateDao(
                     yearOfBirth = 1997,
                     mbti = "ESFP",
                     height = 165,
-                    station = "정자역",
+                    city = "서울특별시",
+                    district = "강남구",
                     job = "디자이너",
                     relation = "직장동료",
                     makerName = "김철수",
                     idealHeightRange = listOf(170, 190),
                     idealAgeRange = listOf("연상", "연하", "동갑"),
-                    idealMbti = listOf("외향적", "직관적", "계획형", "즉흥형")
+                    idealMbti = listOf("외향적", "직관적", "계획형", "즉흥형"),
+                    hobbies = listOf("보드게임", "노래부르기", "사진 촬영"),
+                    smoke = 0,
+                    drink = 0
                 )
             )
         )

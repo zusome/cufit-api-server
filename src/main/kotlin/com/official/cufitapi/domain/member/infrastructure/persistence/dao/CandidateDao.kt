@@ -47,11 +47,15 @@ class CandidateProfileInfoMapper : RowMapper<CandidateProfileInfo> {
             idealHeightRange = rs.getString("ideal_height_range"),
             mbti = rs.getString("mbti"),
             height = rs.getInt("height"),
-            station = rs.getString("station"),
+            city = rs.getString("city"),
+            district = rs.getString("district"),
             job = rs.getString("job"),
             yearOfBirth = rs.getInt("year_of_birth"),
             gender = Gender.of(rs.getString("gender")),
-            phoneNumber = rs.getString("phone_number")
+            phoneNumber = rs.getString("phone_number"),
+            hobbies = rs.getString("hobbies"),
+            smoke = rs.getInt("smoke"),
+            drink = rs.getInt("drink"),
         )
     }
 }

@@ -4,7 +4,7 @@ import com.official.cufitapi.common.config.ErrorCode
 import com.official.cufitapi.common.config.property.AuthorizationProperties
 import com.official.cufitapi.common.exception.UnAuthorizedException
 import com.official.cufitapi.domain.auth.application.command.AuthorizationTokenCreationCommand
-import com.official.cufitapi.domain.auth.application.command.AuthorizationTokenRefreshCommand
+import com.official.cufitapi.domain.auth.application.command.RefreshAuthorizationTokenCommand
 import com.official.cufitapi.domain.auth.application.service.SecretKeyGenerator
 import com.official.cufitapi.domain.auth.domain.AuthorizationToken
 import com.official.cufitapi.domain.auth.domain.repository.AuthorizationTokenRepository
@@ -19,7 +19,7 @@ import java.security.Key
 import java.util.Date
 
 interface AuthorizationTokenRefreshUseCase {
-    fun refresh(authorizationTokenRefreshCommand: AuthorizationTokenRefreshCommand): AuthorizationToken
+    fun refresh(refreshAuthorizationTokenCommand: RefreshAuthorizationTokenCommand): AuthorizationToken
 }
 
 interface AuthorizationTokenCreationUseCase {
@@ -45,7 +45,7 @@ class AuthorizationTokenCreationService(
         return authorizationTokenRepository.save(AuthorizationToken(memberId, accessToken, refreshToken))
     }
 
-    override fun refresh(command: AuthorizationTokenRefreshCommand): AuthorizationToken {
+    override fun refresh(command: RefreshAuthorizationTokenCommand): AuthorizationToken {
         val secretKey = secretKeyGenerator.generate(authorizationProperties.secretKey)
         val memberId = command.memberId
         val authorizationToken = authorizationTokenRepository.findByMemberId(memberId)
