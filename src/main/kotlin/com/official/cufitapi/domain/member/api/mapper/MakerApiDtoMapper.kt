@@ -10,45 +10,45 @@ import com.official.cufitapi.domain.member.api.dto.maker.MakerCandidatesResponse
 import com.official.cufitapi.domain.member.api.dto.maker.MakerOtherCandidateResponse
 import com.official.cufitapi.domain.member.api.dto.maker.MakerOtherCandidatesCountResponse
 import com.official.cufitapi.domain.member.api.dto.maker.MakerOtherCandidatesResponse
-import com.official.cufitapi.domain.member.infrastructure.persistence.JpaMatchCandidate
-import com.official.cufitapi.domain.member.infrastructure.persistence.dto.MatchCandidate
-import com.official.cufitapi.domain.member.infrastructure.persistence.dto.MatchCandidates
-import com.official.cufitapi.domain.member.infrastructure.persistence.dto.OtherMatchCandidate
-import com.official.cufitapi.domain.member.infrastructure.persistence.dto.OtherMatchCandidates
+import com.official.cufitapi.domain.member.infrastructure.persistence.JpaCandidate
+import com.official.cufitapi.domain.member.infrastructure.persistence.dto.Candidate
+import com.official.cufitapi.domain.member.infrastructure.persistence.dto.Candidates
+import com.official.cufitapi.domain.member.infrastructure.persistence.dto.OtherCandidate
+import com.official.cufitapi.domain.member.infrastructure.persistence.dto.OtherCandidates
 import org.springframework.stereotype.Component
 
 @Component
 class MakerApiDtoMapper {
-    private fun mapToCandidates(jpaMatchCandidate: JpaMatchCandidate) =
+    private fun mapToCandidates(jpaCandidate: JpaCandidate) =
         CandidatesInfoResponseDto(
-            id = jpaMatchCandidate.id!!,
-            memberId = jpaMatchCandidate.memberId,
-            isMatchAgreed = jpaMatchCandidate.isMatchAgreed,
-            idealMbti = jpaMatchCandidate.idealMbti,
-            idealAgeRange = jpaMatchCandidate.idealAgeRange,
-            idealHeightRange = jpaMatchCandidate.idealHeightRange,
-            height = jpaMatchCandidate.height,
-            station = jpaMatchCandidate.station,
-            job = jpaMatchCandidate.job,
-            yearOfBirth = jpaMatchCandidate.yearOfBirth,
-            gender = jpaMatchCandidate.gender?.name,
-            phoneNumber = jpaMatchCandidate.phoneNumber
+            id = jpaCandidate.id!!,
+            memberId = jpaCandidate.memberId,
+            isMatchAgreed = jpaCandidate.isMatchAgreed,
+            idealMbti = jpaCandidate.idealMbti,
+            idealAgeRange = jpaCandidate.idealAgeRange,
+            idealHeightRange = jpaCandidate.idealHeightRange,
+            height = jpaCandidate.height,
+            station = jpaCandidate.station,
+            job = jpaCandidate.job,
+            yearOfBirth = jpaCandidate.yearOfBirth,
+            gender = jpaCandidate.gender?.name,
+            phoneNumber = jpaCandidate.phoneNumber
         )
 
-    private fun mapToOtherCandidates(jpaMatchCandidate: JpaMatchCandidate) =
+    private fun mapToOtherCandidates(jpaCandidate: JpaCandidate) =
         OtherCandidatesInfoResponseDto(
-            id = jpaMatchCandidate.id!!,
-            memberId = jpaMatchCandidate.memberId,
-            isMatchAgreed = jpaMatchCandidate.isMatchAgreed,
-            idealMbti = jpaMatchCandidate.idealMbti,
-            idealAgeRange = jpaMatchCandidate.idealAgeRange,
-            idealHeightRange = jpaMatchCandidate.idealHeightRange,
-            height = jpaMatchCandidate.height,
-            station = jpaMatchCandidate.station,
-            job = jpaMatchCandidate.job,
-            yearOfBirth = jpaMatchCandidate.yearOfBirth,
-            gender = jpaMatchCandidate.gender?.name,
-            phoneNumber = jpaMatchCandidate.phoneNumber
+            id = jpaCandidate.id!!,
+            memberId = jpaCandidate.memberId,
+            isMatchAgreed = jpaCandidate.isMatchAgreed,
+            idealMbti = jpaCandidate.idealMbti,
+            idealAgeRange = jpaCandidate.idealAgeRange,
+            idealHeightRange = jpaCandidate.idealHeightRange,
+            height = jpaCandidate.height,
+            station = jpaCandidate.station,
+            job = jpaCandidate.job,
+            yearOfBirth = jpaCandidate.yearOfBirth,
+            gender = jpaCandidate.gender?.name,
+            phoneNumber = jpaCandidate.phoneNumber
         )
 
     fun candidateCount(candidateCount: Long): CandidateCountResponse =
@@ -57,51 +57,51 @@ class MakerApiDtoMapper {
     fun otherCandidateCount(otherCandidateCount: Long): MakerOtherCandidatesCountResponse =
         MakerOtherCandidatesCountResponse(otherCandidateCount)
 
-    fun matchCandidates(matchCandidates: MatchCandidates): MakerCandidatesResponse {
-        return matchCandidates.candidates.map(::mapToCandidates).let(::MakerCandidatesResponse)
+    fun candidates(candidates: Candidates): MakerCandidatesResponse {
+        return candidates.candidates.map(::mapToCandidates).let(::MakerCandidatesResponse)
     }
 
-    fun mapToCandidates(matchCandidate: MatchCandidate): MakerCandidateResponse {
+    fun mapToCandidates(candidate: Candidate): MakerCandidateResponse {
         return MakerCandidateResponse(
-            image = matchCandidate.image,
-            name = matchCandidate.name,
-            relation = matchCandidate.relation,
-            arrangements = matchCandidate.arrangements.map {
+            image = candidate.image,
+            name = candidate.name,
+            relation = candidate.relation,
+            arrangements = candidate.arrangements.map {
                 ArrangementResponse(
                     image = it.image,
                     name = it.name,
                     arrangementStatus = it.arrangementStatus
                 )
             },
-            hasProfile = matchCandidate.hasProfile,
-            isMatchingPaused = matchCandidate.isMatchingPaused
+            hasProfile = candidate.hasProfile,
+            isMatchingPaused = candidate.isMatchingPaused
         )
     }
 
-    fun matchOtherCandidates(otherCandidates: OtherMatchCandidates): MakerOtherCandidatesResponse {
+    fun matchOtherCandidates(otherCandidates: OtherCandidates): MakerOtherCandidatesResponse {
         return otherCandidates.candidates.map(::mapToOtherCandidates).let(::MakerOtherCandidatesResponse)
     }
 
-    fun mapToOtherCandidates(otherMatchCandidate: OtherMatchCandidate): MakerOtherCandidateResponse {
+    fun mapToOtherCandidates(otherCandidate: OtherCandidate): MakerOtherCandidateResponse {
         return MakerOtherCandidateResponse(
-            id = otherMatchCandidate.id,
-            images = otherMatchCandidate.images.map {
+            id = otherCandidate.id,
+            images = otherCandidate.images.map {
                 MakerCandidateImage(
                     imageUrl = it.imageUrl,
                     profileOrder = it.profileOrder
                 )
             },
-            name = otherMatchCandidate.name,
-            yearOfBirth = otherMatchCandidate.yearOfBirth,
-            mbti = otherMatchCandidate.mbti,
-            height = otherMatchCandidate.height,
-            station = otherMatchCandidate.station,
-            job = otherMatchCandidate.job,
-            makerRelation = otherMatchCandidate.relation,
-            makerName = otherMatchCandidate.makerName,
-            idealHeightRange = otherMatchCandidate.idealHeightRange,
-            idealAgeRange = otherMatchCandidate.idealAgeRange,
-            idealMbti = otherMatchCandidate.idealMbti
+            name = otherCandidate.name,
+            yearOfBirth = otherCandidate.yearOfBirth,
+            mbti = otherCandidate.mbti,
+            height = otherCandidate.height,
+            station = otherCandidate.station,
+            job = otherCandidate.job,
+            makerRelation = otherCandidate.relation,
+            makerName = otherCandidate.makerName,
+            idealHeightRange = otherCandidate.idealHeightRange,
+            idealAgeRange = otherCandidate.idealAgeRange,
+            idealMbti = otherCandidate.idealMbti
         )
     }
 }

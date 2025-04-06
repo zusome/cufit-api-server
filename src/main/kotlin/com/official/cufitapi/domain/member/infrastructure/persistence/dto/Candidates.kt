@@ -2,11 +2,11 @@ package com.official.cufitapi.domain.member.infrastructure.persistence.dto
 
 import com.official.cufitapi.domain.member.domain.vo.CandidateImage
 
-data class MatchCandidates(
-    val candidates: List<MatchCandidate>,
+data class Candidates(
+    val candidates: List<Candidate>,
 )
 
-data class MatchCandidate(
+data class Candidate(
     val image: String,
     val name: String,
     val relation: String,
@@ -21,11 +21,11 @@ data class ArrangementInfo(
     val arrangementStatus: String,
 )
 
-data class OtherMatchCandidates(
-    val candidates: List<OtherMatchCandidate>,
+data class OtherCandidates(
+    val candidates: List<OtherCandidate>,
 )
 
-data class OtherMatchCandidate(
+data class OtherCandidate(
     val id: Long,
     val images: List<CandidateImage>,
     val name: String,

@@ -1,8 +1,8 @@
 package com.official.cufitapi.domain.member.infrastructure.persistence.mapper
 
 import com.official.cufitapi.domain.member.infrastructure.persistence.dto.ArrangementDto
-import com.official.cufitapi.domain.member.infrastructure.persistence.dto.MatchCandidateDto
-import com.official.cufitapi.domain.member.infrastructure.persistence.dto.MatchCandidateImageDto
+import com.official.cufitapi.domain.member.infrastructure.persistence.dto.CandidateDto
+import com.official.cufitapi.domain.member.infrastructure.persistence.dto.CandidateImageDto
 import com.official.cufitapi.domain.member.infrastructure.persistence.dto.MemberDto
 import com.official.cufitapi.domain.member.infrastructure.persistence.dto.MemberRelationDto
 import org.springframework.jdbc.core.RowMapper
@@ -18,9 +18,9 @@ class JdbcMemberRelationDtoMapper : RowMapper<MemberRelationDto> {
         )
 }
 
-class JdbcMatchCandidateDtoMapper : RowMapper<MatchCandidateDto> {
-    override fun mapRow(rs: ResultSet, rowNum: Int): MatchCandidateDto {
-        return MatchCandidateDto(
+class JdbcCandidateDtoMapper : RowMapper<CandidateDto> {
+    override fun mapRow(rs: ResultSet, rowNum: Int): CandidateDto {
+        return CandidateDto(
             memberId = rs.getLong("member_id"),
             isMatchAgreed = rs.getBoolean("is_match_agreed"),
             idealMbti = rs.getString("ideal_mbti"),
@@ -48,12 +48,12 @@ class JdbcMemberDtoMapper : RowMapper<MemberDto> {
     }
 }
 
-class JdbcMatchCandidateImageDtoMapper : RowMapper<MatchCandidateImageDto> {
-    override fun mapRow(rs: ResultSet, rowNum: Int): MatchCandidateImageDto {
-        return MatchCandidateImageDto(
+class JdbcCandidateImageDtoMapper : RowMapper<CandidateImageDto> {
+    override fun mapRow(rs: ResultSet, rowNum: Int): CandidateImageDto {
+        return CandidateImageDto(
             imageUrl = rs.getString("image_url"),
             profileOrder = rs.getInt("profile_order"),
-            matchCandidateId = rs.getLong("match_candidate_id"),
+            candidateId = rs.getLong("candidate_id"),
             seq = rs.getLong("id")
         )
     }
@@ -62,7 +62,7 @@ class JdbcMatchCandidateImageDtoMapper : RowMapper<MatchCandidateImageDto> {
 class JdbcArrangementDtoMapper : RowMapper<ArrangementDto> {
     override fun mapRow(rs: ResultSet, rowNum: Int): ArrangementDto {
         return ArrangementDto(
-            makerMemberId = rs.getLong("match_maker_member_id"),
+            makerMemberId = rs.getLong("maker_member_id"),
             leftCandidateMemberId = rs.getLong("left_candidate_member_id"),
             rightCandidateMemberId = rs.getLong("right_candidate_member_id"),
             arrangementStatus = rs.getString("status"),

@@ -1,9 +1,9 @@
 package com.official.cufitapi.domain.member.infrastructure.persistence.dto
 
-data class MatchCandidateImageDto(
+data class CandidateImageDto(
     var imageUrl: String,
     var profileOrder: Int,
-    var matchCandidateId: Long,
+    var candidateId: Long,
     var seq: Long,
 ) {
 }

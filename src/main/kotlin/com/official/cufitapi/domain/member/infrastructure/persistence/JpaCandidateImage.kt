@@ -8,9 +8,9 @@ import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 
-@Table(name = "match_candidate_images")
+@Table(name = "candidate_images")
 @Entity
-class JpaMatchCandidateImage(
+class JpaCandidateImage(
     @Column(name = "image_url", unique = false, nullable = false)
     var imageUrl: String,
 
@@ -18,8 +18,8 @@ class JpaMatchCandidateImage(
     var profileOrder: Int,
 
     @ManyToOne
-    @JoinColumn(name = "match_candidate_id")
-    var jpaMatchCandidate: JpaMatchCandidate? = null,
+    @JoinColumn(name = "candidate_id")
+    var jpaCandidate: JpaCandidate? = null,
 
     @Id @GeneratedValue
     var id: Long? = null,

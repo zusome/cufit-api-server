@@ -1,6 +1,6 @@
 package com.official.cufitapi.domain.member.infrastructure.persistence.dto
 
-data class MatchCandidateDto(
+data class CandidateDto(
     var memberId: Long,
     var isMatchAgreed: Boolean = true,
     var idealMbti: String? = null,

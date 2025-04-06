@@ -13,7 +13,7 @@ import jakarta.persistence.Table
 /*
    사용자 Table
  */
-@Table(name = "member_authorization")
+@Table(name = "member_authorizations")
 @Entity
 class JpaMemberAuthorization(
 

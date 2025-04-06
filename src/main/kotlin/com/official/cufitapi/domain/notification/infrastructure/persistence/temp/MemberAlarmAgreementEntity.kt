@@ -8,7 +8,7 @@ import jakarta.persistence.Id
 import jakarta.persistence.Table
 import java.time.LocalDateTime
 
-@Table(name = "member_alarm_agreement")
+@Table(name = "member_alarm_agreements")
 @Entity
 class MemberAlarmAgreementEntity(
 

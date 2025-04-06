@@ -102,7 +102,7 @@ class ArrangementDao(
         return resultMap
     }
 
-    private fun matchCandidates(candidateIds: Set<Long>): Map<Long, MatchCandidate> {
+    private fun candidates(candidateIds: Set<Long>): Map<Long, Candidate> {
         val secondQueryParameters = MapSqlParameterSource()
             .addValue("candidateIds", candidateIds)
         val secondSql = """
@@ -111,7 +111,7 @@ class ArrangementDao(
                     m.name,
                     mc.year_of_birth
                 FROM
-                    match_candidate mc
+                    candidate mc
                 JOIN 
                     member m ON mc.member_id = m.id
                 AND
@@ -121,8 +121,8 @@ class ArrangementDao(
                 AND
                     mc.member_id IN (:candidateIds)
             """.trimIndent()
-        return namedParameterJdbcTemplate.query(secondSql, secondQueryParameters, MatchCandidateMapper())
-            .associateBy(MatchCandidate::memberId)
+        return namedParameterJdbcTemplate.query(secondSql, secondQueryParameters, CandidateMapper())
+            .associateBy(Candidate::memberId)
     }
 
     private fun existedArrangementCandidates(
@@ -146,7 +146,7 @@ class ArrangementDao(
                 FROM 
                     arrangements a
                 WHERE
-                    a.match_maker_id = :makerId
+                    a.maker_id = :makerId
                 AND
                 (
                     (a.left_candidate_id = :leftTargetId AND a.right_candidate_id in (:inviteeIds))
@@ -184,7 +184,7 @@ class ArrangementDao(
                 FROM
                     arrangements a
                 WHERE
-                    a.match_maker_id = :makerId
+                    a.maker_id = :makerId
                 AND
                     a.left_candidate_id in (:inviteeIds)
                 AND
@@ -214,7 +214,7 @@ class ArrangementDao(
                 FROM
                     arrangements a
                 WHERE
-                    a.match_maker_id = :makerId
+                    a.maker_id = :makerId
                 AND
                     a.right_candidate_id in (:inviteeIds)
                 AND
@@ -243,9 +243,9 @@ data class MakerCandidateRelation(
     val relationType: String,
 )
 
-class MatchCandidateMapper : RowMapper<MatchCandidate> {
-    override fun mapRow(rs: ResultSet, rowNum: Int): MatchCandidate {
-        return MatchCandidate(
+class CandidateMapper : RowMapper<Candidate> {
+    override fun mapRow(rs: ResultSet, rowNum: Int): Candidate {
+        return Candidate(
             rs.getLong("member_id"),
             rs.getString("name"),
             rs.getInt("year_of_birth"),
@@ -253,7 +253,7 @@ class MatchCandidateMapper : RowMapper<MatchCandidate> {
     }
 }
 
-data class MatchCandidate(
+data class Candidate(
     val memberId: Long,
     val name: String,
     val yearOfBirth: Int,

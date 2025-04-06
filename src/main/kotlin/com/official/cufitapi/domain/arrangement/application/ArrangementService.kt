@@ -8,7 +8,7 @@ import com.official.cufitapi.domain.arrangement.application.command.SuggestArran
 import com.official.cufitapi.domain.arrangement.application.command.UpdateArrangementCommand
 import com.official.cufitapi.domain.arrangement.domain.Arrangement
 import com.official.cufitapi.domain.arrangement.domain.ArrangementRepository
-import com.official.cufitapi.domain.arrangement.domain.MatchCandidates
+import com.official.cufitapi.domain.arrangement.domain.Candidates
 import com.official.cufitapi.domain.arrangement.domain.MemberRelations
 import com.official.cufitapi.domain.arrangement.domain.event.MatchedArrangementEvent
 import com.official.cufitapi.domain.arrangement.domain.event.RejectedArrangementEvent
@@ -29,7 +29,7 @@ fun interface UpdateArrangementUsecase {
 
 @Service
 class ArrangementService(
-    private val matchCandidates: MatchCandidates,
+    private val candidates: Candidates,
     private val memberRelations: MemberRelations,
     private val arrangementRepository: ArrangementRepository,
     private val applicationEventPublisher: ApplicationEventPublisher,
@@ -76,7 +76,7 @@ class ArrangementService(
     }
 
     private fun verifySameGender(leftCandidateId: Long, rightCandidateId: Long) {
-        if (matchCandidates.isSameGender(leftCandidateId, rightCandidateId)) {
+        if (candidates.isSameGender(leftCandidateId, rightCandidateId)) {
             throw InvalidRequestException(ErrorCode.CONNECTION_REQUEST_SAME_GENDER)
         }
     }

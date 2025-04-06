@@ -3,7 +3,7 @@ package com.official.cufitapi.domain.member.domain
 import com.official.cufitapi.domain.member.domain.vo.CandidateImage
 import com.official.cufitapi.domain.member.domain.vo.Gender
 
-class MatchCandidate(
+class Candidate(
     val memberId: Long,
     var isMatchAgreed: Boolean = true,
     var images: MutableList<CandidateImage> = mutableListOf(),
@@ -53,7 +53,7 @@ class MatchCandidate(
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as MatchCandidate
+        other as Candidate
 
         return id == other.id
     }

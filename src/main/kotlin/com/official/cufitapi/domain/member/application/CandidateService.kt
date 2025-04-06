@@ -2,9 +2,9 @@ package com.official.cufitapi.domain.member.application
 
 import com.official.cufitapi.domain.member.application.command.candidate.CandidateMatchBreakCommand
 import com.official.cufitapi.domain.member.application.command.candidate.CandidateProfileUpdateCommand
-import com.official.cufitapi.domain.member.domain.MatchCandidate
+import com.official.cufitapi.domain.member.domain.Candidate
 import com.official.cufitapi.domain.member.domain.event.UpdatedCandidateProfileEvent
-import com.official.cufitapi.domain.member.domain.repository.MatchCandidateRepository
+import com.official.cufitapi.domain.member.domain.repository.CandidateRepository
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
 
@@ -16,24 +16,24 @@ interface CandidateProfileUpdateUseCase {
     fun updateProfile(candidateProfileUpdateCommand: CandidateProfileUpdateCommand)
 }
 
-interface RegisterMatchCandidateUseCase {
+interface RegisterCandidateUseCase {
     fun register(memberId: Long)
 }
 
 @Service
 class CandidateService(
-    private val matchCandidateRepository: MatchCandidateRepository,
+    private val candidateRepository: CandidateRepository,
     private val applicationEventPublisher: ApplicationEventPublisher
-) : CandidateProfileUpdateUseCase, CandidateMatchBreakUseCase, RegisterMatchCandidateUseCase {
+) : CandidateProfileUpdateUseCase, CandidateMatchBreakUseCase, RegisterCandidateUseCase {
 
 
     override fun register(memberId: Long) {
-        matchCandidateRepository.save(MatchCandidate(memberId = memberId))
+        candidateRepository.save(Candidate(memberId = memberId))
     }
 
     override fun updateProfile(command: CandidateProfileUpdateCommand) {
-        val matchCandidate = (matchCandidateRepository.findByMemberId(command.memberId))
-        matchCandidate.updateProfile(
+        val candidate = (candidateRepository.findByMemberId(command.memberId))
+        candidate.updateProfile(
             images = command.images,
             idealMbti = command.idealMbti,
             idealAgeRange = command.idealAgeRange.joinToString(),
@@ -46,15 +46,15 @@ class CandidateService(
             gender = command.gender,
             phoneNumber = command.phoneNumber
         )
-        matchCandidateRepository.save(matchCandidate)
+        candidateRepository.save(candidate)
         applicationEventPublisher.publishEvent(
-            UpdatedCandidateProfileEvent(matchCandidate.id!!, matchCandidate.memberId)
+            UpdatedCandidateProfileEvent(candidate.id!!, candidate.memberId)
         )
     }
 
     override fun breakMatch(command: CandidateMatchBreakCommand) {
-        val matchCandidate = matchCandidateRepository.findByMemberId(command.memberId)
-        matchCandidate.breakMatch(command.isMatchAgreed)
-        matchCandidateRepository.save(matchCandidate)
+        val candidate = candidateRepository.findByMemberId(command.memberId)
+        candidate.breakMatch(command.isMatchAgreed)
+        candidateRepository.save(candidate)
     }
 }

@@ -29,7 +29,7 @@ class CandidateDao(
                 gender,
                 phone_number
             FROM
-                match_candidate
+                candidates
             WHERE
                 member_id = :candidateId
         """

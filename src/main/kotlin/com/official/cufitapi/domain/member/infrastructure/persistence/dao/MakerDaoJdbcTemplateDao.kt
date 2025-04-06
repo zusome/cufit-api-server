@@ -2,10 +2,10 @@ package com.official.cufitapi.domain.member.infrastructure.persistence.dao
 
 import com.official.cufitapi.domain.member.domain.vo.CandidateImage
 import com.official.cufitapi.domain.member.infrastructure.persistence.dto.ArrangementInfo
-import com.official.cufitapi.domain.member.infrastructure.persistence.dto.MatchCandidate
-import com.official.cufitapi.domain.member.infrastructure.persistence.dto.MatchCandidates
-import com.official.cufitapi.domain.member.infrastructure.persistence.dto.OtherMatchCandidate
-import com.official.cufitapi.domain.member.infrastructure.persistence.dto.OtherMatchCandidates
+import com.official.cufitapi.domain.member.infrastructure.persistence.dto.Candidate
+import com.official.cufitapi.domain.member.infrastructure.persistence.dto.Candidates
+import com.official.cufitapi.domain.member.infrastructure.persistence.dto.OtherCandidate
+import com.official.cufitapi.domain.member.infrastructure.persistence.dto.OtherCandidates
 import com.official.cufitapi.domain.member.infrastructure.persistence.sql.MemberSqlConstant.CANDIDATE_COUNT_SQL
 import com.official.cufitapi.domain.member.infrastructure.persistence.sql.MemberSqlConstant.OTHER_CANDIDATE_COUNT_SQL
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
@@ -34,10 +34,10 @@ class MakerDaoJdbcTemplateDao(
         ) ?: throw RuntimeException("Candidate not found")
     }
 
-    override fun findCandidates(memberId: Long): MatchCandidates {
-        return MatchCandidates(
+    override fun findCandidates(memberId: Long): Candidates {
+        return Candidates(
             listOf(
-                MatchCandidate(
+                Candidate(
                     image = "https://cataas.com/cat",
                     name = "김철수",
                     relation = "친구",
@@ -45,7 +45,7 @@ class MakerDaoJdbcTemplateDao(
                     hasProfile = true,
                     isMatchingPaused = false
                 ),
-                MatchCandidate(
+                Candidate(
                     image = "https://cataas.com/cat",
                     name = "홍길동",
                     relation = "직장동료",
@@ -69,7 +69,7 @@ class MakerDaoJdbcTemplateDao(
                     hasProfile = true,
                     isMatchingPaused = false
                 ),
-                MatchCandidate(
+                Candidate(
                     image = "https://cataas.com/cat",
                     name = "박혁거세",
                     relation = "직장동료",
@@ -77,7 +77,7 @@ class MakerDaoJdbcTemplateDao(
                     hasProfile = false,
                     isMatchingPaused = false
                 ),
-                MatchCandidate(
+                Candidate(
                     image = "https://cataas.com/cat",
                     name = "김민지",
                     relation = "친구",
@@ -89,10 +89,10 @@ class MakerDaoJdbcTemplateDao(
         )
     }
 
-    override fun findOtherCandidates(memberId: Long): OtherMatchCandidates {
-        return OtherMatchCandidates(
+    override fun findOtherCandidates(memberId: Long): OtherCandidates {
+        return OtherCandidates(
             listOf(
-                OtherMatchCandidate(
+                OtherCandidate(
                     id = 1L,
                     images = listOf(
                         CandidateImage(imageUrl = "https://cataas.com/cat", profileOrder = 1),

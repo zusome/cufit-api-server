@@ -29,7 +29,7 @@ enum class ErrorCode(
     NOT_FOUND_RECEIVER(HttpStatus.NOT_FOUND, "존재하지 않는 Receiver."),
     NOT_FOUND_SENDER(HttpStatus.NOT_FOUND, "존재하지 않는 Sender."),
     NOT_FOUND_DEVICE_TOKEN_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 Device Token입니다."),
-    NOT_FOUND_MATCH_CANDIDATE(HttpStatus.NOT_FOUND, "존재하지 않는 매칭 후보입니다."),
+    NOT_FOUND_CANDIDATE(HttpStatus.NOT_FOUND, "존재하지 않는 매칭 후보입니다."),
 
 
     // 500

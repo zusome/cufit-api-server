@@ -9,7 +9,7 @@ import jakarta.persistence.Table
 import org.hibernate.annotations.Comment
 
 @Entity
-@Table(name = "maker")
+@Table(name = "makers")
 class JpaMaker(
 
     @Comment("고객")

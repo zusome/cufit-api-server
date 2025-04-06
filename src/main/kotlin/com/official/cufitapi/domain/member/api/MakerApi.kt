@@ -57,10 +57,10 @@ class MakerApi(
             AuthorizationType.MAKER
         ) authorizationUser: AuthorizationUser,
     ): HttpResponse<MakerCandidatesResponse> {
-        val matchCandidates = makerDao.findCandidates(authorizationUser.userId)
+        val candidates = makerDao.findCandidates(authorizationUser.userId)
         return HttpResponse.of(
             HttpStatus.OK,
-            makerApiResponseMapper.matchCandidates(matchCandidates)
+            makerApiResponseMapper.candidates(candidates)
         )
     }
 

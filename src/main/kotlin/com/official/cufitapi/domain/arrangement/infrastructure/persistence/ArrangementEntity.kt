@@ -14,7 +14,7 @@ import org.hibernate.annotations.Comment
 class ArrangementEntity(
 
     @Comment("주선 신청자")
-    @Column(name = "match_maker_member_id", unique = false, nullable = false, updatable = false)
+    @Column(name = "maker_member_id", unique = false, nullable = false, updatable = false)
     var makerMemberId: Long,
 
     @Comment("첫번째 주선 대상자")
