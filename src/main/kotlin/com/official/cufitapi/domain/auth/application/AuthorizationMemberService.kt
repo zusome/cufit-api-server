@@ -1,11 +1,17 @@
-package com.official.cufitapi.domain.auth.application.service
+package com.official.cufitapi.domain.auth.application
 
-import com.official.cufitapi.domain.auth.application.FindAuthorizationMemberUseCase
-import com.official.cufitapi.domain.auth.application.RegisterAuthorizationMemberUseCase
 import com.official.cufitapi.domain.auth.application.command.RegisterAuthorizationMemberCommand
 import com.official.cufitapi.domain.auth.domain.AuthorizationMember
 import com.official.cufitapi.domain.auth.domain.repository.AuthorizationMemberRepository
 import org.springframework.stereotype.Service
+
+interface RegisterAuthorizationMemberUseCase {
+    fun register(idToken: RegisterAuthorizationMemberCommand): AuthorizationMember
+}
+
+interface FindAuthorizationMemberUseCase {
+    fun findById(memberId: Long): AuthorizationMember
+}
 
 @Service
 class AuthorizationMemberService(

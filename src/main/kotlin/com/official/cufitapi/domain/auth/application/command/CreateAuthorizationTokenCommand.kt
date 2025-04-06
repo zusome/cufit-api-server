@@ -2,7 +2,7 @@ package com.official.cufitapi.domain.auth.application.command
 
 import com.official.cufitapi.domain.auth.domain.AuthorizationMember
 
-data class AuthorizationTokenCreationCommand(
+data class CreateAuthorizationTokenCommand(
     val memberId: Long,
     val authority: String
 ) {

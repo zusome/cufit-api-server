@@ -10,7 +10,7 @@ import com.official.cufitapi.domain.auth.api.dto.SmsAuthCodeIssueRequest
 import com.official.cufitapi.domain.auth.api.dto.VerifySmsAuthenticationRequest
 import com.official.cufitapi.domain.auth.api.dto.VerifySmsAuthenticationResponse
 import com.official.cufitapi.domain.auth.application.SmsAuthenticationService
-import com.official.cufitapi.domain.auth.application.command.SmsAuthenticationIssueCommand
+import com.official.cufitapi.domain.auth.application.command.IssueSmsAuthenticationCommand
 import com.official.cufitapi.domain.auth.application.command.VerifySmsAuthenticationCodeCommand
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.PostMapping
@@ -26,7 +26,7 @@ class SmsAuthenticationApi(
         @Authorization(AuthorizationType.ALL) authorizationUser: AuthorizationUser,
         @RequestBody request: SmsAuthCodeIssueRequest
     ): HttpResponse<Unit> {
-        authorizationSmsService.issue(SmsAuthenticationIssueCommand(authorizationUser.userId, request.phoneNumber))
+        authorizationSmsService.issue(IssueSmsAuthenticationCommand(authorizationUser.userId, request.phoneNumber))
         return HttpResponse.of(HttpStatus.NO_CONTENT, Unit)
     }
 

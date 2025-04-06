@@ -1,4 +1,4 @@
-package com.official.cufitapi.domain.auth.application.service
+package com.official.cufitapi.domain.auth.domain
 
 import java.security.Key
 

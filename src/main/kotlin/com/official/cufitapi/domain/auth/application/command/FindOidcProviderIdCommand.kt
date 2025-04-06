@@ -1,6 +1,6 @@
 package com.official.cufitapi.domain.auth.application.command
 
-data class OidcProviderIdFindCommand(
+data class FindOidcProviderIdCommand(
     val idToken: String,
     val provider: String,
 )
