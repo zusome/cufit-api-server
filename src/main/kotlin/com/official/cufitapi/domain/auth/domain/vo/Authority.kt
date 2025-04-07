@@ -6,7 +6,7 @@ enum class Authority(
     ADMIN("관리자"),
     BASIC("일반 사용자"),
     CANDIDATE("후보자"),
-    MATCHMAKER("주선자");
+    MAKER("주선자");
 
     fun isSameAuthority(name: String): Boolean =
         this.name == name

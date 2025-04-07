@@ -12,11 +12,15 @@ data class CandidateProfileUpdateCommand(
     val yearOfBirth: Int,
     val height: Int,
     val job: String,
-    val station: String,
+    val city: String,
+    val district: String,
     val mbti: String,
     val idealHeightRange: List<IdealHeightUnit>,
     val idealAgeRange: List<IdealAge>,
     val idealMbti: String,
-    val phoneNumber: String
+    val phoneNumber: String,
+    val hobbies: List<String>,
+    val smoke: Int,
+    val drink: Int,
 ) {
 }

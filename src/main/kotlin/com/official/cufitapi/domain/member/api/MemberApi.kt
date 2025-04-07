@@ -28,7 +28,7 @@ class MemberApi(
         @Authorization(
             AuthorizationType.BASIC,
             AuthorizationType.CANDIDATE,
-            AuthorizationType.MATCHMAKER
+            AuthorizationType.MAKER
         ) authorizationUser: AuthorizationUser,
     ): HttpResponse<MemberInfoResponse> {
         val memberInfo = memberDao.relationInfo(authorizationUser.userId)
@@ -40,7 +40,7 @@ class MemberApi(
         @Authorization(
             AuthorizationType.BASIC,
             AuthorizationType.CANDIDATE,
-            AuthorizationType.MATCHMAKER
+            AuthorizationType.MAKER
         ) authorizationUser: AuthorizationUser,
     ): HttpResponse<MemberTypeInfo> {
         return HttpResponse.of(
@@ -54,7 +54,7 @@ class MemberApi(
         @Authorization(
             AuthorizationType.BASIC,
             AuthorizationType.CANDIDATE,
-            AuthorizationType.MATCHMAKER
+            AuthorizationType.MAKER
         ) authorizationUser: AuthorizationUser,
         @RequestBody request: UpdateMemberProfileRequest,
     ): HttpResponse<Unit> {

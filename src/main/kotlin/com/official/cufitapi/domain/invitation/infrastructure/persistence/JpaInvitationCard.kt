@@ -13,7 +13,7 @@ import org.hibernate.annotations.Comment
    초대장 Table
  */
 @Entity
-@Table(name = "invitation_card")
+@Table(name = "invitation_cards")
 class JpaInvitationCard(
 
     @Comment("초대 코드")

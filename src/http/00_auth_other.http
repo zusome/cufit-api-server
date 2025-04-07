@@ -15,13 +15,13 @@ Content-Type: application/json
     });
 
     client.log(response.body.payload.accessToken);
-    client.global.set("matchmaker_accessToken2", response.body.payload.accessToken)
+    client.global.set("maker_accessToken2", response.body.payload.accessToken)
 %}
 
 ### 주선자2용 실명 인증
 POST http://{{host}}/api/v1/members/name
 Content-Type: application/json
-Authorization: Bearer {{matchmaker_accessToken2}}
+Authorization: Bearer {{maker_accessToken2}}
 
 {
   "name": "주선자2"
@@ -30,7 +30,7 @@ Authorization: Bearer {{matchmaker_accessToken2}}
 ### 주선자2용 타입 확인
 GET http://{{host}}/api/v1/members/type
 Content-Type: application/json
-Authorization: Bearer {{matchmaker_accessToken2}}
+Authorization: Bearer {{maker_accessToken2}}
 
 
 ### 후보자2 초대용 회원 가입

@@ -26,7 +26,7 @@ interface MemberApiDocs {
     )
     fun memberType(
         @Authorization(
-            AuthorizationType.BASIC, AuthorizationType.CANDIDATE, AuthorizationType.MATCHMAKER
+            AuthorizationType.BASIC, AuthorizationType.CANDIDATE, AuthorizationType.MAKER
         ) authorizationUser: AuthorizationUser,
     ): HttpResponse<MemberTypeInfo>
 

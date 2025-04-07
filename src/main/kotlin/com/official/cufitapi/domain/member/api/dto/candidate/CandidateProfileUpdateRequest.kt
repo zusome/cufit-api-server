@@ -20,8 +20,10 @@ data class CandidateProfileUpdateRequest(
     val height: Int,
     @Schema(description = "직업", example = "Male")
     val job: String,
-    @Schema(description = "가까운역", example = "봉천역")
-    val station: String,
+    @Schema(description = "도시", example = "봉천역")
+    val city: String,
+    @Schema(description = "구역", example = "봉천역")
+    val district: String,
     @Schema(description = "MBTI", example = "ESFP")
     val mbti: String,
     @Schema(description = "이상형 키 범위", example = "RANGE150, RANGE160")
@@ -31,7 +33,13 @@ data class CandidateProfileUpdateRequest(
     @Schema(description = "이상형 MBTI", example = "ESFP")
     val idealMbti: String,
     @Schema(description = "핸드폰 번호", example = "010-1234-5678")
-    val phoneNumber: String
+    val phoneNumber: String,
+    @Schema(description = "취미", example = "[\"독서\",\"운동\"]")
+    val hobbies: List<String>,
+    @Schema(description = "금연 여부", example = "0")
+    val smoke: Int,
+    @Schema(description = "음주 여부", example = "0")
+    val drink: Int,
 ) {
     init {
         if (yearOfBirth >= LocalDateTime.now().year) {

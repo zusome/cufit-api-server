@@ -14,7 +14,7 @@ import jakarta.persistence.Table
    알림 Table
  */
 @Entity
-@Table(name = "notification")
+@Table(name = "notifications")
 class NotificationEntity(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,

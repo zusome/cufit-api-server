@@ -8,11 +8,15 @@ data class CandidateProfileInfo(
     var idealHeightRange: String? = null,
     var mbti: String? = null,
     var height: Int? = null,
-    var station: String? = null,
+    var city: String? = null,
+    var district: String? = null,
     var job: String? = null,
     var yearOfBirth: Int? = null,
     var gender: Gender? = null,
     var phoneNumber: String? = null,
+    var hobbies: String? = null,
+    var smoke: Int? = null,
+    var drink: Int? = null,
 ) {
 
     fun isCompleted(): Boolean {
@@ -21,7 +25,8 @@ data class CandidateProfileInfo(
             idealHeightRange != null &&
             mbti != null &&
             height != null &&
-            station != null &&
+            city != null &&
+            district != null &&
             job != null &&
             yearOfBirth != null &&
             gender != null
