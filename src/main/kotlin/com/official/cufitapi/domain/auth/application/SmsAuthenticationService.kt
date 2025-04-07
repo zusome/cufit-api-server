@@ -2,8 +2,8 @@ package com.official.cufitapi.domain.auth.application
 
 import com.official.cufitapi.domain.auth.application.command.IssueSmsAuthenticationCommand
 import com.official.cufitapi.domain.auth.application.command.VerifySmsAuthenticationCodeCommand
-import com.official.cufitapi.domain.auth.application.service.SmsAuthenticationCodeGenerator
 import com.official.cufitapi.domain.auth.domain.SmsAuthentication
+import com.official.cufitapi.domain.auth.domain.SmsAuthenticationCodeGenerator
 import com.official.cufitapi.domain.auth.domain.repository.SmsAuthenticationRepository
 import org.springframework.stereotype.Service
 
