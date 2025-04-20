@@ -1,6 +1,8 @@
 package com.official.cufitapi.domain.notification.infrastructure.temp
 
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.http.HttpHeaders
+import org.springframework.http.MediaType
 import org.springframework.stereotype.Component
 import org.springframework.web.client.RestClient
 import org.springframework.web.servlet.resource.NoResourceFoundException
@@ -22,6 +24,7 @@ class DiscordWebhookClientAdapter(
             restClient
                 .post()
                 .uri(ERROR_ALERT_URL)
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .body(requestBody)
                 .retrieve()
             return
