@@ -44,14 +44,14 @@ class GlobalExceptionHandler(
     fun handleRuntimeException(e: RuntimeException): ErrorResponse {
         discordWebhookClientAdapter.sendErrorAlert(e)
         Sentry.captureException(e)
-        return ErrorResponse(e.message.toString(), ErrorCode.valueOf(e.message.toString()).message)
+        return ErrorResponse(e.message.toString(), ErrorCode.RUNTIME_EXCEPTION.message)
     }
 
     @ExceptionHandler(Exception::class)
     fun handleException(e: Exception): ErrorResponse {
         discordWebhookClientAdapter.sendErrorAlert(e)
         Sentry.captureException(e)
-        return ErrorResponse(e.message.toString(), ErrorCode.valueOf(e.message.toString()).message)
+        return ErrorResponse(e.message.toString(), ErrorCode.INTERNAL_SERVER_ERROR.message)
     }
 }
 
