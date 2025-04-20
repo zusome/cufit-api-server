@@ -1,6 +1,5 @@
 package com.official.cufitapi.domain.notification.infrastructure.temp
 
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Component
@@ -8,10 +7,7 @@ import org.springframework.web.client.RestClient
 import org.springframework.web.servlet.resource.NoResourceFoundException
 
 @Component
-class DiscordWebhookClientAdapter(
-    @Value("\${discord.error-alert-url}")
-    private val ERROR_ALERT_URL: String
-) {
+class DiscordWebhookClientAdapter {
     private val restClient: RestClient = RestClient.create()
 
     fun sendErrorAlert(exception: Exception) {
@@ -23,7 +19,7 @@ class DiscordWebhookClientAdapter(
                 )
             restClient
                 .post()
-                .uri(ERROR_ALERT_URL)
+                .uri("https://discord.com/api/webhooks/1334213279626563644/8jr8iw_abqa4v4gFwHx4wJq0S81F9ci4WVwwEodNRTMLcGVmadrulMh54PIGwq7Ps4U4")
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .body(requestBody)
                 .retrieve()
@@ -41,7 +37,7 @@ class DiscordWebhookClientAdapter(
             )
         restClient
             .post()
-            .uri(ERROR_ALERT_URL)
+            .uri("https://discord.com/api/webhooks/1334213279626563644/8jr8iw_abqa4v4gFwHx4wJq0S81F9ci4WVwwEodNRTMLcGVmadrulMh54PIGwq7Ps4U4")
             .body(requestBody)
             .retrieve()
     }
