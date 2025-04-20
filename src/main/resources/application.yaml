@@ -39,7 +39,7 @@ service:
   sens:
     host-url: ${SENS_HOST_URL:https://sens.apigw.ntruss.com}
 discord:
-  error-alert-url: DISCORD_ERROR_ALERT_URL
+  error-alert-url: ${DISCORD_ERROR_ALERT_URL:https://discord.com/api/webhooks/1334213279626563644/8jr8iw_abqa4v4gFwHx4wJq0S81F9ci4WVwwEodNRTMLcGVmadrulMh54PIGwq7Ps4U4}
 aws:
   s3:
     presigned-url: ${AWS_S3_PRESIGNED_URL:https://5kiejtfjvk2vpy5xwacgt2bpxm0oqghk.lambda-url.ap-northeast-2.on.aws}
