@@ -48,13 +48,12 @@ class AuthorizationApi(
 
     @PostMapping("/auth/login/refresh")
     override fun loginByOidc(
-        @RequestHeader("X-Refresh-Token") refreshToken: String,
         @Authorization(AuthorizationType.ALL, expiredCheck = false) authorizationUser: AuthorizationUser,
         @RequestBody request: RefreshLoginHttpRequest,
     ): HttpResponse<RefreshLoginHttpResponse> {
         val member = findAuthorizationMemberUseCase.findById(authorizationUser.userId)
         val authorizationToken = authorizationTokenRefreshUseCase.refresh(
-            RefreshAuthorizationTokenCommand(authorizationUser.userId, member.authority, refreshToken)
+            RefreshAuthorizationTokenCommand(authorizationUser.userId, member.authority, request.refreshToken)
         )
         return HttpResponse.of(HttpStatus.OK, RefreshLoginHttpResponse(member, authorizationToken))
     }

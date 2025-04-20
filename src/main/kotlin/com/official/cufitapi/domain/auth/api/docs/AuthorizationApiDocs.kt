@@ -25,7 +25,6 @@ interface AuthorizationApiDocs {
 
     @PostMapping("/auth/login/refresh")
     fun loginByOidc(
-        @RequestHeader("X-Refresh-Token") refreshToken: String,
         @Authorization(AuthorizationType.ALL, expiredCheck = false) authorizationUser: AuthorizationUser,
         @RequestBody request: RefreshLoginHttpRequest,
     ): HttpResponse<RefreshLoginHttpResponse>

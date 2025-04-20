@@ -1,3 +1,5 @@
 package com.official.cufitapi.domain.auth.api.dto
 
-class RefreshLoginHttpRequest
+data class RefreshLoginHttpRequest(
+    val refreshToken: String
+)
