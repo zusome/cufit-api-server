@@ -31,6 +31,8 @@ service:
   firebase:
     file-path: ${FIREBASE_FILE_PATH:src/main/resources/firebase/}
     file-name: ${FIREBASE_FILE_NAME:firebase.json}
+  sens:
+    host-url: ${SENS_HOST_URL:localhost}
 discord:
   error-alert-url: ${DISCORD_ERROR_ALERT_URL:""}
 aws:

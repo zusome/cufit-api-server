@@ -1,6 +1,6 @@
 package com.official.cufitapi.domain.auth.application.service
 
-import com.official.cufitapi.domain.auth.domain.SecretKeyGenerator
+import com.official.cufitapi.domain.auth.domain.oidc.SecretKeyGenerator
 import io.jsonwebtoken.security.Keys
 import org.springframework.stereotype.Component
 import java.security.Key

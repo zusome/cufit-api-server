@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody
 
 @ApiV1Controller
 class SmsAuthenticationApi(
-    private val authorizationSmsService: SmsAuthenticationService
+    private val smsAuthenticationService: SmsAuthenticationService
 ) : SmsAuthenticationApiDocs {
 
     @PostMapping("/auth/sms/issue")
@@ -26,7 +26,7 @@ class SmsAuthenticationApi(
         @Authorization(AuthorizationType.ALL) authorizationUser: AuthorizationUser,
         @RequestBody request: SmsAuthCodeIssueRequest
     ): HttpResponse<Unit> {
-        authorizationSmsService.issue(IssueSmsAuthenticationCommand(authorizationUser.userId, request.phoneNumber))
+        smsAuthenticationService.issue(IssueSmsAuthenticationCommand(authorizationUser.userId, request.phoneNumber))
         return HttpResponse.of(HttpStatus.NO_CONTENT, Unit)
     }
 
@@ -35,7 +35,7 @@ class SmsAuthenticationApi(
         @Authorization(AuthorizationType.ALL) authorizationUser: AuthorizationUser,
         @RequestBody request: VerifySmsAuthenticationRequest
     ): HttpResponse<VerifySmsAuthenticationResponse> {
-        val smsAuthentication = authorizationSmsService.verify(
+        val smsAuthentication = smsAuthenticationService.verify(
             VerifySmsAuthenticationCodeCommand(
                 authorizationUser.userId,
                 request.phoneNumber,

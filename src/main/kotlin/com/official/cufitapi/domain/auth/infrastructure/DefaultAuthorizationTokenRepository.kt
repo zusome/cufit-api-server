@@ -1,9 +1,9 @@
 package com.official.cufitapi.domain.auth.infrastructure
 
-import com.official.cufitapi.domain.auth.domain.AuthorizationToken
-import com.official.cufitapi.domain.auth.domain.repository.AuthorizationTokenRepository
-import com.official.cufitapi.domain.auth.domain.vo.AccessToken
-import com.official.cufitapi.domain.auth.domain.vo.RefreshToken
+import com.official.cufitapi.domain.auth.domain.token.AuthorizationToken
+import com.official.cufitapi.domain.auth.domain.token.AuthorizationTokenRepository
+import com.official.cufitapi.domain.auth.domain.token.vo.AccessToken
+import com.official.cufitapi.domain.auth.domain.token.vo.RefreshToken
 import com.official.cufitapi.domain.auth.infrastructure.persist.JpaAuthorizationToken
 import com.official.cufitapi.domain.auth.infrastructure.persist.JpaAuthorizationTokenRepository
 import org.springframework.stereotype.Component

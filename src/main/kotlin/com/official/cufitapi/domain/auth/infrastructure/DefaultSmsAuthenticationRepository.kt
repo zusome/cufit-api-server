@@ -1,7 +1,7 @@
 package com.official.cufitapi.domain.auth.infrastructure
 
-import com.official.cufitapi.domain.auth.domain.SmsAuthentication
-import com.official.cufitapi.domain.auth.domain.repository.SmsAuthenticationRepository
+import com.official.cufitapi.domain.auth.domain.sms.SmsAuthentication
+import com.official.cufitapi.domain.auth.domain.sms.SmsAuthenticationRepository
 import com.official.cufitapi.domain.auth.infrastructure.persist.JpaSmsAuthentication
 import com.official.cufitapi.domain.auth.infrastructure.persist.JpaSmsAuthenticationRepository
 import org.springframework.stereotype.Component
@@ -24,16 +24,16 @@ class DefaultSmsAuthenticationRepository(
     }
 
     private fun mapToDomain(entity: JpaSmsAuthentication): SmsAuthentication = SmsAuthentication(
-        phoneNumber = entity.phoneNumber,
-        authCode = entity.authCode,
+        phone = entity.phone,
+        code = entity.code,
         memberId = entity.memberId,
         isVerified = entity.isVerified,
         id = entity.id
     )
 
     fun mapToEntity(smsAuthentication: SmsAuthentication): JpaSmsAuthentication = JpaSmsAuthentication(
-        phoneNumber = smsAuthentication.phoneNumber,
-        authCode = smsAuthentication.authCode,
+        phone = smsAuthentication.phone,
+        code = smsAuthentication.code,
         memberId = smsAuthentication.memberId,
         isVerified = smsAuthentication.isVerified,
         id = smsAuthentication.id

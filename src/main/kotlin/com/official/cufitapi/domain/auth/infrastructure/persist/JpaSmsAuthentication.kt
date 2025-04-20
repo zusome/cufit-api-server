@@ -9,8 +9,8 @@ import jakarta.persistence.Table
 @Table(name = "sms_authentications")
 @Entity
 class JpaSmsAuthentication(
-    var phoneNumber: String,
-    var authCode: String,
+    var phone: String,
+    var code: String,
     var memberId: Long,
     var isVerified: Boolean = false,
     @GeneratedValue(strategy = GenerationType.IDENTITY)
