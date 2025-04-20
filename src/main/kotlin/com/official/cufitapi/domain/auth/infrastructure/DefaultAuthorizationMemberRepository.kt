@@ -1,9 +1,9 @@
 package com.official.cufitapi.domain.auth.infrastructure
 
-import com.official.cufitapi.domain.auth.domain.AuthorizationMember
-import com.official.cufitapi.domain.auth.domain.repository.AuthorizationMemberRepository
-import com.official.cufitapi.domain.auth.domain.vo.Authority
-import com.official.cufitapi.domain.auth.domain.vo.Provider
+import com.official.cufitapi.domain.auth.domain.member.AuthorizationMember
+import com.official.cufitapi.domain.auth.domain.member.AuthorizationMemberRepository
+import com.official.cufitapi.domain.auth.domain.member.vo.Authority
+import com.official.cufitapi.domain.auth.domain.oidc.vo.Provider
 import com.official.cufitapi.domain.member.application.FindMemberUseCase
 import com.official.cufitapi.domain.member.application.RegisterMemberUseCase
 import com.official.cufitapi.domain.member.application.command.RegisterMemberCommand

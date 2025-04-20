@@ -1,7 +1,7 @@
 package com.official.cufitapi.domain.auth.application
 
 import com.official.cufitapi.domain.auth.application.command.FindOidcProviderIdCommand
-import com.official.cufitapi.domain.auth.domain.repository.OidcProviders
+import com.official.cufitapi.domain.auth.domain.oidc.OidcProviders
 import org.springframework.stereotype.Service
 
 interface OidcProviderIdFindUseCase {

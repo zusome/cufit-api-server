@@ -1,10 +1,10 @@
 package com.official.cufitapi.domain.auth.infrastructure
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.official.cufitapi.domain.auth.domain.OidcPublicKey
-import com.official.cufitapi.domain.auth.domain.OidcPublicKeys
-import com.official.cufitapi.domain.auth.domain.repository.OidcProviders
-import com.official.cufitapi.domain.auth.domain.vo.OidcPublicKeyId
+import com.official.cufitapi.domain.auth.domain.oidc.OidcPublicKey
+import com.official.cufitapi.domain.auth.domain.oidc.OidcPublicKeys
+import com.official.cufitapi.domain.auth.domain.oidc.OidcProviders
+import com.official.cufitapi.domain.auth.domain.oidc.vo.OidcPublicKeyId
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import org.springframework.stereotype.Component
