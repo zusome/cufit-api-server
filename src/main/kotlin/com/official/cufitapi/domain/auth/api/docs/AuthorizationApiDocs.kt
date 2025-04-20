@@ -4,11 +4,7 @@ import com.official.cufitapi.common.annotation.Authorization
 import com.official.cufitapi.common.annotation.AuthorizationType
 import com.official.cufitapi.common.annotation.AuthorizationUser
 import com.official.cufitapi.common.api.dto.HttpResponse
-import com.official.cufitapi.domain.auth.api.dto.OidcLoginHttpRequest
-import com.official.cufitapi.domain.auth.api.dto.OidcLoginHttpResponse
-import com.official.cufitapi.domain.auth.api.dto.RefreshLoginHttpRequest
-import com.official.cufitapi.domain.auth.api.dto.RefreshLoginHttpResponse
-import com.official.cufitapi.domain.auth.api.dto.TestLoginHttpRequest
+import com.official.cufitapi.domain.auth.api.dto.*
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpHeaders
 import org.springframework.web.bind.annotation.PostMapping
@@ -26,7 +22,7 @@ interface AuthorizationApiDocs {
     @PostMapping("/auth/login/refresh")
     fun loginByOidc(
         @Authorization(AuthorizationType.ALL, expiredCheck = false) authorizationUser: AuthorizationUser,
-        @RequestBody request: RefreshLoginHttpRequest,
+        @RequestBody request: RefreshTokenRequest
     ): HttpResponse<RefreshLoginHttpResponse>
 
     @PostMapping("/auth/login/test")

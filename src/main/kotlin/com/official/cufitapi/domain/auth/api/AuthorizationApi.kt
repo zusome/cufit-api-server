@@ -6,11 +6,7 @@ import com.official.cufitapi.common.annotation.AuthorizationUser
 import com.official.cufitapi.common.api.ApiV1Controller
 import com.official.cufitapi.common.api.dto.HttpResponse
 import com.official.cufitapi.domain.auth.api.docs.AuthorizationApiDocs
-import com.official.cufitapi.domain.auth.api.dto.OidcLoginHttpRequest
-import com.official.cufitapi.domain.auth.api.dto.OidcLoginHttpResponse
-import com.official.cufitapi.domain.auth.api.dto.RefreshLoginHttpRequest
-import com.official.cufitapi.domain.auth.api.dto.RefreshLoginHttpResponse
-import com.official.cufitapi.domain.auth.api.dto.TestLoginHttpRequest
+import com.official.cufitapi.domain.auth.api.dto.*
 import com.official.cufitapi.domain.auth.application.AuthorizationTokenCreationUseCase
 import com.official.cufitapi.domain.auth.application.AuthorizationTokenRefreshUseCase
 import com.official.cufitapi.domain.auth.application.FindAuthorizationMemberUseCase
@@ -49,7 +45,7 @@ class AuthorizationApi(
     @PostMapping("/auth/login/refresh")
     override fun loginByOidc(
         @Authorization(AuthorizationType.ALL, expiredCheck = false) authorizationUser: AuthorizationUser,
-        @RequestBody request: RefreshLoginHttpRequest,
+        @RequestBody request: RefreshTokenRequest,
     ): HttpResponse<RefreshLoginHttpResponse> {
         val member = findAuthorizationMemberUseCase.findById(authorizationUser.userId)
         val authorizationToken = authorizationTokenRefreshUseCase.refresh(

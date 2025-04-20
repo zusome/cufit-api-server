@@ -48,6 +48,10 @@ dependencies {
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 	implementation("com.google.firebase:firebase-admin:9.4.2")
 
+	// Sentry
+	implementation("io.sentry:sentry-spring-boot-starter-jakarta:7.14.0")
+	implementation("io.sentry:sentry-logback:7.16.0")
+
 	// WebFlux for WebClient
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
 
