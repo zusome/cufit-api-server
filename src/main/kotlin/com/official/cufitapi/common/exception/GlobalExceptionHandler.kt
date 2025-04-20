@@ -5,7 +5,6 @@ import com.official.cufitapi.domain.notification.infrastructure.temp.DiscordWebh
 import io.sentry.Sentry
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
-import java.lang.RuntimeException
 import kotlin.RuntimeException
 
 @RestControllerAdvice
