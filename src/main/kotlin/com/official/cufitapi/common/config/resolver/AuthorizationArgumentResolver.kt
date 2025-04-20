@@ -2,6 +2,8 @@ package com.official.cufitapi.common.config.resolver
 
 import com.official.cufitapi.common.annotation.Authorization
 import com.official.cufitapi.common.annotation.AuthorizationUser
+import com.official.cufitapi.common.config.ErrorCode
+import com.official.cufitapi.common.exception.UnAuthorizedException
 import com.official.cufitapi.domain.auth.application.AuthorizationTokenParsingUseCase
 import com.official.cufitapi.domain.auth.application.FindAuthorizationMemberUseCase
 import jakarta.servlet.http.HttpServletRequest
@@ -32,6 +34,7 @@ class AuthorizationArgumentResolver(
     ): AuthorizationUser? =
         parameter.getParameterAnnotation(Authorization::class.java)
             ?.let { authorizationUser(it, webRequest) }
+            ?: throw UnAuthorizedException(ErrorCode.INVALID_AUTHORIZATION)
 
     private fun authorizationUser(authorization: Authorization, webRequest: NativeWebRequest): AuthorizationUser? {
         val request = webRequest.nativeRequest as HttpServletRequest
@@ -42,11 +45,12 @@ class AuthorizationArgumentResolver(
         val memberId = claims.subject.toLong()
         val authorizationMember = findAuthorizationMemberUseCase.findById(memberId)
         if(authorization.expiredCheck && expiration!!.before(Date())) {
-            throw RuntimeException()
+            throw UnAuthorizedException(ErrorCode.INVALID_AUTHORIZATION)
         }
         return authorization.value
             .firstOrNull { it.isAll() || authorizationMember.isSameAuthority(it.name) }
             ?.let { AuthorizationUser(memberId) }
+            ?: throw UnAuthorizedException(ErrorCode.INVALID_AUTHORIZATION)
     }
 
     private fun parsingBearerToken(bearerToken: String): String {
