@@ -43,3 +43,10 @@ discord:
 aws:
   s3:
     presigned-url: ${AWS_S3_PRESIGNED_URL:https://5kiejtfjvk2vpy5xwacgt2bpxm0oqghk.lambda-url.ap-northeast-2.on.aws}
+sentry:
+  dsn: ${SENTRY_DSN:https://71d2e4ffdaf65fa8b7ec426a3b9c24c6@o4509184334757888.ingest.us.sentry.io/4509184338558976}
+  environment: dev
+  traces-sample-rate: 1.0
+  enable-tracing: true
+  exception-resolver-order: -2147483647
+  send-default-pii: true
