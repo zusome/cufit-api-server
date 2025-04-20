@@ -1,6 +1,6 @@
 package com.official.cufitapi.domain.auth.application.command
 
-import com.official.cufitapi.domain.auth.domain.AuthorizationMember
+import com.official.cufitapi.domain.auth.domain.member.AuthorizationMember
 
 data class CreateAuthorizationTokenCommand(
     val memberId: Long,

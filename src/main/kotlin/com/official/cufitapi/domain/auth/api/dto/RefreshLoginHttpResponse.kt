@@ -1,7 +1,7 @@
 package com.official.cufitapi.domain.auth.api.dto
 
-import com.official.cufitapi.domain.auth.domain.AuthorizationMember
-import com.official.cufitapi.domain.auth.domain.AuthorizationToken
+import com.official.cufitapi.domain.auth.domain.member.AuthorizationMember
+import com.official.cufitapi.domain.auth.domain.token.AuthorizationToken
 
 data class RefreshLoginHttpResponse(
     val accessToken: String,

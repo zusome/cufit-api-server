@@ -1,8 +1,8 @@
 package com.official.cufitapi.domain.auth.application
 
 import com.official.cufitapi.domain.auth.application.command.RegisterAuthorizationMemberCommand
-import com.official.cufitapi.domain.auth.domain.AuthorizationMember
-import com.official.cufitapi.domain.auth.domain.repository.AuthorizationMemberRepository
+import com.official.cufitapi.domain.auth.domain.member.AuthorizationMember
+import com.official.cufitapi.domain.auth.domain.member.AuthorizationMemberRepository
 import org.springframework.stereotype.Service
 
 interface RegisterAuthorizationMemberUseCase {

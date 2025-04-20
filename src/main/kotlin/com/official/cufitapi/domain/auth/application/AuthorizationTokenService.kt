@@ -5,11 +5,11 @@ import com.official.cufitapi.common.config.property.AuthorizationProperties
 import com.official.cufitapi.common.exception.UnAuthorizedException
 import com.official.cufitapi.domain.auth.application.command.CreateAuthorizationTokenCommand
 import com.official.cufitapi.domain.auth.application.command.RefreshAuthorizationTokenCommand
-import com.official.cufitapi.domain.auth.domain.SecretKeyGenerator
-import com.official.cufitapi.domain.auth.domain.AuthorizationToken
-import com.official.cufitapi.domain.auth.domain.repository.AuthorizationTokenRepository
-import com.official.cufitapi.domain.auth.domain.vo.AccessToken
-import com.official.cufitapi.domain.auth.domain.vo.RefreshToken
+import com.official.cufitapi.domain.auth.domain.oidc.SecretKeyGenerator
+import com.official.cufitapi.domain.auth.domain.token.AuthorizationToken
+import com.official.cufitapi.domain.auth.domain.token.AuthorizationTokenRepository
+import com.official.cufitapi.domain.auth.domain.token.vo.AccessToken
+import com.official.cufitapi.domain.auth.domain.token.vo.RefreshToken
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm

@@ -1,6 +1,5 @@
 package com.official.cufitapi.domain.notification.application.temp
 
-import com.official.cufitapi.domain.notification.application.command.MemberAlarmAgreeCommand
 import com.official.cufitapi.domain.notification.domain.temp.MemberAlarmAgreement
 import com.official.cufitapi.domain.notification.domain.temp.MemberAlarmAgreementRepository
 import org.springframework.stereotype.Service
