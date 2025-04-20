@@ -12,16 +12,19 @@ class GlobalExceptionHandler(
 
     @ExceptionHandler(BadRequestException::class)
     fun handleBadRequestException(e: BadRequestException): ErrorResponse {
+        discordWebhookClientAdapter.sendErrorAlert(e)
         return ErrorResponse(e.message.toString(), ErrorCode.valueOf(e.message.toString()).message)
     }
 
     @ExceptionHandler(UnAuthorizedException::class)
     fun handleUnAuthorizedException(e: UnAuthorizedException): ErrorResponse {
+        discordWebhookClientAdapter.sendErrorAlert(e)
         return ErrorResponse(e.message.toString(), ErrorCode.valueOf(e.message.toString()).message)
     }
 
     @ExceptionHandler(NotFoundException::class)
     fun handleNotFoundException(e: NotFoundException): ErrorResponse {
+        discordWebhookClientAdapter.sendErrorAlert(e)
         return ErrorResponse(e.message.toString(), ErrorCode.valueOf(e.message.toString()).message)
     }
 

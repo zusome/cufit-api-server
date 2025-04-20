@@ -4,7 +4,7 @@ Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-  "memberType": "MATCHMAKER",
+  "memberType": "MAKER",
   "relationType": "FRIEND"
 }
 
@@ -16,22 +16,22 @@ Authorization: Bearer {{accessToken}}
     });
 
     client.log(response.body.payload.invitationCode);
-    client.global.set("matchmaker_invitation_code", response.body.payload.invitationCode)
+    client.global.set("maker_invitation_code", response.body.payload.invitationCode)
 %}
 
 ### 주선자 초대 수락
 POST http://{{host}}/api/v1/invitations/code
 Content-Type: application/json
-Authorization: Bearer {{matchmaker_accessToken}}
+Authorization: Bearer {{maker_accessToken}}
 
 {
-  "invitationCode": "{{matchmaker_invitation_code}}"
+  "invitationCode": "{{maker_invitation_code}}"
 }
 
 ### 주선자 -> 후보자 초대 코드 생성
 POST http://{{host}}/api/v1/invitations
 Content-Type: application/json
-Authorization: Bearer {{matchmaker_accessToken}}
+Authorization: Bearer {{maker_accessToken}}
 
 {
   "memberType": "CANDIDATE",

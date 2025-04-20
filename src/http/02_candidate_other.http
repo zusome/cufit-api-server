@@ -30,9 +30,15 @@ Authorization: Bearer {{candidate_accessToken2}}
   "idealMbti": "INTJ",
   "job": "개발자",
   "mbti": "INTJ",
-  "station": "역삼역",
+  "city": "서울특별시",
+  "district": "강남구",
   "yearOfBirth": 1990,
-  "phoneNumber": "010-1234-5678"
+  "phoneNumber": "010-1234-5678",
+  "hobbies": [
+    "노래 부르기", "그림 그리기", "운동"
+  ],
+  "smoke": 1,
+  "drink": 1
 }
 
 ### 후보자 프로필 조회

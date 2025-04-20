@@ -17,15 +17,23 @@ data class CandidateResponse(
     @Schema(description = "주선자와의 관계", example = "직장동료")
     val relation: String,
     @Schema(description = "매칭 주선자 이름", example = "김민지")
-    val matchMakerName: String,
+    val makerName: String,
     @Schema(description = "MBTI", example = "[\"I\",\"N\",\"T\",\"J\"]")
     val mbti: List<MBTILetter>,
     @Schema(description = "키", example = "170")
     val height: Int,
-    @Schema(description = "역", example = "강남역")
-    val station: String,
+    @Schema(description = "도시", example = "강남역")
+    val city: String,
+    @Schema(description = "구역", example = "강남역")
+    val district: String,
     @Schema(description = "직업", example = "개발자")
-    val job: String
+    val job: String,
+    @Schema(description = "취미", example = "[\"독서\",\"운동\"]")
+    val hobbies: List<String>,
+    @Schema(description = "흡연 여부", example = "0")
+    val smoke: Int,
+    @Schema(description = "음주 여부", example = "0")
+    val drink: Int,
 ) {
     companion object {
         @JvmStatic
@@ -35,11 +43,15 @@ data class CandidateResponse(
             name: String,
             yearOfBirth: String,
             relation: String,
-            matchMakerName: String,
+            makerName: String,
             mbti: List<MBTILetter>,
             height: Int,
-            station: String,
-            job: String
+            city: String,
+            district: String,
+            job: String,
+            hobbies: List<String>,
+            smoke: Int,
+            drink: Int,
         ): CandidateResponse {
             return CandidateResponse(
                 candidateId = candidateId,
@@ -47,11 +59,15 @@ data class CandidateResponse(
                 name = name,
                 yearOfBirth = yearOfBirth,
                 relation = relation,
-                matchMakerName = matchMakerName,
+                makerName = makerName,
                 mbti = mbti,
                 height = height,
-                station = station,
-                job = job
+                city = city,
+                district = district,
+                job = job,
+                hobbies = hobbies,
+                smoke = smoke,
+                drink = drink,
             )
         }
     }

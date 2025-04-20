@@ -15,7 +15,7 @@ import org.hibernate.annotations.Comment
    사용자 Table
  */
 @Entity
-@Table(name = "member")
+@Table(name = "members")
 class JpaMember(
 
     @Column(name = "name", unique = false, nullable = true)

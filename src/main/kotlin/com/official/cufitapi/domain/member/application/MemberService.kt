@@ -13,8 +13,8 @@ interface RegisterMemberUseCase {
 }
 
 interface UpdateAuthorityMemberUseCase {
-    fun updateMatchMaker(memberId: Long)
-    fun updateMatchCandidate(memberId: Long)
+    fun updateMaker(memberId: Long)
+    fun updateCandidate(memberId: Long)
 }
 
 interface UpdateMemberRealNameUseCase {
@@ -47,17 +47,17 @@ class MemberService(
         return memberRepository.save(member)
     }
 
-    override fun updateMatchMaker(memberId: Long) {
+    override fun updateMaker(memberId: Long) {
         val member = memberRepository.findByIdOrNull(memberId)
             ?: throw NotFoundException(ErrorCode.NOT_FOUND_MEMBER)
-        member.updateMatchMaker()
+        member.updateMaker()
         memberRepository.save(member)
     }
 
-    override fun updateMatchCandidate(memberId: Long) {
+    override fun updateCandidate(memberId: Long) {
         val member = memberRepository.findByIdOrNull(memberId)
             ?: throw NotFoundException(ErrorCode.NOT_FOUND_MEMBER)
-        member.updateMatchCandidate()
+        member.updateCandidate()
         memberRepository.save(member)
     }
 }

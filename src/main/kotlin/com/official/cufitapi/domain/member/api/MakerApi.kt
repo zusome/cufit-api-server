@@ -6,75 +6,75 @@ import com.official.cufitapi.common.annotation.AuthorizationUser
 import com.official.cufitapi.common.api.ApiV1Controller
 import com.official.cufitapi.common.api.dto.HttpResponse
 import com.official.cufitapi.domain.member.api.docs.MakerApiDocs
-import com.official.cufitapi.domain.member.api.dto.matchmaker.MatchMakerCandidateCountResponse
-import com.official.cufitapi.domain.member.api.dto.matchmaker.MatchMakerCandidatesResponse
-import com.official.cufitapi.domain.member.api.dto.matchmaker.MatchMakerOtherCandidatesCountResponse
-import com.official.cufitapi.domain.member.api.dto.matchmaker.MatchMakerOtherCandidatesResponse
-import com.official.cufitapi.domain.member.api.mapper.MatchMakerApiDtoMapper
-import com.official.cufitapi.domain.member.infrastructure.persistence.dao.MatchMakerDao
+import com.official.cufitapi.domain.member.api.dto.maker.CandidateCountResponse
+import com.official.cufitapi.domain.member.api.dto.maker.MakerCandidatesResponse
+import com.official.cufitapi.domain.member.api.dto.maker.MakerOtherCandidatesCountResponse
+import com.official.cufitapi.domain.member.api.dto.maker.MakerOtherCandidatesResponse
+import com.official.cufitapi.domain.member.api.mapper.MakerApiDtoMapper
+import com.official.cufitapi.domain.member.infrastructure.persistence.dao.MakerDao
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
 
 @ApiV1Controller
 class MakerApi(
-    @Qualifier("matchMakerDaoJdbcTemplateDao")private val matchMakerDao: MatchMakerDao,
-    private val matchMakerApiResponseMapper: MatchMakerApiDtoMapper,
+    @Qualifier("makerDaoJdbcTemplateDao")private val makerDao: MakerDao,
+    private val makerApiResponseMapper: MakerApiDtoMapper,
 ) : MakerApiDocs {
 
-    @GetMapping("/matchmakers/candidates/count")
+    @GetMapping("/makers/candidates/count")
     override fun findCandidatesCount(
         @Authorization(
             AuthorizationType.BASIC,
-            AuthorizationType.MATCHMAKER
+            AuthorizationType.MAKER
         ) authorizationUser: AuthorizationUser,
-    ): HttpResponse<MatchMakerCandidateCountResponse> {
-        val candidateCount = matchMakerDao.candidateCount(authorizationUser.userId)
+    ): HttpResponse<CandidateCountResponse> {
+        val candidateCount = makerDao.candidateCount(authorizationUser.userId)
         return HttpResponse.of(
             HttpStatus.OK,
-            matchMakerApiResponseMapper.candidateCount(candidateCount)
+            makerApiResponseMapper.candidateCount(candidateCount)
         )
     }
 
-    @GetMapping("/matchmakers/candidates/others/count")
+    @GetMapping("/makers/candidates/others/count")
     override fun findOtherCandidatesCount(
         @Authorization(
             AuthorizationType.BASIC,
-            AuthorizationType.MATCHMAKER
+            AuthorizationType.MAKER
         ) authorizationUser: AuthorizationUser,
-    ): HttpResponse<MatchMakerOtherCandidatesCountResponse> {
-        val otherCandidateCount = matchMakerDao.otherCandidateCount(authorizationUser.userId)
+    ): HttpResponse<MakerOtherCandidatesCountResponse> {
+        val otherCandidateCount = makerDao.otherCandidateCount(authorizationUser.userId)
         return HttpResponse.of(
             HttpStatus.OK,
-            matchMakerApiResponseMapper.otherCandidateCount(otherCandidateCount)
+            makerApiResponseMapper.otherCandidateCount(otherCandidateCount)
         )
     }
 
-    @GetMapping("/matchmakers/candidates")
+    @GetMapping("/makers/candidates")
     override fun findCandidates(
         @Authorization(
             AuthorizationType.BASIC,
-            AuthorizationType.MATCHMAKER
+            AuthorizationType.MAKER
         ) authorizationUser: AuthorizationUser,
-    ): HttpResponse<MatchMakerCandidatesResponse> {
-        val matchCandidates = matchMakerDao.findCandidates(authorizationUser.userId)
+    ): HttpResponse<MakerCandidatesResponse> {
+        val candidates = makerDao.findCandidates(authorizationUser.userId)
         return HttpResponse.of(
             HttpStatus.OK,
-            matchMakerApiResponseMapper.matchCandidates(matchCandidates)
+            makerApiResponseMapper.candidates(candidates)
         )
     }
 
-    @GetMapping("/matchmakers/candidates/others")
+    @GetMapping("/makers/candidates/others")
     override fun findOtherCandidates(
         @Authorization(
             AuthorizationType.BASIC,
-            AuthorizationType.MATCHMAKER
+            AuthorizationType.MAKER
         ) authorizationUser: AuthorizationUser,
-    ): HttpResponse<MatchMakerOtherCandidatesResponse> {
-        val otherCandidates = matchMakerDao.findOtherCandidates(authorizationUser.userId)
+    ): HttpResponse<MakerOtherCandidatesResponse> {
+        val otherCandidates = makerDao.findOtherCandidates(authorizationUser.userId)
         return HttpResponse.of(
             HttpStatus.OK,
-            matchMakerApiResponseMapper.matchOtherCandidates(otherCandidates)
+            makerApiResponseMapper.matchOtherCandidates(otherCandidates)
         )
     }
 }

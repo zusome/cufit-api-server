@@ -1,10 +1,7 @@
 package com.official.cufitapi.domain.auth.application.service
 
+import com.official.cufitapi.domain.auth.domain.SmsAuthenticationCodeGenerator
 import org.springframework.stereotype.Component
-
-fun interface SmsAuthenticationCodeGenerator {
-    fun generate(): String
-}
 
 @Component
 class SmsAuthenticationCodeGeneratorImpl : SmsAuthenticationCodeGenerator {

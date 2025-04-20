@@ -8,7 +8,7 @@ import jakarta.persistence.Id
 import jakarta.persistence.Table
 import java.time.LocalDateTime
 
-@Table(name = "device_token")
+@Table(name = "device_tokens")
 @Entity
 class DeviceTokenEntity(
 
