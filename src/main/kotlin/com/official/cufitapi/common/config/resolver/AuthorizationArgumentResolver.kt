@@ -32,9 +32,9 @@ class AuthorizationArgumentResolver(
         webRequest: NativeWebRequest,
         binderFactory: WebDataBinderFactory?
     ): AuthorizationUser? =
-        parameter.getParameterAnnotation(Authorization::class.java)
-            ?.let { authorizationUser(it, webRequest) }
-            ?: throw UnAuthorizedException(ErrorCode.INVALID_AUTHORIZATION)
+            parameter.getParameterAnnotation(Authorization::class.java)
+                ?.let { authorizationUser(it, webRequest) }
+
 
     private fun authorizationUser(authorization: Authorization, webRequest: NativeWebRequest): AuthorizationUser? {
         val request = webRequest.nativeRequest as HttpServletRequest
@@ -44,13 +44,12 @@ class AuthorizationArgumentResolver(
         val expiration = claims.expiration
         val memberId = claims.subject.toLong()
         val authorizationMember = findAuthorizationMemberUseCase.findById(memberId)
-        if(authorization.expiredCheck && expiration!!.before(Date())) {
+        if (authorization.expiredCheck && expiration!!.before(Date())) {
             throw UnAuthorizedException(ErrorCode.INVALID_AUTHORIZATION)
         }
         return authorization.value
             .firstOrNull { it.isAll() || authorizationMember.isSameAuthority(it.name) }
             ?.let { AuthorizationUser(memberId) }
-            ?: throw UnAuthorizedException(ErrorCode.INVALID_AUTHORIZATION)
     }
 
     private fun parsingBearerToken(bearerToken: String): String {
