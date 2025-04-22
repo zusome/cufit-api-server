@@ -76,6 +76,9 @@ dependencies {
 
 	// coroutine
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0")
+
+	// coolsms
+	implementation("net.nurigo:sdk:4.3.2")
 }
 dependencyManagement {
 	imports {
