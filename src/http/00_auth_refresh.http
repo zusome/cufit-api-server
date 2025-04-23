@@ -23,9 +23,9 @@ Content-Type: application/json
 POST http://{{host}}/api/v1/auth/login/refresh
 Content-Type: application/json
 Authorization: Bearer {{refresher_accessToken}}
-X-Refresh-Token: {{refresher_refreshToken}}
 
 {
+  "refreshToken": {{refresher_refreshToken}}
 }
 
 > {%

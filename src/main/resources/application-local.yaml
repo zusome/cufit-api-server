@@ -45,3 +45,6 @@ sentry:
   enable-tracing: true
   exception-resolver-order: -2147483647
   send-default-pii: true
+coolsms:
+  api-key: ${COOLSMS_API_KEY}
+  secret-key: ${COOLSMS_SECRET_KEY}

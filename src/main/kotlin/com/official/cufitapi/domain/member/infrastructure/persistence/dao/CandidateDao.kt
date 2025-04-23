@@ -23,11 +23,15 @@ class CandidateDao(
                 ideal_height_range,
                 mbti,
                 height,
-                station,
+                city,
+                district,
                 job,
                 year_of_birth,
                 gender,
-                phone_number
+                phone_number,
+                hobbies,
+                smoke,
+                drink
             FROM
                 candidates
             WHERE

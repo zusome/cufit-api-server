@@ -54,10 +54,10 @@ class MakerDaoJdbcClientDao(
         val memberRelations = memberRelations(memberId)
         val relationMap = memberRelations.associateBy(MemberRelationDto::inviteeId, MemberRelationDto::relationType)
         val candidates = candidates(memberRelations.map(MemberRelationDto::inviteeId))
-        val candidateMap: Map<Long, CandidateDto> = candidates.associateBy(CandidateDto::id)
-        val candidateIds = candidateMap.keys
-        val candidateImages = candidateImages(candidateIds)
-        val candidateImageMap = candidateImages.groupBy(CandidateImageDto::candidateId)
+        val candidateMap: Map<Long, CandidateDto> = candidates.associateBy(CandidateDto::memberId)
+        val candidateMemberIds = candidateMap.keys
+        val candidateImages = candidateImages(candidateMemberIds)
+        val candidateImageMap = candidateImages.groupBy(CandidateImageDto::memberId)
         val members = members(candidates.map(CandidateDto::memberId))
         val memberMap: Map<Long, MemberDto> = members.associateBy(MemberDto::id)
 
@@ -73,16 +73,15 @@ class MakerDaoJdbcClientDao(
                 .mapValues { (_, value) -> value.flatten() }
 
         // 상대 후보자 조회
-        val daterIds =
-            matchesMap.entries.flatMap { it.value.map { match -> match.otherCandidateId(it.key) } }
+        val daterIds = matchesMap.entries.flatMap { it.value.map { match -> match.otherCandidateId(it.key) } }
         val daters = members(daterIds)
         val daterMap = daters.associateBy(MemberDto::id)
         val daterImages = candidateImages(daterIds.toSet())
-        val daterImageMap = daterImages.groupBy(CandidateImageDto::candidateId)
+        val daterImageMap = daterImages.groupBy(CandidateImageDto::memberId)
 
         candidates.map { candidate ->
             Candidate(
-                image = candidateImageMap[candidate.id]?.firstOrNull { it.profileOrder == 1 }?.imageUrl ?: "",
+                image = candidateImageMap[candidate.memberId]?.firstOrNull { it.profileOrder == 1 }?.imageUrl ?: "",
                 name = memberMap[candidate.memberId]!!.name,
                 relation = relationMap[candidate.memberId]!!,
                 isMatchingPaused = candidate.isMatchAgreed.not(),
@@ -108,17 +107,17 @@ class MakerDaoJdbcClientDao(
         val relationMap = memberRelations.associateBy(MemberRelationDto::inviteeId, MemberRelationDto::relationType)
         val candidates =
             candidates(memberRelations.map(MemberRelationDto::inviteeId)).filter(CandidateDto::hasProfile)
-        val candidateMap = candidates.associateBy(CandidateDto::id)
-        val candidateIds = candidateMap.keys
-        val candidateImages = candidateImages(candidateIds)
+        val candidateMap = candidates.associateBy(CandidateDto::memberId)
+        val candidateMemberIds = candidateMap.keys
+        val candidateImages = candidateImages(candidateMemberIds)
         val candidateImageMap = candidateImages.groupBy(CandidateImageDto::candidateId)
         val members = members(candidates.map(CandidateDto::memberId))
         val memberMap: Map<Long, MemberDto> = members.associateBy(MemberDto::id)
 
         candidates.map { candidate ->
             OtherCandidate(
-                id = candidate.id,
-                images = candidateImageMap[candidate.id]?.map { CandidateImage(it.imageUrl, it.profileOrder) }
+                id = candidate.memberId,
+                images = candidateImageMap[candidate.memberId]?.map { CandidateImage(it.imageUrl, it.profileOrder) }
                     ?: emptyList(),
                 name = memberMap[candidate.memberId]!!.name,
                 yearOfBirth = candidate?.yearOfBirth!!,
@@ -174,7 +173,7 @@ class MakerDaoJdbcClientDao(
         if (map.isEmpty()) {
             return emptyList()
         }
-        return jdbcClient.sql("SELECT id, name, email FROM member WHERE id IN (:ids)")
+        return jdbcClient.sql("SELECT id, name, email FROM members WHERE id IN (:ids)")
             .param("ids", map)
             .query(JdbcMemberDtoMapper())
             .list()
@@ -211,7 +210,12 @@ class MakerDaoJdbcClientDao(
         if (candidateIds.isEmpty()) {
             return mutableListOf()
         }
-        return jdbcClient.sql("SELECT * FROM candidate_images WHERE candidate_id IN(:ids)")
+        return jdbcClient.sql("""
+            SELECT ci.*, c.member_id FROM candidate_images ci 
+            LEFT JOIN candidates c 
+            ON ci.candidate_id = c.id
+            WHERE c.member_id IN (:ids)
+        """.trimMargin())
             .param("ids", candidateIds)
             .query(JdbcCandidateImageDtoMapper())
             .list()
