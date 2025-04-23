@@ -58,6 +58,7 @@ class JdbcCandidateImageDtoMapper : RowMapper<CandidateImageDto> {
             imageUrl = rs.getString("image_url"),
             profileOrder = rs.getInt("profile_order"),
             candidateId = rs.getLong("candidate_id"),
+            memberId = rs.getLong("member_id"),
             seq = rs.getLong("id")
         )
     }
