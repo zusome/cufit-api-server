@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping
 
 @ApiV1Controller
 class MakerApi(
-    @Qualifier("makerDaoJdbcTemplateDao")private val makerDao: MakerDao,
+    @Qualifier("makerDaoJdbcClientDao")private val makerDao: MakerDao,
     private val makerApiResponseMapper: MakerApiDtoMapper,
 ) : MakerApiDocs {
 
