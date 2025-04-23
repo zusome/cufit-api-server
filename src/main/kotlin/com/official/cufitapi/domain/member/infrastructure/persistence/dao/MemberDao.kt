@@ -46,7 +46,7 @@ class MemberDao(
             LEFT JOIN 
                 members inviter ON mr.inviter_id = inviter.id
             WHERE
-                id = :memberId
+                m.id = :memberId
         """.trimIndent()
         return namedParameterJdbcTemplate.queryForObject(sql, queryParameters, MemberInfoResponseMapper())
     }
