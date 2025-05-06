@@ -7,7 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 @Schema(name = "후보자 응답")
 data class CandidateResponse(
     @Schema(description = "후보자 ID", example = "10")
-    val candidateId: Long,
+    val id: Long,
     @Schema(description = "후보자 프로필 이미지 목록")
     val images: List<CandidateImage>,
     @Schema(description = "후보자 이름", example = "박유나")
@@ -54,7 +54,7 @@ data class CandidateResponse(
             drink: Int,
         ): CandidateResponse {
             return CandidateResponse(
-                candidateId = candidateId,
+                id = candidateId,
                 images = images,
                 name = name,
                 yearOfBirth = yearOfBirth,
