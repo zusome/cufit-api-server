@@ -50,9 +50,9 @@ class CandidateApi(
                     ),
                     name = "John Doe",
                     yearOfBirth = "1990",
-                    relation = "Friend",
+                    makerRelation = "Friend",
                     makerName = "Jane Smith",
-                    mbti = listOf(MBTILetter.I, MBTILetter.N, MBTILetter.T, MBTILetter.J),
+                    mbti = listOf(MBTILetter.I, MBTILetter.N, MBTILetter.T, MBTILetter.J).joinToString(separator = ""),
                     height = 180,
                     city = "서울특별시",
                     district = "강남구",
@@ -60,6 +60,9 @@ class CandidateApi(
                     hobbies = emptyList(),
                     smoke = 1,
                     drink = 1,
+                    idealHeightRange = listOf(170, 190),
+                    idealAgeRange = listOf("EQUAL", "OLDER"),
+                    idealMbti = listOf("ENTP", "INTJ")
                 )
             ),
         )
