@@ -13,14 +13,13 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
-import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestBody
 
 @Tag(name = "후보자 관련 API")
 interface CandidateApiDocs {
 
     @Operation(
-        summary = "제안된 후보자 목록 조회 API"
+        summary = "주선자로부터 요청 받은 후보자 목록 조회 API"
     )
     @ApiResponses(
         ApiResponse(responseCode = "200", description = "성공"),
@@ -48,7 +47,6 @@ interface CandidateApiDocs {
         authorizationUser: AuthorizationUser,
         request: CandidateProfileUpdateRequest,
     ) {
-
     }
 
     @Operation(
@@ -67,7 +65,6 @@ interface CandidateApiDocs {
         @RequestBody request: MatchBreakRequest,
     ): HttpResponse<Unit>
 
-
     @Operation(
         summary = "후보자 프로필 조회 API"
     )
@@ -82,7 +79,6 @@ interface CandidateApiDocs {
             AuthorizationType.CANDIDATE
         ) authorizationUser: AuthorizationUser,
     ): HttpResponse<CandidateProfileInfoResponse>
-
 
     @Operation(
         summary = "후보자 프로필 업로드 presigned url 발급 조회 API"
