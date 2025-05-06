@@ -3,6 +3,7 @@ package com.official.cufitapi.domain.member.infrastructure.persistence.dao
 import com.official.cufitapi.domain.member.domain.vo.CandidateImage
 import com.official.cufitapi.domain.member.infrastructure.persistence.dto.MatchInfo
 import com.official.cufitapi.domain.member.infrastructure.persistence.dto.Candidate
+import com.official.cufitapi.domain.member.infrastructure.persistence.dto.CandidateDetailInfo
 import com.official.cufitapi.domain.member.infrastructure.persistence.dto.Candidates
 import com.official.cufitapi.domain.member.infrastructure.persistence.dto.OtherCandidate
 import com.official.cufitapi.domain.member.infrastructure.persistence.dto.OtherCandidates
@@ -43,7 +44,29 @@ class MakerDaoJdbcTemplateDao(
                     relation = "친구",
                     matches = listOf(),
                     hasProfile = true,
-                    isMatchingPaused = false
+                    isMatchingPaused = false,
+                    candidateDetailInfo = CandidateDetailInfo(
+                        id = 1L,
+                        images = listOf(
+                            CandidateImage(imageUrl = "https://cataas.com/cat", profileOrder = 1),
+                            CandidateImage(imageUrl = "https://cataas.com/cat", profileOrder = 2)
+                        ),
+                        name = "김철수",
+                        yearOfBirth = 1997,
+                        makerRelation = "직장동료",
+                        makerName = "홍길동",
+                        mbti = "ESFP",
+                        height = 165,
+                        city = "서울특별시",
+                        district = "강남구",
+                        job = "디자이너",
+                        hobbies = listOf("보드게임", "노래부르기", "사진 촬영"),
+                        smoke = 0,
+                        drink = 0,
+                        idealHeightRange = listOf(170, 190),
+                        idealAgeRange = listOf("연상", "연하", "동갑"),
+                        idealMbti = listOf("외향적", "직관적", "계획형", "즉흥형")
+                    )
                 ),
                 Candidate(
                     image = "https://cataas.com/cat",
@@ -67,7 +90,29 @@ class MakerDaoJdbcTemplateDao(
                         )
                     ),
                     hasProfile = true,
-                    isMatchingPaused = false
+                    isMatchingPaused = false,
+                    candidateDetailInfo = CandidateDetailInfo(
+                        id = 2L,
+                        images = listOf(
+                            CandidateImage(imageUrl = "https://cataas.com/cat", profileOrder = 1),
+                            CandidateImage(imageUrl = "https://cataas.com/cat", profileOrder = 2)
+                        ),
+                        name = "홍길동",
+                        yearOfBirth = 1997,
+                        makerRelation = "직장동료",
+                        makerName = "김철수",
+                        mbti = "ESFP",
+                        height = 165,
+                        city = "서울특별시",
+                        district = "강남구",
+                        job = "디자이너",
+                        hobbies = listOf("보드게임", "노래부르기", "사진 촬영"),
+                        smoke = 0,
+                        drink = 0,
+                        idealHeightRange = listOf(170, 190),
+                        idealAgeRange = listOf("연상", "연하", "동갑"),
+                        idealMbti = listOf("외향적", "직관적", "계획형", "즉흥형")
+                    )
                 ),
                 Candidate(
                     image = "https://cataas.com/cat",
@@ -75,7 +120,29 @@ class MakerDaoJdbcTemplateDao(
                     relation = "직장동료",
                     matches = listOf(),
                     hasProfile = false,
-                    isMatchingPaused = false
+                    isMatchingPaused = false,
+                    candidateDetailInfo = CandidateDetailInfo(
+                        id = 3L,
+                        images = listOf(
+                            CandidateImage(imageUrl = "https://cataas.com/cat", profileOrder = 1),
+                            CandidateImage(imageUrl = "https://cataas.com/cat", profileOrder = 2)
+                        ),
+                        name = "박혁거세",
+                        yearOfBirth = 1997,
+                        makerRelation = "직장동료",
+                        makerName = "김철수",
+                        mbti = "ESFP",
+                        height = 165,
+                        city = "서울특별시",
+                        district = "강남구",
+                        job = "디자이너",
+                        hobbies = listOf("보드게임", "노래부르기", "사��� 촬영"),
+                        smoke = 0,
+                        drink = 0,
+                        idealHeightRange = listOf(170, 190),
+                        idealAgeRange = listOf("연상", "연하", "동갑"),
+                        idealMbti = listOf("외향적", "직관적", "계획형", "즉흥형")
+                    )
                 ),
                 Candidate(
                     image = "https://cataas.com/cat",
@@ -83,7 +150,29 @@ class MakerDaoJdbcTemplateDao(
                     relation = "친구",
                     matches = listOf(),
                     hasProfile = true,
-                    isMatchingPaused = true
+                    isMatchingPaused = true,
+                    candidateDetailInfo = CandidateDetailInfo(
+                        id = 4L,
+                        images = listOf(
+                            CandidateImage(imageUrl = "https://cataas.com/cat", profileOrder = 1),
+                            CandidateImage(imageUrl = "https://cataas.com/cat", profileOrder = 2)
+                        ),
+                        name = "김민지",
+                        yearOfBirth = 1997,
+                        makerRelation = "직장동료",
+                        makerName = "김철수",
+                        mbti = "ESFP",
+                        height = 165,
+                        city = "서울특별시",
+                        district = "강남구",
+                        job = "디자이너",
+                        hobbies = listOf("보드게임", "노래부르기", "사진 촬영"),
+                        smoke = 0,
+                        drink = 0,
+                        idealHeightRange = listOf(170, 190),
+                        idealAgeRange = listOf("연상", "연하", "동갑"),
+                        idealMbti = listOf("외향적", "직관적", "계획형", "즉흥형")
+                    )
                 )
             )
         )
