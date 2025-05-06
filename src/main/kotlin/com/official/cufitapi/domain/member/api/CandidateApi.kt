@@ -49,7 +49,7 @@ class CandidateApi(
                         CandidateImage(imageUrl = "https://cataas.com/cat", profileOrder = 2)
                     ),
                     name = "John Doe",
-                    yearOfBirth = "1990",
+                    yearOfBirth = 1990,
                     makerRelation = "Friend",
                     makerName = "Jane Smith",
                     mbti = listOf(MBTILetter.I, MBTILetter.N, MBTILetter.T, MBTILetter.J).joinToString(separator = ""),
