@@ -3,6 +3,7 @@ package com.official.cufitapi.common.exception
 import com.official.cufitapi.common.config.ErrorCode
 import com.official.cufitapi.domain.notification.infrastructure.temp.DiscordWebhookClientAdapter
 import io.sentry.Sentry
+import org.slf4j.LoggerFactory
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import kotlin.RuntimeException
