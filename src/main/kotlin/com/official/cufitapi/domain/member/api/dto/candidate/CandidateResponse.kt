@@ -15,11 +15,11 @@ data class CandidateResponse(
     @Schema(description = "후보자 나이", example = "25")
     val yearOfBirth: String,
     @Schema(description = "주선자와의 관계", example = "직장동료")
-    val relation: String,
+    val makerRelation: String,
     @Schema(description = "매칭 주선자 이름", example = "김민지")
     val makerName: String,
-    @Schema(description = "MBTI", example = "[\"I\",\"N\",\"T\",\"J\"]")
-    val mbti: List<MBTILetter>,
+    @Schema(description = "MBTI", example = "INTJ")
+    val mbti: String,
     @Schema(description = "키", example = "170")
     val height: Int,
     @Schema(description = "도시", example = "강남역")
@@ -34,6 +34,12 @@ data class CandidateResponse(
     val smoke: Int,
     @Schema(description = "음주 여부", example = "0")
     val drink: Int,
+    @Schema(description = "이상형 키 범위", example = "[160, 180]")
+    val idealHeightRange: List<Int>,
+    @Schema(description = "이상형 나이 범위", example = "[\"20대 초반\", \"30대 중반\"]")
+    val idealAgeRange: List<String>,
+    @Schema(description = "이상형 MBTI", example = "[\"INTJ\", \"INFP\"]")
+    val idealMbti: List<String>,
 ) {
     companion object {
         @JvmStatic
@@ -44,7 +50,7 @@ data class CandidateResponse(
             yearOfBirth: String,
             relation: String,
             makerName: String,
-            mbti: List<MBTILetter>,
+            mbti: String,
             height: Int,
             city: String,
             district: String,
@@ -52,13 +58,16 @@ data class CandidateResponse(
             hobbies: List<String>,
             smoke: Int,
             drink: Int,
+            idealHeightRange: List<Int>,
+            idealAgeRange: List<String>,
+            idealMbti: List<String>
         ): CandidateResponse {
             return CandidateResponse(
                 id = candidateId,
                 images = images,
                 name = name,
                 yearOfBirth = yearOfBirth,
-                relation = relation,
+                makerRelation = relation,
                 makerName = makerName,
                 mbti = mbti,
                 height = height,
@@ -68,6 +77,9 @@ data class CandidateResponse(
                 hobbies = hobbies,
                 smoke = smoke,
                 drink = drink,
+                idealHeightRange = idealHeightRange,
+                idealAgeRange = idealAgeRange,
+                idealMbti = idealMbti
             )
         }
     }
