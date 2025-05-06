@@ -69,6 +69,7 @@ class MatchMockApi(
             MatchDao.MatchCandidates(
                 listOf(
                     MatchCandidate(
+                        1L,
                         image = "https://search.pstatic.net/common?type=b&size=3000&quality=100&direct=true&src=http%3A%2F%2Fsstatic.naver.net%2Fpeople%2Fportrait%2F202301%2F20230127132729112.jpg",
                         "차은우",
                         "직장 동료",
@@ -76,6 +77,7 @@ class MatchMockApi(
                         1
                     ),
                     MatchCandidate(
+                        2L,
                         image = "https://search.pstatic.net/common?type=b&size=3000&quality=100&direct=true&src=http%3A%2F%2Fsstatic.naver.net%2Fpeople%2FprofileImg%2Fe27fbdf2-be0c-43c6-9add-b836279a80b5.jpg",
                         "추영우",
                         "직장 동료",
@@ -83,6 +85,7 @@ class MatchMockApi(
                         0
                     ),
                     MatchCandidate(
+                        3L,
                         image = "https://search.pstatic.net/common?type=b&size=3000&quality=100&direct=true&src=http%3A%2F%2Fsstatic.naver.net%2Fpeople%2Fportrait%2F202009%2F20200910113051466.jpg",
                         "변우석",
                         "친구",
