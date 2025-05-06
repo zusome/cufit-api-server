@@ -26,8 +26,8 @@ springdoc:
 service:
   authorization:
     secret-key: ${AUTHORIZATION_SECRET_KEY:g8rrLgXxe3/OF+mwPQGINe5pxxh5AQddN6gNFE3iueY=}
-    access-timeout: ${AUTHORIZATION_ACCESS_TIMEOUT:86400000}
-    refresh-timeout: ${AUTHORIZATION_REFRESH_TIMEOUT:604800000}
+    access-timeout: ${AUTHORIZATION_ACCESS_TIMEOUT:2592000000}
+    refresh-timeout: ${AUTHORIZATION_REFRESH_TIMEOUT:8640000000}
   firebase:
     file-path: ${FIREBASE_FILE_PATH:src/main/resources/firebase/}
     file-name: ${FIREBASE_FILE_NAME:firebase.json}
