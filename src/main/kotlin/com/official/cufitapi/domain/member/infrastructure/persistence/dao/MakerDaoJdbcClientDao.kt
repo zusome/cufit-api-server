@@ -5,6 +5,7 @@ import com.official.cufitapi.domain.member.domain.vo.IdealHeightUnit
 import com.official.cufitapi.domain.member.infrastructure.persistence.dto.MatchDto
 import com.official.cufitapi.domain.member.infrastructure.persistence.dto.MatchInfo
 import com.official.cufitapi.domain.member.infrastructure.persistence.dto.Candidate
+import com.official.cufitapi.domain.member.infrastructure.persistence.dto.CandidateDetailInfo
 import com.official.cufitapi.domain.member.infrastructure.persistence.dto.CandidateDto
 import com.official.cufitapi.domain.member.infrastructure.persistence.dto.CandidateImageDto
 import com.official.cufitapi.domain.member.infrastructure.persistence.dto.Candidates
@@ -96,8 +97,27 @@ class MakerDaoJdbcClientDao(
                         image = otherCandidateImageUrl,
                         name = otherCandidate.name,
                         matchStatus = match.matchStatus
-                    )
-                } ?: emptyList()
+                    ) } ?: emptyList(),
+                candidateDetailInfo = CandidateDetailInfo(
+                    id = candidate.memberId,
+                    images = candidateImageMap[candidate.memberId]?.map { CandidateImage(it.imageUrl, it.profileOrder) }
+                        ?: emptyList(),
+                    name = memberMap[candidate.memberId]!!.name,
+                    yearOfBirth = candidate.yearOfBirth!!,
+                    makerRelation = relationMap[candidate.memberId]!!,
+                    makerName = memberMap[candidate.memberId]?.name!!,
+                    mbti = candidate.mbti!!,
+                    height = candidate.height!!,
+                    city = candidate.city!!,
+                    district = candidate.district!!,
+                    job = candidate.job!!,
+                    hobbies = mapToHobbies(candidate),
+                    smoke = candidate.smoke!!,
+                    drink = candidate.drink!!,
+                    idealHeightRange = mapToList(candidate),
+                    idealAgeRange = mapToString(candidate),
+                    idealMbti = mapToMbtiList(candidate)
+                )
             )
         }.let { return Candidates(it) }
     }
