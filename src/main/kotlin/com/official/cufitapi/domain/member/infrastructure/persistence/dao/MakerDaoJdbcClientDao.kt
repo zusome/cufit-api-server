@@ -2,20 +2,20 @@ package com.official.cufitapi.domain.member.infrastructure.persistence.dao
 
 import com.official.cufitapi.domain.member.domain.vo.CandidateImage
 import com.official.cufitapi.domain.member.domain.vo.IdealHeightUnit
-import com.official.cufitapi.domain.member.infrastructure.persistence.dto.MatchDto
-import com.official.cufitapi.domain.member.infrastructure.persistence.dto.MatchInfo
 import com.official.cufitapi.domain.member.infrastructure.persistence.dto.Candidate
 import com.official.cufitapi.domain.member.infrastructure.persistence.dto.CandidateDetailInfo
 import com.official.cufitapi.domain.member.infrastructure.persistence.dto.CandidateDto
 import com.official.cufitapi.domain.member.infrastructure.persistence.dto.CandidateImageDto
 import com.official.cufitapi.domain.member.infrastructure.persistence.dto.Candidates
+import com.official.cufitapi.domain.member.infrastructure.persistence.dto.MatchDto
+import com.official.cufitapi.domain.member.infrastructure.persistence.dto.MatchInfo
 import com.official.cufitapi.domain.member.infrastructure.persistence.dto.MemberDto
 import com.official.cufitapi.domain.member.infrastructure.persistence.dto.MemberRelationDto
 import com.official.cufitapi.domain.member.infrastructure.persistence.dto.OtherCandidate
 import com.official.cufitapi.domain.member.infrastructure.persistence.dto.OtherCandidates
-import com.official.cufitapi.domain.member.infrastructure.persistence.mapper.JdbcMatchDtoMapper
 import com.official.cufitapi.domain.member.infrastructure.persistence.mapper.JdbcCandidateDtoMapper
 import com.official.cufitapi.domain.member.infrastructure.persistence.mapper.JdbcCandidateImageDtoMapper
+import com.official.cufitapi.domain.member.infrastructure.persistence.mapper.JdbcMatchDtoMapper
 import com.official.cufitapi.domain.member.infrastructure.persistence.mapper.JdbcMemberDtoMapper
 import com.official.cufitapi.domain.member.infrastructure.persistence.mapper.JdbcMemberRelationDtoMapper
 import com.official.cufitapi.domain.member.infrastructure.persistence.sql.MemberSqlConstant.CANDIDATE_COUNT_SQL
@@ -80,46 +80,54 @@ class MakerDaoJdbcClientDao(
         val daterImages = candidateImages(daterIds.toSet())
         val daterImageMap = daterImages.groupBy(CandidateImageDto::memberId)
 
-        candidates.map { candidate ->
-            Candidate(
-                image = candidateImageMap[candidate.memberId]?.firstOrNull { it.profileOrder == 1 }?.imageUrl ?: "",
-                name = memberMap[candidate.memberId]!!.name,
-                relation = relationMap[candidate.memberId]!!,
-                isMatchingPaused = candidate.isMatchAgreed.not(),
-                hasProfile = candidate.hasProfile(),
-                matches = matchesMap[candidate.memberId]?.map { match ->
-                    val otherCandidateId = match.otherCandidateId(candidate.memberId)
-                    val otherCandidate = daterMap[otherCandidateId]!!
-                    val otherCandidateImages = daterImageMap[otherCandidateId]!!
-                    val otherCandidateImageUrl =
-                        otherCandidateImages.firstOrNull { it.profileOrder == 1 }?.imageUrl ?: ""
-                    MatchInfo(
-                        image = otherCandidateImageUrl,
-                        name = otherCandidate.name,
-                        matchStatus = match.matchStatus
-                    ) } ?: emptyList(),
-                candidateDetailInfo = CandidateDetailInfo(
-                    id = candidate.memberId,
-                    images = candidateImageMap[candidate.memberId]?.map { CandidateImage(it.imageUrl, it.profileOrder) }
-                        ?: emptyList(),
+        candidates
+            .filter { it.hasProfile() }
+            .map { candidate ->
+                Candidate(
+                    image = candidateImageMap[candidate.memberId]?.firstOrNull { it.profileOrder == 1 }?.imageUrl ?: "",
                     name = memberMap[candidate.memberId]!!.name,
-                    yearOfBirth = candidate.yearOfBirth!!,
-                    makerRelation = relationMap[candidate.memberId]!!,
-                    makerName = memberMap[candidate.memberId]?.name!!,
-                    mbti = candidate.mbti!!,
-                    height = candidate.height!!,
-                    city = candidate.city!!,
-                    district = candidate.district!!,
-                    job = candidate.job!!,
-                    hobbies = mapToHobbies(candidate),
-                    smoke = candidate.smoke!!,
-                    drink = candidate.drink!!,
-                    idealHeightRange = mapToList(candidate),
-                    idealAgeRange = mapToString(candidate),
-                    idealMbti = mapToMbtiList(candidate)
+                    relation = relationMap[candidate.memberId]!!,
+                    isMatchingPaused = candidate.isMatchAgreed.not(),
+                    hasProfile = candidate.hasProfile(),
+                    matches = matchesMap[candidate.memberId]?.map { match ->
+                        val otherCandidateId = match.otherCandidateId(candidate.memberId)
+                        val otherCandidate = daterMap[otherCandidateId]!!
+                        val otherCandidateImages = daterImageMap[otherCandidateId]!!
+                        val otherCandidateImageUrl =
+                            otherCandidateImages.firstOrNull { it.profileOrder == 1 }?.imageUrl ?: ""
+                        MatchInfo(
+                            image = otherCandidateImageUrl,
+                            name = otherCandidate.name,
+                            matchStatus = match.matchStatus
+                        )
+                    } ?: emptyList(),
+                    candidateDetailInfo = CandidateDetailInfo(
+                        id = candidate.memberId,
+                        images = candidateImageMap[candidate.memberId]?.map {
+                            CandidateImage(
+                                it.imageUrl,
+                                it.profileOrder
+                            )
+                        }
+                            ?: emptyList(),
+                        name = memberMap[candidate.memberId]!!.name,
+                        yearOfBirth = candidate.yearOfBirth!!,
+                        makerRelation = relationMap[candidate.memberId]!!,
+                        makerName = memberMap[candidate.memberId]?.name!!,
+                        mbti = candidate.mbti!!,
+                        height = candidate.height!!,
+                        city = candidate.city!!,
+                        district = candidate.district!!,
+                        job = candidate.job!!,
+                        hobbies = mapToHobbies(candidate),
+                        smoke = candidate.smoke!!,
+                        drink = candidate.drink!!,
+                        idealHeightRange = mapToList(candidate),
+                        idealAgeRange = mapToString(candidate),
+                        idealMbti = mapToMbtiList(candidate)
+                    )
                 )
-            )
-        }.let { return Candidates(it) }
+            }.let { return Candidates(it) }
     }
 
     override fun findOtherCandidates(memberId: Long): OtherCandidates {
@@ -230,12 +238,14 @@ class MakerDaoJdbcClientDao(
         if (candidateIds.isEmpty()) {
             return mutableListOf()
         }
-        return jdbcClient.sql("""
+        return jdbcClient.sql(
+            """
             SELECT ci.*, c.member_id FROM candidate_images ci 
             LEFT JOIN candidates c 
             ON ci.candidate_id = c.id
             WHERE c.member_id IN (:ids)
-        """.trimMargin())
+        """.trimMargin()
+        )
             .param("ids", candidateIds)
             .query(JdbcCandidateImageDtoMapper())
             .list()
