@@ -16,7 +16,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 
-@ApiV1Controller
+// @ApiV1Controller
 class SmsAuthenticationApi(
     private val smsAuthenticationService: SmsAuthenticationService
 ) : SmsAuthenticationApiDocs {
