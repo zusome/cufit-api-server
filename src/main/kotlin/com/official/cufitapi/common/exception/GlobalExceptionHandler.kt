@@ -16,28 +16,28 @@ class GlobalExceptionHandler(
     fun handleBadRequestException(e: BadRequestException): ErrorResponse {
         discordWebhookClientAdapter.sendErrorAlert(e)
         Sentry.captureException(e)
-        return ErrorResponse(e.getCode(), ErrorCode.valueOf(e.message.toString()).message)
+        return ErrorResponse(e.getCode(), e.getCustomMessage())
     }
 
     @ExceptionHandler(UnAuthorizedException::class)
     fun handleUnAuthorizedException(e: UnAuthorizedException): ErrorResponse {
         discordWebhookClientAdapter.sendErrorAlert(e)
         Sentry.captureException(e)
-        return ErrorResponse(e.getCode(), ErrorCode.valueOf(e.message.toString()).message)
+        return ErrorResponse(e.getCode(), e.getCustomMessage())
     }
 
     @ExceptionHandler(NotFoundException::class)
     fun handleNotFoundException(e: NotFoundException): ErrorResponse {
         discordWebhookClientAdapter.sendErrorAlert(e)
         Sentry.captureException(e)
-        return ErrorResponse(e.getCode(), ErrorCode.valueOf(e.message.toString()).message)
+        return ErrorResponse(e.getCode(), e.getCustomMessage())
     }
 
     @ExceptionHandler(InternalServerErrorException::class)
     fun handleInternalServerErrorException(e: InternalServerErrorException): ErrorResponse {
         discordWebhookClientAdapter.sendErrorAlert(e)
         Sentry.captureException(e)
-        return ErrorResponse(e.getCode(), ErrorCode.valueOf(e.message.toString()).message)
+        return ErrorResponse(e.getCode(), e.getCustomMessage())
     }
 
     @ExceptionHandler(RuntimeException::class)
