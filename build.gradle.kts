@@ -45,6 +45,11 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 	testImplementation("org.springframework.modulith:spring-modulith-starter-test")
+	testImplementation("io.rest-assured:rest-assured:5.5.1")
+	testImplementation("io.rest-assured:json-path:5.5.1")
+	testImplementation("io.rest-assured:kotlin-extensions:5.5.1")
+	testImplementation("org.testcontainers:junit-jupiter")
+	testImplementation("org.testcontainers:postgresql")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 	implementation("com.google.firebase:firebase-admin:9.4.2")
 
