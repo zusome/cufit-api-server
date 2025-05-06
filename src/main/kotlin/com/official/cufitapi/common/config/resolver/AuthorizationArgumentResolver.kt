@@ -38,7 +38,6 @@ class AuthorizationArgumentResolver(
 
 
     private fun authorizationUser(authorization: Authorization, webRequest: NativeWebRequest): AuthorizationUser? {
-        throw NotFoundException(ErrorCode.INVALID_REFRESH_TOKEN)
         val request = webRequest.nativeRequest as HttpServletRequest
         val authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION)
         val accessToken = parsingBearerToken(authorizationHeader)
