@@ -43,7 +43,7 @@ class CandidateApi(
             HttpStatus.OK,
             mutableListOf(
                 CandidateResponse(
-                    candidateId = 1L,
+                    id = 1L,
                     images = listOf(
                         CandidateImage(imageUrl = "https://cataas.com/cat", profileOrder = 1),
                         CandidateImage(imageUrl = "https://cataas.com/cat", profileOrder = 2)

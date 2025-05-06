@@ -40,6 +40,9 @@ class AuthorizationArgumentResolver(
     private fun authorizationUser(authorization: Authorization, webRequest: NativeWebRequest): AuthorizationUser? {
         val request = webRequest.nativeRequest as HttpServletRequest
         val authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION)
+        if (authorizationHeader.isNullOrEmpty()) {
+            throw UnAuthorizedException(ErrorCode.INVALID_AUTHORIZATION)
+        }
         val accessToken = parsingBearerToken(authorizationHeader)
         val claims = authorizationTokenParsingUseCase.claims(accessToken)
         val expiration = claims.expiration
