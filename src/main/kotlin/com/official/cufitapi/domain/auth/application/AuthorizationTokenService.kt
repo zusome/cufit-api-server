@@ -2,6 +2,7 @@ package com.official.cufitapi.domain.auth.application
 
 import com.official.cufitapi.common.config.ErrorCode
 import com.official.cufitapi.common.config.property.AuthorizationProperties
+import com.official.cufitapi.common.exception.NotFoundException
 import com.official.cufitapi.common.exception.UnAuthorizedException
 import com.official.cufitapi.domain.auth.application.command.CreateAuthorizationTokenCommand
 import com.official.cufitapi.domain.auth.application.command.RefreshAuthorizationTokenCommand
@@ -13,7 +14,6 @@ import com.official.cufitapi.domain.auth.domain.token.vo.RefreshToken
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
-import jakarta.persistence.EntityNotFoundException
 import org.springframework.stereotype.Service
 import java.security.Key
 import java.util.Date
@@ -49,15 +49,27 @@ class AuthorizationTokenService(
         val secretKey = secretKeyGenerator.generate(authorizationProperties.secretKey)
         val memberId = command.memberId
         val authorizationToken = authorizationTokenRepository.findByMemberId(memberId)
-            ?: throw EntityNotFoundException()
+            ?: throw NotFoundException(ErrorCode.INVALID_ACCESS_TOKEN)
         val refreshToken = authorizationToken.refreshToken
         if(refreshToken.isNotSame(command.refreshToken)) {
-            throw IllegalArgumentException()
+            throw NotFoundException(ErrorCode.INVALID_REFRESH_TOKEN)
         }
+        verifyRefreshTokenIsExpired(refreshToken)
         val renewAccessToken = createAccessToken(secretKey, memberId, command.authority.name)
         val renewRefreshToken = refreshToken(secretKey, memberId)
         authorizationToken.refresh(renewAccessToken, renewRefreshToken)
         return authorizationTokenRepository.save(authorizationToken)
+    }
+
+    private fun verifyRefreshTokenIsExpired(refreshToken: RefreshToken) {
+        val claims = Jwts.parserBuilder()
+            .setSigningKey(secretKeyGenerator.generate(authorizationProperties.secretKey))
+            .build()
+            .parseClaimsJws(refreshToken.refreshToken)
+            .body
+        if (claims.expiration.before(Date())) {
+            throw UnAuthorizedException(ErrorCode.EXPIRED_REFRESH_TOKEN)
+        }
     }
 
     private fun createAccessToken(
@@ -100,5 +112,5 @@ class AuthorizationTokenService(
             .build()
             .parseClaimsJws(accessToken)
             .body
-            ?: throw UnAuthorizedException(ErrorCode.INVALID_TOKEN)
+            ?: throw UnAuthorizedException(ErrorCode.INVALID_ACCESS_TOKEN)
 }

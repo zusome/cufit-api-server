@@ -45,11 +45,12 @@ class AuthorizationArgumentResolver(
         val memberId = claims.subject.toLong()
         val authorizationMember = findAuthorizationMemberUseCase.findById(memberId)
         if (authorization.expiredCheck && expiration!!.before(Date())) {
-            throw UnAuthorizedException(ErrorCode.INVALID_AUTHORIZATION)
+            throw UnAuthorizedException(ErrorCode.EXPIRED_ACCESS_TOKEN)
         }
         return authorization.value
             .firstOrNull { it.isAll() || authorizationMember.isSameAuthority(it.name) }
             ?.let { AuthorizationUser(memberId) }
+            ?: throw UnAuthorizedException(ErrorCode.INVALID_AUTHORIZATION)
     }
 
     private fun parsingBearerToken(bearerToken: String): String {
