@@ -13,6 +13,27 @@ data class Candidate(
     val matches: List<MatchInfo>,
     val hasProfile: Boolean,
     val isMatchingPaused: Boolean,
+    val candidateDetailInfo: CandidateDetailInfo,
+)
+
+data class CandidateDetailInfo(
+    val id: Long,
+    val images: List<CandidateImage>,
+    val name: String,
+    val yearOfBirth: Int,
+    val makerRelation: String,
+    val makerName: String,
+    val mbti: String,
+    val height: Int,
+    val city: String,
+    val district: String,
+    val job: String,
+    val hobbies: List<String>,
+    val smoke: Int,
+    val drink: Int,
+    val idealHeightRange: List<Int>,
+    val idealAgeRange: List<String>,
+    val idealMbti: List<String>,
 )
 
 data class MatchInfo(
