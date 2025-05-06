@@ -20,6 +20,7 @@ class MatchDao(
     )
 
     data class MatchCandidate(
+        val id: Long,
         val image: String,
         val candidateName: String,
         val relationType: String,
@@ -46,6 +47,7 @@ class MatchDao(
         val matchCandidates = candidates(realAvailableMatchMakerCandidateRelations.keys)
         return matchCandidates.map { (memberId, matchCandidate) ->
             MatchCandidate(
+                memberId,
                 "image",
                 matchCandidate.name,
                 realAvailableMatchMakerCandidateRelations[memberId]!!.relationType,
