@@ -3,6 +3,7 @@ package com.official.cufitapi.common.config.resolver
 import com.official.cufitapi.common.annotation.Authorization
 import com.official.cufitapi.common.annotation.AuthorizationUser
 import com.official.cufitapi.common.config.ErrorCode
+import com.official.cufitapi.common.exception.NotFoundException
 import com.official.cufitapi.common.exception.UnAuthorizedException
 import com.official.cufitapi.domain.auth.application.AuthorizationTokenParsingUseCase
 import com.official.cufitapi.domain.auth.application.FindAuthorizationMemberUseCase
@@ -37,6 +38,7 @@ class AuthorizationArgumentResolver(
 
 
     private fun authorizationUser(authorization: Authorization, webRequest: NativeWebRequest): AuthorizationUser? {
+        throw NotFoundException(ErrorCode.INVALID_REFRESH_TOKEN)
         val request = webRequest.nativeRequest as HttpServletRequest
         val authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION)
         val accessToken = parsingBearerToken(authorizationHeader)

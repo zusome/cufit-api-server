@@ -12,6 +12,7 @@ import com.official.cufitapi.domain.auth.domain.token.AuthorizationTokenReposito
 import com.official.cufitapi.domain.auth.domain.token.vo.AccessToken
 import com.official.cufitapi.domain.auth.domain.token.vo.RefreshToken
 import io.jsonwebtoken.Claims
+import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import org.springframework.stereotype.Service
@@ -106,11 +107,16 @@ class AuthorizationTokenService(
         return RefreshToken(refreshToken)
     }
 
-    override fun claims(accessToken: String): Claims =
-        Jwts.parserBuilder()
-            .setSigningKey(secretKeyGenerator.generate(authorizationProperties.secretKey))
-            .build()
-            .parseClaimsJws(accessToken)
-            .body
-            ?: throw UnAuthorizedException(ErrorCode.INVALID_ACCESS_TOKEN)
+    override fun claims(accessToken: String): Claims {
+        return try {
+            Jwts.parserBuilder()
+                .setSigningKey(secretKeyGenerator.generate(authorizationProperties.secretKey))
+                .build()
+                .parseClaimsJws(accessToken)
+                .body
+                ?: throw UnAuthorizedException(ErrorCode.INVALID_ACCESS_TOKEN)
+        } catch (e: ExpiredJwtException) {
+            throw UnAuthorizedException(ErrorCode.EXPIRED_ACCESS_TOKEN)
+        }
+    }
 }
