@@ -13,7 +13,7 @@ data class CandidateResponse(
     @Schema(description = "후보자 이름", example = "박유나")
     val name: String,
     @Schema(description = "후보자 나이", example = "25")
-    val yearOfBirth: String,
+    val yearOfBirth: Int,
     @Schema(description = "주선자와의 관계", example = "직장동료")
     val makerRelation: String,
     @Schema(description = "매칭 주선자 이름", example = "김민지")
@@ -47,7 +47,7 @@ data class CandidateResponse(
             candidateId: Long,
             images: List<CandidateImage>,
             name: String,
-            yearOfBirth: String,
+            yearOfBirth: Int,
             relation: String,
             makerName: String,
             mbti: String,
