@@ -116,7 +116,7 @@ class AuthorizationTokenService(
                 .body
                 ?: throw UnAuthorizedException(ErrorCode.INVALID_ACCESS_TOKEN)
         } catch (e: ExpiredJwtException) {
-            throw UnAuthorizedException(ErrorCode.EXPIRED_ACCESS_TOKEN)
+            return e.claims
         }
     }
 }
