@@ -33,33 +33,26 @@ class MatchDao(
      * 요청을 다 보낸 사용자의 경우 disabled 되어야 함
      * 이미 주선을 보냈었다면 보여지지도 않아야 함
      */
-    fun findAllByMatchId(makerId: Long, targetId: Long): MatchCandidates {
-        // 내 후보자 조회
-        return MatchCandidates(
-            listOf(
-                MatchCandidate(
-                    "https://cataas.com/cat",
-                    "내후보자",
-                    "COMPANION",
-                    1996,
-                    2
-                ),
-                MatchCandidate(
-                    "https://cataas.com/cat",
-                    "내후보자2",
-                    "FRIEND",
-                    2000,
-                    3
-                ),
-                MatchCandidate(
-                    "https://cataas.com/cat",
-                    "내후보자3",
-                    "ACQUAINTANCE",
-                    1998,
-                    1
-                )
+    fun findAllByMatchId(makerMemberId: Long, targetId: Long): MatchCandidates {
+        val matchMakerCandidateRelations = makerCandidateRelations(makerMemberId, targetId)
+        val availableMatchMakerCandidateRelations =
+            matchMakerCandidateRelations.filter { matchMakerCandidateRelations.containsKey(it.key) }
+        val existedArrangementCandidates =
+            existedMatchCandidates(makerMemberId, targetId, availableMatchMakerCandidateRelations.keys)
+        val realAvailableMatchMakerCandidateRelations =
+            availableMatchMakerCandidateRelations.filterKeys { !existedArrangementCandidates.contains(it) }
+        val candidateArrangementCountMap =
+            availableCandidateIds(makerMemberId, realAvailableMatchMakerCandidateRelations.keys)
+        val matchCandidates = candidates(realAvailableMatchMakerCandidateRelations.keys)
+        return matchCandidates.map { (memberId, matchCandidate) ->
+            MatchCandidate(
+                "image",
+                matchCandidate.name,
+                realAvailableMatchMakerCandidateRelations[memberId]!!.relationType,
+                matchCandidate.yearOfBirth,
+                3 - (candidateArrangementCountMap[memberId] ?: 0)
             )
-        )
+        }.let { MatchCandidates(it) }
     }
 
     private fun makerCandidateRelations(
@@ -111,9 +104,9 @@ class MatchDao(
                     m.name,
                     mc.year_of_birth
                 FROM
-                    candidate mc
+                    candidates mc
                 JOIN 
-                    member m ON mc.member_id = m.id
+                    members m ON mc.member_id = m.id
                 AND
                     mc.is_match_agreed = true
                 AND
@@ -130,7 +123,7 @@ class MatchDao(
         targetId: Long,
         inviteeIds: Set<Long>,
     ): MutableList<Long> {
-        if(inviteeIds.isEmpty()){
+        if (inviteeIds.isEmpty()) {
             return mutableListOf()
         }
         val thirdQueryParameters = MapSqlParameterSource()
@@ -141,17 +134,17 @@ class MatchDao(
 
         val thirdSql = """
                 SELECT
-                    left_candidate_id,
-                    right_candidate_id
+                    left_candidate_member_id,
+                    right_candidate_member_id
                 FROM 
                     matches a
                 WHERE
-                    a.maker_id = :makerId
+                    a.maker_member_id = :makerId
                 AND
                 (
-                    (a.left_candidate_id = :leftTargetId AND a.right_candidate_id in (:inviteeIds))
+                    (a.left_candidate_member_id = :leftTargetId AND a.right_candidate_member_id in (:inviteeIds))
                     OR
-                    (a.right_candidate_id = :rightTargetId AND a.left_candidate_id in (:inviteeIds))
+                    (a.right_candidate_member_id = :rightTargetId AND a.left_candidate_member_id in (:inviteeIds))
                 )
             """.trimIndent()
         val matches = namedParameterJdbcTemplate.query(thirdSql, thirdQueryParameters, MatchMapper())
@@ -172,6 +165,9 @@ class MatchDao(
         makerId: Long,
         inviteeIds: Set<Long>,
     ): MutableMap<Long, Int> {
+        if(inviteeIds.isEmpty()) {
+            return mutableMapOf()
+        }
         val fourthQueryParameters = MapSqlParameterSource()
             .addValue("makerId", makerId)
             .addValue("inviteeIds", inviteeIds)
@@ -179,17 +175,17 @@ class MatchDao(
             .addValue("tomorrow", DateTimeUtils.beginToday().tomorrow())
 
         val fourthQuery = """
-                SELECT 
-                    a.left_candidate_id
-                FROM
-                    matches a
-                WHERE
-                    a.maker_id = :makerId
-                AND
-                    a.left_candidate_id in (:inviteeIds)
-                AND
-                    a.created_date BETWEEN :today AND :tomorrow
-            """.trimIndent()
+            SELECT 
+                a.left_candidate_member_id
+            FROM
+                matches a
+            WHERE
+                a.maker_member_id = :makerId
+            AND
+                a.left_candidate_member_id IN (:inviteeIds)
+            AND
+                a.created_date BETWEEN :today AND :tomorrow
+        """.trimIndent()
 
         // group by id count
         val candidateIds = namedParameterJdbcTemplate.queryForList(fourthQuery, fourthQueryParameters, Long::class.java)
@@ -202,6 +198,9 @@ class MatchDao(
         makerId: Long,
         inviteeIds: Set<Long>,
     ): MutableMap<Long, Int> {
+        if(inviteeIds.isEmpty()) {
+            return mutableMapOf()
+        }
         val fourthQueryParameters = MapSqlParameterSource()
             .addValue("makerId", makerId)
             .addValue("inviteeIds", inviteeIds)
@@ -210,13 +209,13 @@ class MatchDao(
 
         val fourthQuery = """
                 SELECT 
-                    a.right_candidate_id
+                    a.right_candidate_member_id
                 FROM
                     matches a
                 WHERE
-                    a.maker_id = :makerId
+                    a.maker_member_id = :makerId
                 AND
-                    a.right_candidate_id in (:inviteeIds)
+                    a.right_candidate_member_id in (:inviteeIds)
                 AND
                     a.created_date BETWEEN :today AND :tomorrow
             """.trimIndent()
@@ -262,8 +261,8 @@ data class Candidate(
 class MatchMapper : RowMapper<Match> {
     override fun mapRow(rs: ResultSet, rowNum: Int): Match {
         return Match(
-            rs.getLong("left_candidate_id"),
-            rs.getLong("right_candidate_id"),
+            rs.getLong("left_candidate_member_id"),
+            rs.getLong("right_candidate_member_id"),
         )
     }
 }

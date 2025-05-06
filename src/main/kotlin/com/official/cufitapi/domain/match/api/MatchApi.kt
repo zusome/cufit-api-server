@@ -12,7 +12,6 @@ import com.official.cufitapi.domain.match.api.dto.UpdateMatchRequest
 import com.official.cufitapi.domain.match.application.SuggestMatchUsecase
 import com.official.cufitapi.domain.match.application.UpdateMatchUsecase
 import com.official.cufitapi.domain.match.infrastructure.persistence.MatchDao
-import org.springframework.context.annotation.Profile
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
-// @Profile("local")
 @ApiV1Controller
 @RestController
 class MatchApi(
