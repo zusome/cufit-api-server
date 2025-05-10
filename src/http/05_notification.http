@@ -1,0 +1,7 @@
+### 주선자 알림 조회
+GET http://localhost:8080/api/v1/notifications
+Authorization: Bearer {{maker_accessToken}}
+
+### 후보자 알림 조회
+GET http://localhost:8080/api/v1/notifications
+Authorization: Bearer {{candidate_accessToken}}
