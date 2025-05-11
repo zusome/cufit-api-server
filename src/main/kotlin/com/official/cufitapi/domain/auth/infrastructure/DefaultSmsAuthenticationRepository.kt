@@ -20,7 +20,7 @@ class DefaultSmsAuthenticationRepository(
 
     @Transactional(readOnly = true)
     override fun findAll(memberId: Long): List<SmsAuthentication> {
-        return jpaSmsAuthenticationRepository.findAll(memberId)
+        return jpaSmsAuthenticationRepository.findAll()
             .map(::mapToDomain)
     }
 
