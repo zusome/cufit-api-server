@@ -1,14 +1,19 @@
 package com.official.cufitapi.domain.auth.application
 
+import com.official.cufitapi.common.config.ErrorCode
+import com.official.cufitapi.common.exception.InvalidSmsAuthenticationException
+import com.official.cufitapi.common.exception.NotFoundException
 import com.official.cufitapi.domain.auth.application.command.IssueSmsAuthenticationCommand
 import com.official.cufitapi.domain.auth.application.command.VerifySmsAuthenticationCodeCommand
-import com.official.cufitapi.domain.auth.domain.sms.SmsAuthenticationCodeGenerator
 import com.official.cufitapi.domain.auth.domain.sms.SmsAuthentication
-import com.official.cufitapi.domain.auth.domain.sms.event.RegisterSmsAuthenticationEvent
+import com.official.cufitapi.domain.auth.domain.sms.SmsAuthenticationCodeGenerator
 import com.official.cufitapi.domain.auth.domain.sms.SmsAuthenticationRepository
 import com.official.cufitapi.domain.auth.domain.sms.SmsSender
+import com.official.cufitapi.domain.auth.domain.sms.SmsWhiteList
+import com.official.cufitapi.domain.auth.domain.sms.event.RegisterSmsAuthenticationEvent
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
+import java.util.concurrent.CompletableFuture
 
 interface IssueSmsAuthenticationUseCase {
     fun issue(command: IssueSmsAuthenticationCommand): SmsAuthentication
@@ -18,24 +23,22 @@ interface VerifySmsAuthenticationUseCase {
     fun verify(command: VerifySmsAuthenticationCodeCommand): SmsAuthentication
 }
 
-// @Service
+@Service
 class SmsAuthenticationService(
     private val smsAuthenticationRepository: SmsAuthenticationRepository,
     private val smsAuthenticationCodeGenerator: SmsAuthenticationCodeGenerator,
+    private val smsWhiteList: SmsWhiteList,
     private val smsSender: SmsSender,
     private val applicationEventPublisher: ApplicationEventPublisher,
 ) : IssueSmsAuthenticationUseCase, VerifySmsAuthenticationUseCase {
 
-    companion object {
-        const val COOL_SMS_API_URL = "https://api.coolsms.co.kr"
-        const val COOL_SMS_FROM_PHONE = "01087837803"
-    }
-
     override fun issue(command: IssueSmsAuthenticationCommand): SmsAuthentication {
-        // message 전송
+        if(smsWhiteList.isNotWhiteListed(command.phone)) {
+            throw InvalidSmsAuthenticationException(ErrorCode.INVALID_SMS_PHONE)
+        }
         val smsAuthentication = smsAuthenticationRepository.save(init(command))
         applicationEventPublisher.publishEvent(registerSmsAuthenticationEvent(smsAuthentication))
-        smsSender.send(COOL_SMS_FROM_PHONE, command.phone, "인증번호는 ${smsAuthentication.code}입니다.")
+        CompletableFuture.runAsync { smsSender.send(command.phone, "[큐핏] 인증번호는 ${smsAuthentication.code}입니다. (타인 노출 주의)") }
         return smsAuthentication
     }
 
@@ -58,8 +61,8 @@ class SmsAuthenticationService(
 
     override fun verify(command: VerifySmsAuthenticationCodeCommand): SmsAuthentication {
         val smsAuthentication = smsAuthenticationRepository.findByMemberIdOrNull(command.memberId)
-            ?: throw IllegalArgumentException("Invalid member id")
-        smsAuthentication.verify(command.authCode)
+            ?: throw NotFoundException(ErrorCode.INTERNAL_SERVER_ERROR)
+        smsAuthentication.verify(command.authCode, command.phone)
         return smsAuthenticationRepository.save(smsAuthentication)
     }
 }

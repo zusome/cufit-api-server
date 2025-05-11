@@ -15,6 +15,9 @@ enum class ErrorCode(
     CONNECTION_REQUEST_SAME_GENDER(HttpStatus.BAD_REQUEST, "동성과는 매칭을 할 수 없습니다."),
     YEAR_OF_BIRTH_INVALID(HttpStatus.BAD_REQUEST, "생년이 유효하지 않습니다."),
     INVALID_SMS_AUTH_CODE(HttpStatus.BAD_REQUEST, "유효하지 않은 SMS 인증번호입니다."),
+    INVALID_SMS_AUTH_CODE_VERIFY(HttpStatus.BAD_REQUEST, "유효하지 않은 SMS 인증번호입니다."),
+    INVALID_SMS_PHONE(HttpStatus.BAD_REQUEST, "유효하지 않은 전화번호입니다."),
+    INVALID_SMS_PHONE_VERIFY(HttpStatus.BAD_REQUEST, "유효하지 않은 전화번호입니다."),
     INVALID_SUFFIX(HttpStatus.BAD_REQUEST, "유효하지 않은 접미사입니다."),
     INVALID_RELATION_TYPE(HttpStatus.BAD_REQUEST, "유효하지 않은 관계 유형입니다."),
 
