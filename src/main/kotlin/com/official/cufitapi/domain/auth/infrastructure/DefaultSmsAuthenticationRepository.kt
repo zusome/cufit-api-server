@@ -19,8 +19,9 @@ class DefaultSmsAuthenticationRepository(
     }
 
     @Transactional(readOnly = true)
-    override fun findByMemberIdOrNull(memberId: Long): SmsAuthentication? {
-        return jpaSmsAuthenticationRepository.findByMemberId(memberId)?.let(::mapToDomain)
+    override fun findAll(memberId: Long): List<SmsAuthentication> {
+        return jpaSmsAuthenticationRepository.findAll(memberId)
+            .map(::mapToDomain)
     }
 
     private fun mapToDomain(entity: JpaSmsAuthentication): SmsAuthentication = SmsAuthentication(
