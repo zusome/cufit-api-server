@@ -1,11 +1,10 @@
 package com.official.cufitapi.domain.member.api.dto.candidate
 
 import com.official.cufitapi.domain.member.domain.vo.CandidateImage
-import com.official.cufitapi.domain.member.domain.vo.MBTILetter
 import io.swagger.v3.oas.annotations.media.Schema
 
 @Schema(name = "후보자 응답")
-data class CandidateResponse(
+data class CandidateMatchResultResponse(
     @Schema(description = "후보자 ID", example = "10")
     val id: Long,
     @Schema(description = "후보자 프로필 이미지 목록")
@@ -40,47 +39,12 @@ data class CandidateResponse(
     val idealAgeRange: List<String>,
     @Schema(description = "이상형 MBTI", example = "[\"INTJ\", \"INFP\"]")
     val idealMbti: List<String>,
-) {
-    companion object {
-        @JvmStatic
-        fun of(
-            candidateId: Long,
-            images: List<CandidateImage>,
-            name: String,
-            yearOfBirth: Int,
-            relation: String,
-            makerName: String,
-            mbti: String,
-            height: Int,
-            city: String,
-            district: String,
-            job: String,
-            hobbies: List<String>,
-            smoke: Int,
-            drink: Int,
-            idealHeightRange: List<Int>,
-            idealAgeRange: List<String>,
-            idealMbti: List<String>
-        ): CandidateResponse {
-            return CandidateResponse(
-                id = candidateId,
-                images = images,
-                name = name,
-                yearOfBirth = yearOfBirth,
-                makerRelation = relation,
-                makerName = makerName,
-                mbti = mbti,
-                height = height,
-                city = city,
-                district = district,
-                job = job,
-                hobbies = hobbies,
-                smoke = smoke,
-                drink = drink,
-                idealHeightRange = idealHeightRange,
-                idealAgeRange = idealAgeRange,
-                idealMbti = idealMbti
-            )
-        }
-    }
-}
+    @Schema(description = "핸드폰 번호", example = "010-1234-5678")
+    val phoneNumber: String?,
+    @Schema(description = "매칭 결과", example = "1")
+    val matchStatus: String,
+    @Schema(description = "매치 식별자", example = "1")
+    val matchId: Long,
+    @Schema(description = "매치 남은 시간(UNIX_TIMESTAMP)", example = "MATCHED")
+    val expiredTime: Long,
+)
