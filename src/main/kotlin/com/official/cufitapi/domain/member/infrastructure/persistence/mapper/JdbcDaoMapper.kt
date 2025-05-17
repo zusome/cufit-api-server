@@ -69,8 +69,12 @@ class JdbcMatchDtoMapper : RowMapper<MatchDto> {
         return MatchDto(
             makerMemberId = rs.getLong("maker_member_id"),
             leftCandidateMemberId = rs.getLong("left_candidate_member_id"),
+            leftCandidateAgree = rs.getBoolean("left_candidate_agree"),
             rightCandidateMemberId = rs.getLong("right_candidate_member_id"),
+            rightCandidateAgree = rs.getBoolean("right_candidate_agree"),
             matchStatus = rs.getString("status"),
+            createdDate = rs.getTimestamp("created_date").toLocalDateTime(),
+            modifiedDate = rs.getTimestamp("modified_date").toLocalDateTime(),
             id = rs.getLong("id")
         )
     }

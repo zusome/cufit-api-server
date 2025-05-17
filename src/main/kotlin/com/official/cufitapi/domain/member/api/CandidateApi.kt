@@ -14,7 +14,6 @@ import com.official.cufitapi.domain.member.application.CandidateProfileUpdateUse
 import com.official.cufitapi.domain.member.application.command.candidate.CandidateMatchBreakCommand
 import com.official.cufitapi.domain.member.application.command.candidate.CandidateProfileUpdateCommand
 import com.official.cufitapi.domain.member.domain.vo.CandidateImage
-import com.official.cufitapi.domain.member.domain.vo.MBTILetter
 import com.official.cufitapi.domain.member.infrastructure.ProfileImageUploadClientAdapter
 import com.official.cufitapi.domain.member.infrastructure.persistence.dao.CandidateDao
 import org.springframework.http.HttpStatus
@@ -31,40 +30,32 @@ class CandidateApi(
 ) : CandidateApiDocs {
 
     // 나한테 제안된 후보자 목록 조회
-    @GetMapping("/candidates/suggestion")
+    @GetMapping("/candidates/matches/suggestion")
     override fun getSuggestedCandidate(
         @Authorization(
             AuthorizationType.BASIC,
             AuthorizationType.CANDIDATE
         ) authorizationUser: AuthorizationUser,
-    ): HttpResponse<List<CandidateResponse>> {
-        // TODO : CandidateDAO를 활용하여 구현
+    ): HttpResponse<List<CandidateMatchSuggestionResponse>> {
         return HttpResponse.of(
             HttpStatus.OK,
-            mutableListOf(
-                CandidateResponse(
-                    id = 1L,
-                    images = listOf(
-                        CandidateImage(imageUrl = "https://cataas.com/cat", profileOrder = 1),
-                        CandidateImage(imageUrl = "https://cataas.com/cat", profileOrder = 2)
-                    ),
-                    name = "John Doe",
-                    yearOfBirth = 1990,
-                    makerRelation = "FRIEND",
-                    makerName = "Jane Smith",
-                    mbti = listOf(MBTILetter.I, MBTILetter.N, MBTILetter.T, MBTILetter.J).joinToString(separator = ""),
-                    height = 180,
-                    city = "서울특별시",
-                    district = "강남구",
-                    job = "개발자",
-                    hobbies = listOf("노래 부르기", "그림 그리기", "운동"),
-                    smoke = 1,
-                    drink = 1,
-                    idealHeightRange = listOf(170, 190),
-                    idealAgeRange = listOf("EQUAL", "OLDER"),
-                    idealMbti = listOf("ENTP", "INTJ")
-                )
-            ),
+            candidateDao.findMatchSuggestions(authorizationUser.userId, 1L, 100L)
+        )
+    }
+
+    /**
+     * 승낙한 후보자 목록 조회
+     */
+    @GetMapping("/candidates/matches/result")
+    override fun getSuggestedResultCandidate(
+        @Authorization(
+            AuthorizationType.BASIC,
+            AuthorizationType.CANDIDATE
+        ) authorizationUser: AuthorizationUser,
+    ): HttpResponse<List<CandidateMatchResultResponse>> {
+        return HttpResponse.of(
+            HttpStatus.OK,
+            candidateDao.findMatchResult(authorizationUser.userId, 1L, 100L)
         )
     }
 

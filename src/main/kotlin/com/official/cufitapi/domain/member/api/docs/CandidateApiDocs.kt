@@ -5,9 +5,10 @@ import com.official.cufitapi.common.annotation.AuthorizationType
 import com.official.cufitapi.common.annotation.AuthorizationUser
 import com.official.cufitapi.common.api.dto.HttpResponse
 import com.official.cufitapi.domain.member.api.dto.CandidateProfileInfoResponse
+import com.official.cufitapi.domain.member.api.dto.candidate.CandidateMatchResultResponse
 import com.official.cufitapi.domain.member.api.dto.candidate.CandidatePresignedUrlUploadResponse
 import com.official.cufitapi.domain.member.api.dto.candidate.CandidateProfileUpdateRequest
-import com.official.cufitapi.domain.member.api.dto.candidate.CandidateResponse
+import com.official.cufitapi.domain.member.api.dto.candidate.CandidateMatchSuggestionResponse
 import com.official.cufitapi.domain.member.api.dto.candidate.MatchBreakRequest
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
@@ -28,7 +29,7 @@ interface CandidateApiDocs {
     )
     fun getSuggestedCandidate(
         @Authorization(AuthorizationType.CANDIDATE) authorizationUser: AuthorizationUser,
-    ): HttpResponse<List<CandidateResponse>>
+    ): HttpResponse<List<CandidateMatchSuggestionResponse>>
 
     @Operation(
         summary = "후보자 프로필 업데이트 API",
@@ -42,12 +43,6 @@ interface CandidateApiDocs {
         authorizationUser: AuthorizationUser,
         request: CandidateProfileUpdateRequest,
     ): HttpResponse<Unit>
-
-    fun updateCandidateIdealType(
-        authorizationUser: AuthorizationUser,
-        request: CandidateProfileUpdateRequest,
-    ) {
-    }
 
     @Operation(
         summary = "매칭 쉬어가기 API"
@@ -94,4 +89,14 @@ interface CandidateApiDocs {
             AuthorizationType.CANDIDATE
         ) authorizationUser: AuthorizationUser,
     ): HttpResponse<CandidatePresignedUrlUploadResponse>
+
+    @Operation(
+        summary = "승인된 후보자 목록 조회 API"
+    )
+    @ApiResponses(
+        ApiResponse(responseCode = "200", description = "성공"),
+        ApiResponse(responseCode = "401", description = "인증 실패"),
+        ApiResponse(responseCode = "500", description = "서버 에러")
+    )
+    fun getSuggestedResultCandidate(authorizationUser: AuthorizationUser): HttpResponse<List<CandidateMatchResultResponse>>
 }
