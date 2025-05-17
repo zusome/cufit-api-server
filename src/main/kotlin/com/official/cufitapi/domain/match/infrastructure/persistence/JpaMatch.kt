@@ -21,16 +21,24 @@ class JpaMatch(
     @Column(name = "left_candidate_member_id", unique = false, nullable = false, updatable = false)
     var leftCandidateMemberId: Long,
 
+    @Comment("첫번째 주선자 동의 여부")
+    @Column(name = "left_candidate_agree", unique = false, nullable = false, updatable = true)
+    var leftCandidateAgree: Boolean = false,
+
     @Comment("두번째 주선 대상자")
     @Column(name = "right_candidate_member_id", unique = false, nullable = false, updatable = false)
     var rightCandidateId: Long,
+
+    @Comment("두번째 주선자 동의 여부")
+    @Column(name = "right_candidate_agree", unique = false, nullable = false, updatable = true)
+    var rightCandidateAgree: Boolean = false,
 
     @Comment("주선 상태")
     @Column(name = "status", unique = false, nullable = false, updatable = true)
     var status: Int,
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long? = null
+    var id: Long? = null,
 ): BaseTimeEntity() {
 
     override fun equals(other: Any?): Boolean {

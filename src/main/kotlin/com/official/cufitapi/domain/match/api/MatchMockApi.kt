@@ -32,7 +32,7 @@ class MatchMockApi(
 ) : MatchApiDocs {
 
     @PostMapping("/matches")
-    override fun suggestMatch(
+    override fun suggest(
         @Authorization(
             AuthorizationType.BASIC,
             AuthorizationType.MAKER
