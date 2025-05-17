@@ -22,10 +22,6 @@ enum class MatchStatus(
         return this.step < MATCHED.step
     }
 
-    fun isCancelled(): Boolean {
-        return this == CANCELED
-    }
-
     companion object {
         fun of(matchStatus: Int): MatchStatus {
             return entries.firstOrNull { it.step == matchStatus }
