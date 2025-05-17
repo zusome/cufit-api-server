@@ -29,14 +29,14 @@ class MatchApi(
 ) : MatchApiDocs {
 
     @PostMapping("/matches")
-    override fun suggestMatch(
+    override fun suggest(
         @Authorization(
             AuthorizationType.BASIC,
             AuthorizationType.MAKER
         ) authorizationUser: AuthorizationUser,
         @RequestBody request: SuggestMatchRequest,
     ): HttpResponse<SuggestMatchResponse> {
-        val matchId = suggestMatchUseCase.suggestMatch(request.toCommand(authorizationUser.userId))
+        val matchId = suggestMatchUseCase.suggest(request.toCommand(authorizationUser.userId))
         return HttpResponse.of(HttpStatus.CREATED, SuggestMatchResponse(matchId))
     }
 
@@ -49,10 +49,9 @@ class MatchApi(
         ) authorizationUser: AuthorizationUser,
         @RequestBody request: UpdateMatchRequest,
     ): HttpResponse<Void> {
-        updateMatchUseCase.nextStep(request.toCommand(matchId, authorizationUser.userId))
+        updateMatchUseCase.agreeOrReject(request.toCommand(matchId, authorizationUser.userId))
         return HttpResponse.of(HttpStatus.OK, null)
     }
-
 
     @GetMapping("/matches/candidates")
     override fun findAvailableCandidates(

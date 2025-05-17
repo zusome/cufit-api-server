@@ -20,11 +20,11 @@ import java.time.LocalDateTime
 import java.util.Objects
 
 fun interface SuggestMatchUsecase {
-    fun suggestMatch(command: SuggestMatchCommand): Long
+    fun suggest(command: SuggestMatchCommand): Long
 }
 
 fun interface UpdateMatchUsecase {
-    fun nextStep(command: UpdateMatchCommand)
+    fun agreeOrReject(command: UpdateMatchCommand)
 }
 
 @Service
@@ -40,7 +40,7 @@ class MatchService(
      * 주선자 <-> 상대후보자 == 같은 사람 불가능
      * 나중에 내후보자끼리도 주선 가능 == 동일 로직
      */
-    override fun suggestMatch(command: SuggestMatchCommand): Long {
+    override fun suggest(command: SuggestMatchCommand): Long {
         val today = DateTimeUtils.beginToday()
         val tomorrow = today.tomorrow()
 
@@ -52,7 +52,9 @@ class MatchService(
         val match = Match(
             makerMemberId = command.makerMemberId,
             leftCandidateId = command.leftCandidateId,
+            leftCandidateAgree = false,
             rightCandidateId = command.rightCandidateId,
+            rightCandidateAgree = false,
             matchStatus = MatchStatus.SUGGESTED
         )
         val matchId = matchRepository.save(match).let { it.id!! }
@@ -96,11 +98,11 @@ class MatchService(
         }
     }
 
-    override fun nextStep(command: UpdateMatchCommand) {
+    override fun agreeOrReject(command: UpdateMatchCommand) {
         val match = matchRepository.findById(command.matchId)
-        match.nextStep(command.isAccepted)
-        matchRepository.save(match)
-        if (match.isMatched()) {
+        match.agreeOrReject(command.memberId, command.isAccepted)
+        val updatedMatch = matchRepository.save(match)
+        if (updatedMatch.isMatched()) {
             applicationEventPublisher.publishEvent(
                 SucceedMatchEvent(
                     match.id!!,
