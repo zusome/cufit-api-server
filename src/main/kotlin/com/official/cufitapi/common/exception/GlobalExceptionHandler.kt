@@ -15,6 +15,7 @@ class GlobalExceptionHandler(
 
     @ExceptionHandler(BadRequestException::class)
     fun handleBadRequestException(e: BadRequestException): ErrorResponse {
+        logger.error(e.message, e)
         discordWebhookClientAdapter.sendErrorAlert(e)
         Sentry.captureException(e)
         return ErrorResponse(e.getCode(), e.getCustomMessage())
@@ -22,6 +23,7 @@ class GlobalExceptionHandler(
 
     @ExceptionHandler(UnAuthorizedException::class)
     fun handleUnAuthorizedException(e: UnAuthorizedException): ErrorResponse {
+        logger.error(e.message, e)
         discordWebhookClientAdapter.sendErrorAlert(e)
         Sentry.captureException(e)
         return ErrorResponse(e.getCode(), e.getCustomMessage())
@@ -29,6 +31,7 @@ class GlobalExceptionHandler(
 
     @ExceptionHandler(NotFoundException::class)
     fun handleNotFoundException(e: NotFoundException): ErrorResponse {
+        logger.error(e.message, e)
         discordWebhookClientAdapter.sendErrorAlert(e)
         Sentry.captureException(e)
         return ErrorResponse(e.getCode(), e.getCustomMessage())
@@ -36,6 +39,7 @@ class GlobalExceptionHandler(
 
     @ExceptionHandler(InternalServerErrorException::class)
     fun handleInternalServerErrorException(e: InternalServerErrorException): ErrorResponse {
+        logger.error(e.message, e)
         discordWebhookClientAdapter.sendErrorAlert(e)
         Sentry.captureException(e)
         return ErrorResponse(e.getCode(), e.getCustomMessage())
@@ -43,6 +47,7 @@ class GlobalExceptionHandler(
 
     @ExceptionHandler(RuntimeException::class)
     fun handleRuntimeException(e: RuntimeException): ErrorResponse {
+        logger.error(e.message, e)
         discordWebhookClientAdapter.sendErrorAlert(e)
         Sentry.captureException(e)
         return ErrorResponse(ErrorCode.RUNTIME_EXCEPTION.name, ErrorCode.RUNTIME_EXCEPTION.message)
@@ -50,9 +55,14 @@ class GlobalExceptionHandler(
 
     @ExceptionHandler(Exception::class)
     fun handleException(e: Exception): ErrorResponse {
+        logger.error(e.message, e)
         discordWebhookClientAdapter.sendErrorAlert(e)
         Sentry.captureException(e)
         return ErrorResponse(ErrorCode.INTERNAL_SERVER_ERROR.name, ErrorCode.INTERNAL_SERVER_ERROR.message)
+    }
+
+    companion object {
+        private val logger = LoggerFactory.getLogger(GlobalExceptionHandler::class.java)
     }
 }
 

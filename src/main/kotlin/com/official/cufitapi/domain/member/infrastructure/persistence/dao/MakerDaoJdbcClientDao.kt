@@ -19,9 +19,14 @@ import com.official.cufitapi.domain.member.infrastructure.persistence.mapper.Jdb
 import com.official.cufitapi.domain.member.infrastructure.persistence.mapper.JdbcMemberDtoMapper
 import com.official.cufitapi.domain.member.infrastructure.persistence.mapper.JdbcMemberRelationDtoMapper
 import com.official.cufitapi.domain.member.infrastructure.persistence.sql.MemberSqlConstant.CANDIDATE_COUNT_SQL
+import com.official.cufitapi.domain.member.infrastructure.persistence.sql.MemberSqlConstant.CANDIDATE_IMAGE_BY_MEMBER_IDS_SQL
+import com.official.cufitapi.domain.member.infrastructure.persistence.sql.MemberSqlConstant.MEMBER_RELATIONS_BY_INVITER_ID
+import com.official.cufitapi.domain.member.infrastructure.persistence.sql.MemberSqlConstant.MEMBER_RELATIONS_BY_NOT_INVITER_ID
 import com.official.cufitapi.domain.member.infrastructure.persistence.sql.MemberSqlConstant.OTHER_CANDIDATE_COUNT_SQL
 import org.springframework.jdbc.core.simple.JdbcClient
 import org.springframework.stereotype.Component
+
+private const val s = "SELECT * FROM member_relations WHERE inviter_id != :inviterId"
 
 @Component
 class MakerDaoJdbcClientDao(
@@ -238,14 +243,7 @@ class MakerDaoJdbcClientDao(
         if (candidateIds.isEmpty()) {
             return mutableListOf()
         }
-        return jdbcClient.sql(
-            """
-            SELECT ci.*, c.member_id FROM candidate_images ci 
-            LEFT JOIN candidates c 
-            ON ci.candidate_id = c.id
-            WHERE c.member_id IN (:ids)
-        """.trimMargin()
-        )
+        return jdbcClient.sql(CANDIDATE_IMAGE_BY_MEMBER_IDS_SQL)
             .param("ids", candidateIds)
             .query(JdbcCandidateImageDtoMapper())
             .list()
@@ -262,13 +260,13 @@ class MakerDaoJdbcClientDao(
     }
 
     private fun memberRelations(memberId: Long): MutableList<MemberRelationDto> =
-        jdbcClient.sql("SELECT * FROM member_relations WHERE inviter_id = :inviterId")
+        jdbcClient.sql(MEMBER_RELATIONS_BY_INVITER_ID)
             .param("inviterId", memberId)
             .query(JdbcMemberRelationDtoMapper())
             .list()
 
     private fun memberRelationsByNotMemberId(memberId: Long): MutableList<MemberRelationDto> =
-        jdbcClient.sql("SELECT * FROM member_relations WHERE inviter_id != :inviterId")
+        jdbcClient.sql(MEMBER_RELATIONS_BY_NOT_INVITER_ID)
             .param("inviterId", memberId)
             .query(JdbcMemberRelationDtoMapper())
             .list()
