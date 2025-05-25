@@ -25,7 +25,7 @@ class InvitationCardMapper {
     fun mapToEntity(domain: InvitationCard): JpaInvitationCard =
         JpaInvitationCard(
             code = domain.code.value,
-            invitationType = domain.invitationType.value,
+            invitationType = domain.invitationType.name,
             relationType = domain.relationType.name,
             inviterId = domain.inviterId,
             isAccepted = domain.isAccepted,
