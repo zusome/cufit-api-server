@@ -87,26 +87,39 @@ class CandidateDao(
         return (leftCandidateResponses + rightCandidateResponses)
     }
 
+    /**
+     * 1일 경우 내가 수락하지 않은 것, 그외는 괜찮음
+     */
     fun findMatchResult(candidateMemberId: Long, startIndex: Long, limit: Long): List<CandidateMatchResultResponse> {
         val candidate = candidate(candidateMemberId)
         val leftToRightCandidateMatches = matchesByLeftCandidate(candidateMemberId)
-            .filter { it.matchStatus != "0" }
-            .filter { it.leftCandidateAgree }
+            .filter { resultByMatchStatusAndAgree(it.matchStatus, it.leftCandidateAgree) }
             .toMutableList()
+
         val leftToRightTargetImagesMap =
             candidateImageMapByMemberIds(leftToRightCandidateMatches.map { it.rightCandidateMemberId })
         val leftCandidateResponses =
             leftCandidatesMatchResultResponse(leftToRightCandidateMatches, leftToRightTargetImagesMap, candidate)
 
         val rightToLeftCandidateMatches = matchesByRightCandidate(candidateMemberId)
-            .filter { it.matchStatus != "0" }
-            .filter { it.rightCandidateAgree }
+            .filter { resultByMatchStatusAndAgree(it.matchStatus, it.rightCandidateAgree) }
             .toMutableList()
+
         val rightToLeftTargetImagesMap =
             candidateImageMapByMemberIds(rightToLeftCandidateMatches.map { it.leftCandidateMemberId })
         val rightCandidateResponses =
             rightCandidatesMatchResultResponse(rightToLeftCandidateMatches, rightToLeftTargetImagesMap, candidate)
         return (leftCandidateResponses + rightCandidateResponses)
+    }
+
+    private fun resultByMatchStatusAndAgree(matchStatus: String, isAgree: Boolean): Boolean {
+        if(matchStatus == "0") {
+            return false
+        }
+        if(matchStatus == "1") {
+            return isAgree
+        }
+        return true
     }
 
     private fun leftCandidatesMatchSuggestionResponse(

@@ -1,13 +1,11 @@
 package com.official.cufitapi.domain.invitation.domain.vo
 
-enum class InvitationType(
-    val value: String,
-) {
+enum class InvitationType {
 
-    ADMIN("관리자"),
-    BASIC("일반 사용자"),
-    CANDIDATE("후보자"),
-    MAKER("주선자");
+    ADMIN,
+    BASIC,
+    CANDIDATE,
+    MAKER;
 
     fun suffix(): String {
         return this.name.substring(0, 2)
