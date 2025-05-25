@@ -42,7 +42,7 @@ class InvitationApi(
         val inviter = findInvitersUseCase.findByInviterId(invitationCard.inviterId)
         return HttpResponse.of(
             HttpStatus.OK,
-            AcceptInvitationCardResponse(invitationCard.relationType.name, inviter.name)
+            AcceptInvitationCardResponse(invitationCard.invitationType.value, inviter.name)
         )
     }
 }

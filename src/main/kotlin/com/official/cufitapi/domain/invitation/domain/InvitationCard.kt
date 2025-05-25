@@ -2,9 +2,11 @@ package com.official.cufitapi.domain.invitation.domain
 
 import com.official.cufitapi.domain.invitation.domain.vo.InvitationCode
 import com.official.cufitapi.domain.invitation.domain.vo.InvitationRelationType
+import com.official.cufitapi.domain.invitation.domain.vo.InvitationType
 
 class InvitationCard(
     var code: InvitationCode,
+    var invitationType: InvitationType,
     var inviterId: Long,
     var relationType: InvitationRelationType,
     var isAccepted: Boolean,
