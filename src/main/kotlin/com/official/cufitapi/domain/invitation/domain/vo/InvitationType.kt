@@ -1,8 +1,9 @@
 package com.official.cufitapi.domain.invitation.domain.vo
 
 enum class InvitationType(
-    val description: String,
+    val value: String,
 ) {
+
     ADMIN("관리자"),
     BASIC("일반 사용자"),
     CANDIDATE("후보자"),
