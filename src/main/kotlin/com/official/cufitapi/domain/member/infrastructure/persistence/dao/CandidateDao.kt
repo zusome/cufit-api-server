@@ -73,7 +73,7 @@ class CandidateDao(
         val leftToRightTargetImagesMap =
             candidateImageMapByMemberIds(leftToRightCandidateMatches.map { it.rightCandidateMemberId })
         val leftCandidateResponses =
-            candidatesMatchSuggestionResponse(leftToRightCandidateMatches, leftToRightTargetImagesMap, candidate)
+            leftCandidatesMatchSuggestionResponse(leftToRightCandidateMatches, leftToRightTargetImagesMap, candidate)
 
         val rights = matchesByRightCandidate(candidateMemberId)
         val rightToLeftCandidateMatches = rights
@@ -83,7 +83,7 @@ class CandidateDao(
         val rightToLeftTargetImagesMap =
             candidateImageMapByMemberIds(rightToLeftCandidateMatches.map { it.leftCandidateMemberId })
         val rightCandidateResponses =
-            candidatesMatchSuggestionResponse(rightToLeftCandidateMatches, rightToLeftTargetImagesMap, candidate)
+            rightCandidatesMatchSuggestionResponse(rightToLeftCandidateMatches, rightToLeftTargetImagesMap, candidate)
         return (leftCandidateResponses + rightCandidateResponses)
     }
 
@@ -96,7 +96,7 @@ class CandidateDao(
         val leftToRightTargetImagesMap =
             candidateImageMapByMemberIds(leftToRightCandidateMatches.map { it.rightCandidateMemberId })
         val leftCandidateResponses =
-            candidatesMatchResultResponse(leftToRightCandidateMatches, leftToRightTargetImagesMap, candidate)
+            leftCandidatesMatchResultResponse(leftToRightCandidateMatches, leftToRightTargetImagesMap, candidate)
 
         val rightToLeftCandidateMatches = matchesByRightCandidate(candidateMemberId)
             .filter { it.matchStatus != "0" }
@@ -105,11 +105,11 @@ class CandidateDao(
         val rightToLeftTargetImagesMap =
             candidateImageMapByMemberIds(rightToLeftCandidateMatches.map { it.leftCandidateMemberId })
         val rightCandidateResponses =
-            candidatesMatchResultResponse(rightToLeftCandidateMatches, rightToLeftTargetImagesMap, candidate)
+            rightCandidatesMatchResultResponse(rightToLeftCandidateMatches, rightToLeftTargetImagesMap, candidate)
         return (leftCandidateResponses + rightCandidateResponses)
     }
 
-    private fun candidatesMatchSuggestionResponse(
+    private fun leftCandidatesMatchSuggestionResponse(
         matches: MutableList<MatchDto>,
         candidateImageMap: Map<Long, List<CandidateImageDto>>,
         candidate: CandidateDto,
@@ -144,12 +144,87 @@ class CandidateDao(
         )
     }
 
-    private fun candidatesMatchResultResponse(
+    private fun rightCandidatesMatchSuggestionResponse(
+        matches: MutableList<MatchDto>,
+        candidateImageMap: Map<Long, List<CandidateImageDto>>,
+        candidate: CandidateDto,
+    ): List<CandidateMatchSuggestionResponse> = matches.map {
+        val matchMemberId = it.leftCandidateMemberId
+        val matchMember = member(matchMemberId)
+        val matchRelation = memberRelation(matchMemberId)
+        val matchMakerName = member(matchRelation.inviterId).name
+        val matchMakerRelation = matchRelation.relationType
+        CandidateMatchSuggestionResponse(
+            id = matchMember.id,
+            images = candidateImageMap[matchMemberId]?.map { targetImage ->
+                CandidateImage(targetImage.imageUrl, targetImage.profileOrder)
+            } ?: emptyList(),
+            name = matchMember.name,
+            yearOfBirth = candidate.yearOfBirth!!,
+            mbti = candidate.mbti.toString(),
+            height = candidate.height!!,
+            city = candidate.city!!,
+            district = candidate.district!!,
+            job = candidate.job!!,
+            hobbies = candidate.hobbies?.split(",") ?: listOf(),
+            smoke = candidate.smoke!!,
+            drink = candidate.drink!!,
+            idealHeightRange = mapToHeightRange(candidate),
+            idealAgeRange = mapToIdealAgeRange(candidate),
+            idealMbti = mapToMbtiList(candidate),
+            makerRelation = matchMakerRelation,
+            makerName = matchMakerName,
+            matchId = it.id,
+            expiredTime = it.createdDate.tomorrow().atZone(ZoneId.of("Asia/Seoul")).withZoneSameInstant(ZoneId.of("UTC")).toInstant().toEpochMilli(),
+        )
+    }
+
+    private fun leftCandidatesMatchResultResponse(
         matches: MutableList<MatchDto>,
         candidateImageMap: Map<Long, List<CandidateImageDto>>,
         candidate: CandidateDto,
     ): List<CandidateMatchResultResponse> = matches.map {
         val matchMemberId = it.rightCandidateMemberId
+        val matchMember = member(matchMemberId)
+        val matchRelation = memberRelation(matchMemberId)
+        val matchMakerName = member(matchRelation.inviterId).name
+        val matchMakerRelation = matchRelation.relationType
+
+        // 만료 시간이 지나지 않았다면 핸드폰 번호를 안보이게 한다.
+        val expiredTime = it.modifiedDate.tomorrow().atZone(ZoneId.of("Asia/Seoul")).withZoneSameInstant(ZoneId.of("UTC")).toInstant().toEpochMilli()
+        CandidateMatchResultResponse(
+            id = matchMember.id,
+            images = candidateImageMap[matchMemberId]?.map { targetImage ->
+                CandidateImage(targetImage.imageUrl, targetImage.profileOrder)
+            } ?: emptyList(),
+            name = matchMember.name,
+            yearOfBirth = candidate.yearOfBirth!!,
+            mbti = candidate.mbti.toString(),
+            height = candidate.height!!,
+            city = candidate.city!!,
+            district = candidate.district!!,
+            job = candidate.job!!,
+            hobbies = candidate.hobbies?.split(",") ?: listOf(),
+            smoke = candidate.smoke!!,
+            drink = candidate.drink!!,
+            idealHeightRange = mapToHeightRange(candidate),
+            idealAgeRange = mapToIdealAgeRange(candidate),
+            idealMbti = mapToMbtiList(candidate),
+            makerRelation = matchMakerRelation,
+            makerName = matchMakerName,
+            phoneNumber = if (expiredTime > System.currentTimeMillis()) { candidate.phoneNumber } else { null },
+            matchStatus = it.matchStatus,
+            matchId = it.id,
+            expiredTime = expiredTime,
+        )
+    }
+
+    private fun rightCandidatesMatchResultResponse(
+        matches: MutableList<MatchDto>,
+        candidateImageMap: Map<Long, List<CandidateImageDto>>,
+        candidate: CandidateDto,
+    ): List<CandidateMatchResultResponse> = matches.map {
+        val matchMemberId = it.leftCandidateMemberId
         val matchMember = member(matchMemberId)
         val matchRelation = memberRelation(matchMemberId)
         val matchMakerName = member(matchRelation.inviterId).name
