@@ -53,7 +53,7 @@ class InvitationCardService(
         applicationEventPublisher.publishEvent(
             RegisteredInvitationCardEvent(
                 invitationCard.code.value,
-                invitationCard.invitationType.value,
+                invitationCard.invitationType.name,
                 invitationCard.inviterId,
                 invitationCard.relationType.name,
                 invitationCard.isAccepted,
@@ -72,7 +72,7 @@ class InvitationCardService(
             applicationEventPublisher.publishEvent(
                 AcceptedInvitationCardEvent.mock(
                     command.invitationCode,
-                    parse(command.invitationCode).value,
+                    parse(command.invitationCode).name,
                     command.inviteeId,
                     "FRIEND"
                 )
@@ -92,7 +92,7 @@ class InvitationCardService(
         applicationEventPublisher.publishEvent(
             AcceptedInvitationCardEvent(
                 invitationCard.code.value,
-                invitationCard.invitationType.value,
+                invitationCard.invitationType.name,
                 invitationCard.inviterId,
                 invitationCard.relationType.name,
                 invitationCard.isAccepted,
