@@ -39,7 +39,7 @@ class MemberDao(
             SELECT
                 m.name,
                 m.email,
-                inviter.email AS inviterName,
+                inviter.name AS inviterName,
                 mr.relation_type AS relationWithInvitee
             FROM
                 members m
