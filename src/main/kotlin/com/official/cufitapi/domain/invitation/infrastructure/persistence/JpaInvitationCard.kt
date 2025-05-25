@@ -20,6 +20,10 @@ class JpaInvitationCard(
     @Column(name = "code", nullable = false, updatable = false)
     var code: String,
 
+    @Comment("초대 유형")
+    @Column(name = "invitation_type", nullable = false, updatable = false)
+    var invitationType: String,
+
     @Comment("초대하는 사용자 ID")
     @Column(name = "inviter_id", nullable = false, updatable = false)
     var inviterId: Long,
