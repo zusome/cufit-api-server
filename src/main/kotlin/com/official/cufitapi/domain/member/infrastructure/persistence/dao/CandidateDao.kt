@@ -90,7 +90,7 @@ class CandidateDao(
     fun findMatchResult(candidateMemberId: Long, startIndex: Long, limit: Long): List<CandidateMatchResultResponse> {
         val candidate = candidate(candidateMemberId)
         val leftToRightCandidateMatches = matchesByLeftCandidate(candidateMemberId)
-            .filter { it.matchStatus == "1" || it.matchStatus == "2" }
+            .filter { it.matchStatus != "0" }
             .filter { it.leftCandidateAgree }
             .toMutableList()
         val leftToRightTargetImagesMap =
@@ -99,7 +99,7 @@ class CandidateDao(
             candidatesMatchResultResponse(leftToRightCandidateMatches, leftToRightTargetImagesMap, candidate)
 
         val rightToLeftCandidateMatches = matchesByRightCandidate(candidateMemberId)
-            .filter { it.matchStatus == "1" || it.matchStatus == "2" }
+            .filterNot { it.matchStatus == "0" }
             .filter { it.rightCandidateAgree }
             .toMutableList()
         val rightToLeftTargetImagesMap =
