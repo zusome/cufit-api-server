@@ -43,7 +43,7 @@ object MemberSqlConstant {
 
     const val MEMBER_RELATIONS_BY_NOT_INVITER_ID = """
             SELECT * FROM MEMBER_RELATIONS
-            WHERE MEMBER_RELATIONS.INVITER_ID = :inviterId
+            WHERE MEMBER_RELATIONS.INVITER_ID != :inviterId
         """
 
     const val MATCHES_BY_LEFT_CANDIDATE_MEMBER_ID_SQL = """
