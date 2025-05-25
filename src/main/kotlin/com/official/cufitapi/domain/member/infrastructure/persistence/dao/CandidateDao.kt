@@ -99,7 +99,7 @@ class CandidateDao(
             candidatesMatchResultResponse(leftToRightCandidateMatches, leftToRightTargetImagesMap, candidate)
 
         val rightToLeftCandidateMatches = matchesByRightCandidate(candidateMemberId)
-            .filterNot { it.matchStatus == "0" }
+            .filter { it.matchStatus != "0" }
             .filter { it.rightCandidateAgree }
             .toMutableList()
         val rightToLeftTargetImagesMap =
