@@ -70,7 +70,6 @@ class SmsAuthenticationService(
             .firstOrNull()
             ?: throw NotFoundException(ErrorCode.INTERNAL_SERVER_ERROR)
         smsAuthentication.verify(command.authCode, command.phone)
-        applicationEventPublisher.publishEvent(registerSmsAuthenticationEvent(smsAuthentication))
         return smsAuthenticationRepository.save(smsAuthentication)
     }
 }
