@@ -1,6 +1,7 @@
 package com.official.cufitapi.domain.member.infrastructure.persistence.dao
 
 import com.official.cufitapi.common.tomorrow
+import com.official.cufitapi.domain.member.api.dto.candidate.CandidateMatchBreakResponse
 import com.official.cufitapi.domain.member.api.dto.candidate.CandidateMatchResultResponse
 import com.official.cufitapi.domain.member.api.dto.candidate.CandidateMatchSuggestionResponse
 import com.official.cufitapi.domain.member.domain.vo.CandidateImage
@@ -17,6 +18,7 @@ import com.official.cufitapi.domain.member.infrastructure.persistence.mapper.Jdb
 import com.official.cufitapi.domain.member.infrastructure.persistence.mapper.JdbcMemberRelationDtoMapper
 import com.official.cufitapi.domain.member.infrastructure.persistence.sql.MemberSqlConstant.CANDIDATE_BY_MEMBER_ID_SQL
 import com.official.cufitapi.domain.member.infrastructure.persistence.sql.MemberSqlConstant.CANDIDATE_IMAGE_BY_MEMBER_IDS_SQL
+import com.official.cufitapi.domain.member.infrastructure.persistence.sql.MemberSqlConstant.CANDIDATE_MATCH_BREAK_SQL
 import com.official.cufitapi.domain.member.infrastructure.persistence.sql.MemberSqlConstant.MATCHES_BY_LEFT_CANDIDATE_MEMBER_ID_SQL
 import com.official.cufitapi.domain.member.infrastructure.persistence.sql.MemberSqlConstant.MATCHES_BY_RIGHT_CANDIDATE_MEMBER_ID_SQL
 import com.official.cufitapi.domain.member.infrastructure.persistence.sql.MemberSqlConstant.MEMBER_RELATIONS_BY_INVITEE_ID
@@ -63,7 +65,11 @@ class CandidateDao(
             ?: throw RuntimeException("Candidate not found")
     }
 
-    fun findMatchSuggestions(candidateMemberId: Long, startIndex: Long, limit: Long): List<CandidateMatchSuggestionResponse> {
+    fun findMatchSuggestions(
+        candidateMemberId: Long,
+        startIndex: Long,
+        limit: Long,
+    ): List<CandidateMatchSuggestionResponse> {
         val candidate = candidate(candidateMemberId)
         val lefts = matchesByLeftCandidate(candidateMemberId)
         val leftToRightCandidateMatches = lefts
@@ -113,10 +119,10 @@ class CandidateDao(
     }
 
     private fun resultByMatchStatusAndAgree(matchStatus: String, isAgree: Boolean): Boolean {
-        if(matchStatus == "0") {
+        if (matchStatus == "0") {
             return false
         }
-        if(matchStatus == "1") {
+        if (matchStatus == "1") {
             return isAgree
         }
         return true
@@ -153,7 +159,8 @@ class CandidateDao(
             makerRelation = matchMakerRelation,
             makerName = matchMakerName,
             matchId = it.id,
-            expiredTime = it.createdDate.tomorrow().atZone(ZoneId.of("Asia/Seoul")).withZoneSameInstant(ZoneId.of("UTC")).toInstant().toEpochMilli(),
+            expiredTime = it.createdDate.tomorrow().atZone(ZoneId.of("Asia/Seoul"))
+                .withZoneSameInstant(ZoneId.of("UTC")).toInstant().toEpochMilli(),
         )
     }
 
@@ -188,7 +195,8 @@ class CandidateDao(
             makerRelation = matchMakerRelation,
             makerName = matchMakerName,
             matchId = it.id,
-            expiredTime = it.createdDate.tomorrow().atZone(ZoneId.of("Asia/Seoul")).withZoneSameInstant(ZoneId.of("UTC")).toInstant().toEpochMilli(),
+            expiredTime = it.createdDate.tomorrow().atZone(ZoneId.of("Asia/Seoul"))
+                .withZoneSameInstant(ZoneId.of("UTC")).toInstant().toEpochMilli(),
         )
     }
 
@@ -204,7 +212,9 @@ class CandidateDao(
         val matchMakerRelation = matchRelation.relationType
 
         // 만료 시간이 지나지 않았다면 핸드폰 번호를 안보이게 한다.
-        val expiredTime = it.modifiedDate.tomorrow().atZone(ZoneId.of("Asia/Seoul")).withZoneSameInstant(ZoneId.of("UTC")).toInstant().toEpochMilli()
+        val expiredTime =
+            it.modifiedDate.tomorrow().atZone(ZoneId.of("Asia/Seoul")).withZoneSameInstant(ZoneId.of("UTC")).toInstant()
+                .toEpochMilli()
         CandidateMatchResultResponse(
             id = matchMember.id,
             images = candidateImageMap[matchMemberId]?.map { targetImage ->
@@ -225,7 +235,11 @@ class CandidateDao(
             idealMbti = mapToMbtiList(candidate),
             makerRelation = matchMakerRelation,
             makerName = matchMakerName,
-            phoneNumber = if (expiredTime > System.currentTimeMillis()) { candidate.phoneNumber } else { null },
+            phoneNumber = if (expiredTime > System.currentTimeMillis()) {
+                candidate.phoneNumber
+            } else {
+                null
+            },
             matchStatus = it.matchStatus,
             matchId = it.id,
             expiredTime = expiredTime,
@@ -244,7 +258,9 @@ class CandidateDao(
         val matchMakerRelation = matchRelation.relationType
 
         // 만료 시간이 지나지 않았다면 핸드폰 번호를 안보이게 한다.
-        val expiredTime = it.modifiedDate.tomorrow().atZone(ZoneId.of("Asia/Seoul")).withZoneSameInstant(ZoneId.of("UTC")).toInstant().toEpochMilli()
+        val expiredTime =
+            it.modifiedDate.tomorrow().atZone(ZoneId.of("Asia/Seoul")).withZoneSameInstant(ZoneId.of("UTC")).toInstant()
+                .toEpochMilli()
         CandidateMatchResultResponse(
             id = matchMember.id,
             images = candidateImageMap[matchMemberId]?.map { targetImage ->
@@ -265,7 +281,11 @@ class CandidateDao(
             idealMbti = mapToMbtiList(candidate),
             makerRelation = matchMakerRelation,
             makerName = matchMakerName,
-            phoneNumber = if (expiredTime > System.currentTimeMillis()) { candidate.phoneNumber } else { null },
+            phoneNumber = if (expiredTime > System.currentTimeMillis()) {
+                candidate.phoneNumber
+            } else {
+                null
+            },
             matchStatus = it.matchStatus,
             matchId = it.id,
             expiredTime = expiredTime,
@@ -301,7 +321,7 @@ class CandidateDao(
         .single()
 
     private fun candidateImageMapByMemberIds(leftToRightOtherTargets: List<Long>): Map<Long, List<CandidateImageDto>> {
-        if(leftToRightOtherTargets.isEmpty()) {
+        if (leftToRightOtherTargets.isEmpty()) {
             return emptyMap()
         }
         return jdbcClient.sql(CANDIDATE_IMAGE_BY_MEMBER_IDS_SQL)
@@ -341,5 +361,12 @@ class CandidateDao(
             .map(IdealHeightUnit.Companion::from)
             .map(IdealHeightUnit::value)
     }
+
+    fun findBreakMatch(memberId: Long): CandidateMatchBreakResponse =
+        namedParameterJdbcTemplate.queryForObject(CANDIDATE_MATCH_BREAK_SQL, mapOf("memberId" to memberId)) { rs, _ ->
+            CandidateMatchBreakResponse(
+                isMatchAgreed = rs.getBoolean("is_match_agreed")
+            )
+        }!!
 }
 
