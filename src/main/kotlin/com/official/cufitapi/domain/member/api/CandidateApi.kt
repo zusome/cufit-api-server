@@ -125,6 +125,19 @@ class CandidateApi(
         return HttpResponse.of(HttpStatus.NO_CONTENT, Unit)
     }
 
+    @GetMapping("/candidates/match/break")
+    override fun findBreakMatching(
+        @Authorization(
+            AuthorizationType.BASIC,
+            AuthorizationType.CANDIDATE
+        ) authorizationUser: AuthorizationUser,
+    ): HttpResponse<CandidateMatchBreakResponse> {
+        return HttpResponse.of(
+            HttpStatus.OK,
+            candidateDao.findBreakMatch(authorizationUser.userId)
+        )
+    }
+
     @GetMapping("/candidates/profile-images/presigned-url")
     override fun getProfileImageUploadPresignedUrl(
         @Authorization(
