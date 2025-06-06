@@ -55,4 +55,13 @@ object MemberSqlConstant {
             SELECT MATCHES.* FROM MATCHES
             WHERE MATCHES.RIGHT_CANDIDATE_MEMBER_ID = :rightMemberId
         """
+
+    const val CANDIDATE_MATCH_BREAK_SQL = """
+            SELECT
+                is_match_agreed
+            FROM
+                candidates mc
+            WHERE
+                member_id = :memberId
+        """
 }

@@ -5,6 +5,7 @@ import com.official.cufitapi.common.annotation.AuthorizationType
 import com.official.cufitapi.common.annotation.AuthorizationUser
 import com.official.cufitapi.common.api.dto.HttpResponse
 import com.official.cufitapi.domain.member.api.dto.CandidateProfileInfoResponse
+import com.official.cufitapi.domain.member.api.dto.candidate.CandidateMatchBreakResponse
 import com.official.cufitapi.domain.member.api.dto.candidate.CandidateMatchResultResponse
 import com.official.cufitapi.domain.member.api.dto.candidate.CandidatePresignedUrlUploadResponse
 import com.official.cufitapi.domain.member.api.dto.candidate.CandidateProfileUpdateRequest
@@ -99,4 +100,20 @@ interface CandidateApiDocs {
         ApiResponse(responseCode = "500", description = "서버 에러")
     )
     fun getSuggestedResultCandidate(authorizationUser: AuthorizationUser): HttpResponse<List<CandidateMatchResultResponse>>
+
+
+    @Operation(
+        summary = "매칭 쉬어가기 조회 API"
+    )
+    @ApiResponses(
+        ApiResponse(responseCode = "200", description = "성공"),
+        ApiResponse(responseCode = "401", description = "인증 실패"),
+        ApiResponse(responseCode = "500", description = "서버 에러")
+    )
+    fun findBreakMatching(
+        @Authorization(
+            AuthorizationType.BASIC,
+            AuthorizationType.CANDIDATE
+        ) authorizationUser: AuthorizationUser,
+    ): HttpResponse<CandidateMatchBreakResponse>
 }
