@@ -20,9 +20,9 @@ class JpaCandidate(
     @Column(name = "member_id", unique = false, nullable = false)
     var memberId: Long,
 
-    @Column(name = "is_match_agreed", unique = false, nullable = false)
-    @Comment("매칭동의여부")
-    var isMatchAgreed: Boolean = true,
+    @Column(name = "is_match_paused", unique = false, nullable = false)
+    @Comment("매칭 중단 여부")
+    var isMatchPaused: Boolean = false,
 
     @Column(name = "ideal_mbti", unique = false, nullable = true)
     @Comment("이상형 MBTI")

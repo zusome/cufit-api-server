@@ -3,7 +3,7 @@ package com.official.cufitapi.domain.member.api.dto.candidate
 data class OtherCandidatesInfoResponseDto(
     val id: Long,
     val memberId: Long,
-    val isMatchAgreed: Boolean,
+    val isMatchPaused: Boolean,
     val idealMbti: String? = null,
     val idealAgeRange: String? = null,
     val idealHeightRange: String? = null,

@@ -12,13 +12,12 @@ import com.official.cufitapi.domain.member.api.dto.maker.MakerOtherCandidatesCou
 import com.official.cufitapi.domain.member.api.dto.maker.MakerOtherCandidatesResponse
 import com.official.cufitapi.domain.member.api.mapper.MakerApiDtoMapper
 import com.official.cufitapi.domain.member.infrastructure.persistence.dao.MakerDao
-import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
 
 @ApiV1Controller
 class MakerApi(
-    @Qualifier("makerDaoJdbcClientDao")private val makerDao: MakerDao,
+    private val makerDao: MakerDao,
     private val makerApiResponseMapper: MakerApiDtoMapper,
 ) : MakerApiDocs {
 

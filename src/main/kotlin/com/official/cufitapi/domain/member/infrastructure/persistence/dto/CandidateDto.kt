@@ -2,7 +2,7 @@ package com.official.cufitapi.domain.member.infrastructure.persistence.dto
 
 data class CandidateDto(
     var memberId: Long,
-    var isMatchAgreed: Boolean = true,
+    var isMatchPaused: Boolean = false,
     var idealMbti: String? = null,
     var idealAgeRange: String? = null,
     var idealHeightRange: String? = null,
