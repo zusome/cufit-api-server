@@ -25,7 +25,7 @@ class MakerApiDtoMapper {
         CandidatesInfoResponseDto(
             id = jpaCandidate.id!!,
             memberId = jpaCandidate.memberId,
-            isMatchAgreed = jpaCandidate.isMatchAgreed,
+            isMatchPaused = jpaCandidate.isMatchPaused,
             idealMbti = jpaCandidate.idealMbti,
             idealAgeRange = jpaCandidate.idealAgeRange,
             idealHeightRange = jpaCandidate.idealHeightRange,
@@ -45,7 +45,7 @@ class MakerApiDtoMapper {
         OtherCandidatesInfoResponseDto(
             id = jpaCandidate.id!!,
             memberId = jpaCandidate.memberId,
-            isMatchAgreed = jpaCandidate.isMatchAgreed,
+            isMatchPaused = jpaCandidate.isMatchPaused,
             idealMbti = jpaCandidate.idealMbti,
             idealAgeRange = jpaCandidate.idealAgeRange,
             idealHeightRange = jpaCandidate.idealHeightRange,
@@ -84,7 +84,7 @@ class MakerApiDtoMapper {
                 )
             },
             hasProfile = candidate.hasProfile,
-            isMatchingPaused = candidate.isMatchingPaused,
+            isMatchPaused = candidate.isMatchPaused,
             candidateDetailInfo = MakerCandidateDetailInfo(
                 id = candidate.candidateDetailInfo.id,
                 images = candidate.candidateDetailInfo.images.map {

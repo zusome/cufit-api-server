@@ -365,7 +365,7 @@ class CandidateDao(
     fun findBreakMatch(memberId: Long): CandidateMatchBreakResponse =
         namedParameterJdbcTemplate.queryForObject(CANDIDATE_MATCH_BREAK_SQL, mapOf("memberId" to memberId)) { rs, _ ->
             CandidateMatchBreakResponse(
-                isMatchAgreed = rs.getBoolean("is_match_agreed")
+                isMatchPaused = rs.getBoolean("is_match_agreed")
             )
         }!!
 }

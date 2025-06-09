@@ -5,7 +5,7 @@ import com.official.cufitapi.domain.member.domain.vo.Gender
 
 class Candidate(
     val memberId: Long,
-    var isMatchAgreed: Boolean = true,
+    var isMatchPaused: Boolean = false,
     var images: MutableList<CandidateImage> = mutableListOf(),
     var idealMbti: String? = null,
     var idealAgeRange: String? = null,
@@ -58,7 +58,7 @@ class Candidate(
     }
 
     fun breakMatch(matchAgreed: Boolean) {
-        this.isMatchAgreed = matchAgreed
+        this.isMatchPaused = matchAgreed
     }
 
     override fun equals(other: Any?): Boolean {

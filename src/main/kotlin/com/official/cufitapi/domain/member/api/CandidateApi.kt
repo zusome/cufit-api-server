@@ -119,7 +119,7 @@ class CandidateApi(
         candidateMatchBreakUseCase.breakMatch(
             CandidateMatchBreakCommand(
                 memberId = authorizationUser.userId,
-                isMatchAgreed = request.isMatchAgreed
+                isMatchPaused = request.isMatchPaused
             )
         )
         return HttpResponse.of(HttpStatus.NO_CONTENT, Unit)

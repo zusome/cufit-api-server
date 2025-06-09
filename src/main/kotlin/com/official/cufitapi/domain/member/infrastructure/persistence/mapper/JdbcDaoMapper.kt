@@ -22,7 +22,7 @@ class JdbcCandidateDtoMapper : RowMapper<CandidateDto> {
     override fun mapRow(rs: ResultSet, rowNum: Int): CandidateDto {
         return CandidateDto(
             memberId = rs.getLong("member_id"),
-            isMatchAgreed = rs.getBoolean("is_match_agreed"),
+            isMatchPaused = rs.getBoolean("is_match_agreed"),
             idealMbti = rs.getString("ideal_mbti"),
             idealAgeRange = rs.getString("ideal_age_range"),
             idealHeightRange = rs.getString("ideal_height_range"),
