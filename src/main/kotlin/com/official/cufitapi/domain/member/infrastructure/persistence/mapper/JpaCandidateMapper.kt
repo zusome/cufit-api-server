@@ -18,7 +18,7 @@ class JpaCandidateMapper {
     fun mapToDomain(entity: JpaCandidate): Candidate {
         return Candidate(
             memberId = entity.memberId,
-            isMatchAgreed = entity.isMatchAgreed,
+            isMatchPaused = entity.isMatchPaused,
             images = entity.images.map(::mapToDomain).toMutableList(),
             idealMbti = entity.idealMbti,
             idealAgeRange = entity.idealAgeRange,
@@ -49,7 +49,7 @@ class JpaCandidateMapper {
     fun mapToEntity(candidate: Candidate): JpaCandidate {
         return JpaCandidate(
             memberId = candidate.memberId,
-            isMatchAgreed = candidate.isMatchAgreed,
+            isMatchPaused = candidate.isMatchPaused,
             images = candidate.images.map(::mapToEntity).toMutableList(),
             idealMbti = candidate.idealMbti,
             idealAgeRange = candidate.idealAgeRange,

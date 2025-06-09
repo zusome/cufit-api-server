@@ -92,7 +92,7 @@ class MakerDaoJdbcClientDao(
                     image = candidateImageMap[candidate.memberId]?.firstOrNull { it.profileOrder == 1 }?.imageUrl ?: "",
                     name = memberMap[candidate.memberId]!!.name,
                     relation = relationMap[candidate.memberId]!!,
-                    isMatchingPaused = candidate.isMatchAgreed.not(),
+                    isMatchPaused = candidate.isMatchPaused,
                     hasProfile = candidate.hasProfile(),
                     matches = matchesMap[candidate.memberId]?.map { match ->
                         val otherCandidateId = match.otherCandidateId(candidate.memberId)

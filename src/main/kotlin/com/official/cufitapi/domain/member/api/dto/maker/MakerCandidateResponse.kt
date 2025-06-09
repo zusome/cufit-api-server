@@ -9,7 +9,7 @@ data class MakerCandidateResponse(
     val relation: String,
     val matches: List<MatchResponse>,
     val hasProfile: Boolean,
-    val isMatchingPaused: Boolean,
+    val isMatchPaused: Boolean,
     val candidateDetailInfo: MakerCandidateDetailInfo,
 )
 

@@ -58,7 +58,7 @@ class CandidateService(
 
     override fun breakMatch(command: CandidateMatchBreakCommand) {
         val candidate = candidateRepository.findByMemberId(command.memberId)
-        candidate.breakMatch(command.isMatchAgreed)
+        candidate.breakMatch(command.isMatchPaused)
         candidateRepository.save(candidate)
     }
 }
