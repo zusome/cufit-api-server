@@ -110,7 +110,7 @@ class MatchDao(
                 JOIN 
                     members m ON mc.member_id = m.id
                 AND
-                    mc.is_match_agreed = true
+                    mc.is_match_paused = false
                 AND
                     mc.year_of_birth IS NOT NULL
                 AND

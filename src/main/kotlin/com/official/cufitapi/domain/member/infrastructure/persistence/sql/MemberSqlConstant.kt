@@ -58,7 +58,7 @@ object MemberSqlConstant {
 
     const val CANDIDATE_MATCH_BREAK_SQL = """
             SELECT
-                is_match_agreed
+                is_match_paused
             FROM
                 candidates mc
             WHERE
