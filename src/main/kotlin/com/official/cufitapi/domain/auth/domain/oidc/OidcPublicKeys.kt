@@ -5,7 +5,7 @@ import com.official.cufitapi.domain.auth.domain.oidc.vo.OidcPublicKeyId
 data class OidcPublicKeys(
     val keys: List<OidcPublicKey>
 ) {
-    fun match(oidcPublicKeyId: OidcPublicKeyId): OidcPublicKey =
+    fun findByOidcPublicKeyId(oidcPublicKeyId: OidcPublicKeyId): OidcPublicKey =
         keys.firstOrNull { it.match(oidcPublicKeyId) } ?: throw RuntimeException()
 
     override fun equals(other: Any?): Boolean {
