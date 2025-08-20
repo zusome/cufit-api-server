@@ -4,8 +4,9 @@ import com.official.cufitapi.domain.auth.application.command.FindOidcProviderIdC
 import com.official.cufitapi.domain.auth.domain.oidc.OidcProviders
 import org.springframework.stereotype.Service
 
+@FunctionalInterface
 interface OidcProviderIdFindUseCase {
-    fun find(findOidcProviderIdCommand: FindOidcProviderIdCommand): String
+    fun providerId(findOidcProviderIdCommand: FindOidcProviderIdCommand): String
 }
 
 @Service
@@ -13,7 +14,7 @@ class OidcProviderService(
     private val oidcProviders: OidcProviders
 ): OidcProviderIdFindUseCase {
 
-    override fun find(command: FindOidcProviderIdCommand): String {
-        return oidcProviders.findByIdToken(command.idToken, command.provider)
+    override fun providerId(command: FindOidcProviderIdCommand): String {
+        return oidcProviders.providerId(command.idToken, command.provider)
     }
 }

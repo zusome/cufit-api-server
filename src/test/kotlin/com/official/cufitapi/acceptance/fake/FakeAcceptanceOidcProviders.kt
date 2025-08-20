@@ -9,11 +9,11 @@ import java.util.concurrent.atomic.AtomicInteger
 @Primary
 @Component
 @ActiveProfiles("acceptance")
-class FakeOidcProviders : OidcProviders {
+class FakeAcceptanceOidcProviders : OidcProviders {
 
     private val atomicInteger: AtomicInteger = AtomicInteger(1)
 
-    override fun findByIdToken(idToken: String, provider: String): String {
+    override fun providerId(idToken: String, provider: String): String {
         return atomicInteger.getAndIncrement().toString()
     }
 }

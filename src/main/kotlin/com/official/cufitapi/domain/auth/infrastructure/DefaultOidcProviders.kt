@@ -24,10 +24,10 @@ class DefaultOidcProviders(
         .baseUrl("https://appleid.apple.com")
         .build()
 
-    override fun findByIdToken(idToken: String, provider: String): String {
+    override fun providerId(idToken: String, provider: String): String {
         val oidcPublicKeyId = oidcPublicKeyId(idToken)
         val oidcPublicKeys = oidcPublicKeys()
-        val oidcPublicKey = oidcPublicKeys.match(oidcPublicKeyId)
+        val oidcPublicKey = oidcPublicKeys.findByOidcPublicKeyId(oidcPublicKeyId)
         val publicKey = publicKey(oidcPublicKey)
         val parseClaims = parseClaims(idToken, publicKey)
         return parseClaims.subject
